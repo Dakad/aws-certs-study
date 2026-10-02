@@ -1,6 +1,6 @@
 # AWS CloudOps study repository
 
-This is a personal study workspace for the AWS Certified CloudOps Engineer – Associate (SOA-C03) exam. It is not the AppTweak infrastructure repository. Keep SOA-C03 learning material and learner progress distinct from supplemental question banks for other certifications.
+This is a personal study workspace for the AWS Certified CloudOps Engineer – Associate (SOA-C03) exam. Keep SOA-C03 learning material and learner progress distinct from supplemental question banks for other certifications.
 
 ## Start here
 
@@ -19,7 +19,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 - The learner prefers AWS CLI creation, their own Console inspection, then Terraform/OpenTofu recreation. Never request AWS credentials or take control of their Console or laptop; they may share screenshots for interpretation.
 - Before an AWS mutation, show the exact command or configuration and explain its target, expected change, cost, risk, and cleanup. Verify identity with `aws sts get-caller-identity`; use the configured profile and do not add `--device-code` to SSO login by default.
-- Keep labs disposable and scoped to the learner's authorized playground or personal account. Do not touch AppTweak production/shared infrastructure. A high budget alert is not blanket approval for avoidable spend.
+- Keep labs disposable and scoped to the learner's authorized playground or personal account. Do not use production or shared workloads as lab targets. A high budget alert is not blanket approval for avoidable spend.
 - Review plans and state before applying. Never blindly duplicate a CLI-created resource with IaC; explain import versus safe recreation. Clean up temporary resources and verify the result.
 - Do not commit credentials, state, plans, or sensitive account output.
 
@@ -34,4 +34,4 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 - Use Jujutsu (`jj`) for local version control and `gh` for GitHub operations. Keep changes focused and preserve unrelated work.
 - Prefer relative Markdown links. After documentation changes, validate links and any YAML/front matter you edited.
-- Never store AWS credentials or use this study repository to make changes to the AppTweak infrastructure repo.
+- Never store AWS credentials or sensitive account output in this repository.
