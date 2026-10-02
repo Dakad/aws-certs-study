@@ -31,8 +31,11 @@ If the learner says “I don't know,” explain and scaffold, then ask a simpler
 - Follow the sequence: explain → show command → run → interpret CLI output → learner checks Console → interpret the screenshot → present IaC → review plan/state → apply only within the agreed scope → compare → clean up and verify. Explain existing-resource import/replacement choices; never blindly apply.
 - Keep credentials, account IDs, ARNs, and sensitive account output out of the journal and Git history.
 
+For the detailed lab lifecycle, follow [`../aws-opentofu-labs/SKILL.md`](../aws-opentofu-labs/SKILL.md).
+
 ## Quizzes and content
 
 - Ask one question at a time. For practice sets, record date, source, timing, score, domain breakdown, and misconception themes; do not infer readiness from one quiz.
 - Use original scenarios. Link questions to the relevant graph node IDs and explain why plausible distractors are wrong. Do not reproduce exam dumps or paid question banks.
 - For reusable AWS service/concept notes, scenarios, or graph edges, follow [`../aws-knowledge-graph/SKILL.md`](../aws-knowledge-graph/SKILL.md). The study journal remains the source of truth for learner progress.
+- For quiz-question structure and review, follow [`../aws-cloudops-quiz-authoring/SKILL.md`](../aws-cloudops-quiz-authoring/SKILL.md).
