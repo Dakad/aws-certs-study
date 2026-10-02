@@ -93,6 +93,14 @@ On Sep 28, the tutor over-focused on networking because it was identified as a w
 - **Still unknown:** Overall SOA-C03 performance and independent technical reasoning across the remaining domains; this single item is not a score or mastery assessment.
 - **Next:** Continue in the agreed order with the Domain 1 lab: Console inspection, then OpenTofu recreation and cleanup of the temporary alarm. The Domain 2 discussion was a detour. See [Domain 1 lab notes](aws-cloudops/domain-1-monitoring.md).
 
+### 2026-10-02 — Resume Domain 1 alarm comparison
+
+- **Resumed from:** The pending Console inspection of `codex-study-cpu-high-ec2-lab`; no domain change.
+- **Read-only check:** The configured AWS SSO session had expired and could not refresh non-interactively, so caller identity and live alarm settings were not re-verified. No AWS changes were made.
+- **Record correction:** The journal contains the alarm settings but not the literal original `put-metric-alarm` command. Do not present a reconstructed command as the original.
+- **Progress:** No new learner answer or mastery evidence yet; Domain 1 remains Learning.
+- **Next:** Inspect the alarm in the AWS Console and compare the displayed fields with the saved settings below. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+
 ## Readiness evidence
 
 | Date | Source / set | Timed? | Overall | Domain breakdown | Main miss themes / next action |
@@ -135,19 +143,20 @@ You can ask for **“show/update my study journal”** at any point. Keep this f
 
 - [AWS Certified CloudOps Engineer – Associate (SOA-C03) exam guide](https://docs.aws.amazon.com/pdfs/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03.pdf)
 
-## Handoff — 2026-09-28
+## Handoff — 2026-10-02
 
 ### Where we are
 
 - Study started with the account reconnaissance and a small Domain 1 CloudWatch alarm lab. The agreed overall coverage remains balanced across all five exam domains; Domain 2/RPO and ALB discussions were detours, not a change to the sequence.
-- The six study files now live in `/Users/davida/aws-cloudops-study/`, outside the infrastructure repository.
-- A temporary CloudWatch alarm named `codex-study-cpu-high-ec2-lab` exists on an EC2 `CPUUtilization` metric. It has no actions enabled, uses 5-minute average datapoints, requires 2 of 2 datapoints >=80%, and treats missing data as not breaching. CLI showed it transition from initial `INSUFFICIENT_DATA` to `OK`. It may incur a small CloudWatch charge. **Do not modify or delete it until the learner has inspected it in the Console and the next step is agreed.**
+- This journal and its supporting study files live in this repository.
+- A temporary CloudWatch alarm named `codex-study-cpu-high-ec2-lab` was previously observed on an EC2 `CPUUtilization` metric. Saved settings: no actions enabled, 5-minute average datapoints, 2 of 2 datapoints >=80%, and missing data not breaching. CLI previously showed it transition from initial `INSUFFICIENT_DATA` to `OK`; current state is unverified. It may incur a small CloudWatch charge. **Do not modify or delete it until the learner has inspected it in the Console and the next step is agreed.**
+- The literal original `put-metric-alarm` command was not saved. The current SSO token expired during a read-only verification attempt; do not invent the original command or initiate an interactive login on the learner's behalf.
 - No AWS credentials were requested. Do not control or attempt to access the learner's laptop/Console. The learner will inspect the Console and may paste a screenshot for explanation.
 
 ### Next session — resume Domain 1 in order
 
-1. Start by acknowledging the exact CLI command that created the alarm and explain each setting before asking the learner to inspect the Console.
-2. Learner opens **CloudWatch → Alarms → All alarms → `codex-study-cpu-high-ec2-lab`** and optionally shares a screenshot. Compare Console fields to CLI and explain the `OK` state.
+1. Explain the saved alarm settings and be transparent that the literal original CLI command was not recorded; do not pretend a reconstructed command is exact.
+2. Learner opens **CloudWatch → Alarms → All alarms → `codex-study-cpu-high-ec2-lab`** and optionally shares a screenshot. Compare Console fields to the saved settings; do not assume the current state is still `OK`.
 3. Only after that review, present an OpenTofu configuration for the same alarm and explain it before any apply. Because an alarm with this name already exists, decide explicitly between deleting the CLI-created alarm before creating it with OpenTofu or importing it into state; do not blindly apply and do not mutate AWS until the learner understands the step.
 4. Complete the comparison and cleanup, then verify the alarm is gone. Continue remaining Domain 1 monitoring/logging objectives before moving on to the scheduled next exam domain.
 
