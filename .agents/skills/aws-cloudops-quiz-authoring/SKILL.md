@@ -8,7 +8,7 @@ description: Create, review, or revise original AWS CloudOps Engineer Associate 
 ## Workflow
 
 1. Read `AWS-CLOUDOPS-STUDY.md`, the relevant domain page, and `aws-cloudops/knowledge/README.md`. Verify scope against the current official SOA-C03 exam guide; do not reuse an older SOA-C02 blueprint as current scope.
-2. Write original operational scenarios from verified AWS behavior. Never copy exam dumps, paid questions, or another repository's prose. Cite official AWS documentation for answer-critical claims.
+2. Write original operational scenarios from verified AWS behavior. Never copy exam dumps, paid questions, or material with unclear redistribution rights. Import third-party questions only when the user explicitly requests it and the license permits redistribution; retain the license and provenance, keep imported banks isolated from original SOA-C03 content, and do not imply they are official AWS exam questions. Cite official AWS documentation for answer-critical claims in original questions.
 3. Give each item a stable ID, domain(s), topic/service tags, graph node IDs, difficulty, and source URLs. Use `aws-cloudops/knowledge/templates/scenario.md` as the content structure.
 4. Make the prompt answerable from the stated facts. Specify single-answer versus multiple-answer format; include only constraints that affect the decision. Avoid trick wording or two defensible answers.
 5. Make distractors plausible and diagnostically useful. Explain why the best option fits and why each alternative fails under the stated requirements.
@@ -22,6 +22,6 @@ description: Create, review, or revise original AWS CloudOps Engineer Associate 
 - Is every technical claim verified by an official source, including exceptions and service limits?
 - Are distractors wrong for a specific, explainable reason rather than merely unfamiliar?
 - Does the rationale teach the relevant graph relationship and link to canonical nodes?
-- Is the question original and free of copied answer-bank material?
+- For original questions, is the question free of copied answer-bank material? For licensed imports, is the source, revision, and license recorded and kept intact?
 
 Coordinate with [`../aws-knowledge-graph/SKILL.md`](../aws-knowledge-graph/SKILL.md) for node/edge structure and [`../aws-cloudops-tutoring/SKILL.md`](../aws-cloudops-tutoring/SKILL.md) for presenting one question at a time and recording learner evidence.
