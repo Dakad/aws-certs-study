@@ -1,0 +1,23 @@
+# OpenTofu / Terraform local data and state can contain secrets.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local credentials and secret material.
+.aws/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Local OS/editor files.
+.DS_Store
