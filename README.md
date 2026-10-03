@@ -2,13 +2,13 @@
 
 Personal study workspace for the AWS Certified CloudOps Engineer – Associate (SOA-C03) exam, targeted for October 31, 2026.
 
-Start with [PROGRESS.md](PROGRESS.md) for current domain status, evidence, strengths, corrections, and the next exercise. See [ROADMAP.md](ROADMAP.md) for the exam schedule, domain objectives, access constraints, and planned evidence. Each exam domain has its own page:
+Start with [PROGRESS.md](PROGRESS.md) for current domain status, evidence, strengths, corrections, and the next exercise. See [ROADMAP.md](ROADMAP.md) for the exam schedule, domain objectives, access constraints, and planned evidence. Structured task guides for all five domains are indexed in [aws-cloudops/domains/](aws-cloudops/domains/README.md); the original domain pages below are preserved as learner-specific study records:
 
-- [1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization](aws-cloudops/domain-1-monitoring.md)
-- [2. Reliability and Business Continuity](aws-cloudops/domain-2-reliability.md)
-- [3. Deployment, Provisioning, and Automation](aws-cloudops/domain-3-deployment.md)
-- [4. Security and Compliance](aws-cloudops/domain-4-security.md)
-- [5. Networking and Content Delivery](aws-cloudops/domain-5-networking.md)
+- [1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md)
+- [2. Reliability and Business Continuity](aws-cloudops/domains/02-reliability-business-continuity/README.md)
+- [3. Deployment, Provisioning, and Automation](aws-cloudops/domains/03-deployment-provisioning-automation/README.md)
+- [4. Security and Compliance](aws-cloudops/domains/04-security-compliance/README.md)
+- [5. Networking and Content Delivery](aws-cloudops/domains/05-networking-content-delivery/README.md)
 
 The [knowledge graph](aws-cloudops/knowledge/README.md) connects canonical AWS service and concept notes to relationships, exam domains, scenarios, and labs. It is Markdown-first; no graph database or app is required.
 

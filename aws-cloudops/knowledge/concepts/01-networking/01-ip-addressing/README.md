@@ -40,4 +40,4 @@ Each document ends with its own `Sources` section; there is no separate `sources
 
 See also:
 
-- [VPC networking — Domain 5](../../../../domain-5-networking.md)
+- [VPC networking — Domain 5](../../../../domains/05-networking-content-delivery/README.md)

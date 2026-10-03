@@ -128,7 +128,7 @@ flowchart LR
 4. Scenarios and future quiz questions must be original, link to the nodes they test, and explain why plausible alternatives do not fit. Do not copy exam dumps or another repository's prose/questions.
 5. Add a Mermaid diagram only when it clarifies a multi-step flow or several relationships. Keep ordinary navigation as relative Markdown links so GitHub renders it.
 6. Mark mutable facts with `last_verified` and re-check AWS defaults, limits, and behaviors against current official documentation before relying on them.
-7. A page being read, linked, or used in a successful lab is not proof of mastery. Record learner evidence and mistakes in [PROGRESS.md](../../PROGRESS.md) and the relevant [domain page](../domain-1-monitoring.md) without inflating the status.
+7. A page being read, linked, or used in a successful lab is not proof of mastery. Record learner evidence and mistakes in [PROGRESS.md](../../PROGRESS.md) and the relevant domain README without inflating the status.
 
 The repo-local authoring workflow for agents is [`../../.agents/skills/aws-knowledge-graph/SKILL.md`](../../.agents/skills/aws-knowledge-graph/SKILL.md).
 
@@ -136,7 +136,7 @@ The repo-local authoring workflow for agents is [`../../.agents/skills/aws-knowl
 
 Start with what is already in the study record; create canonical pages as those topics are revisited rather than migrating everything at once:
 
-- CloudWatch alarm states and evaluation — [Domain 1](../domain-1-monitoring.md)
-- ALB target groups and health checks — [Domain 5](../domain-5-networking.md)
-- RPO, backup cadence, and replication lag — [Domain 2](../domain-2-reliability.md)
-- CLI → Console → OpenTofu comparison — [Domain 3](../domain-3-deployment.md)
+- CloudWatch alarm states and evaluation — [Domain 1](../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md)
+- ALB target groups and health checks — [Domain 5](../domains/05-networking-content-delivery/README.md)
+- RPO, backup cadence, and replication lag — [Domain 2](../domains/02-reliability-business-continuity/README.md)
+- CLI → Console → OpenTofu comparison — [Domain 3](../domains/03-deployment-provisioning-automation/README.md)

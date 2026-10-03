@@ -2,34 +2,44 @@
 
 **Exam weight:** 22% of scored content  
 **Status:** Learning  
-**Official objective:** [AWS Domain 1 guide](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html)
+**Official objective:** [AWS Domain 1 guide](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html) (scope checked 2026-10-03)
 
 ## What this domain is about
-
 Operate workloads by observing useful signals, finding the cause of unhealthy behavior, restoring service, and improving performance without wasting resources. The exam expects you to distinguish metrics from logs and events, choose a useful alarm or filter, interpret what monitoring data does and does not prove, and select an appropriate remediation or optimization.
 
-## Official task areas
+## Official task areas and study guides
 
-- **1.1 — Metrics, alarms, and filters:** Configure monitoring and logging; use CloudWatch and CloudTrail; collect host/container signals with the CloudWatch agent; reason about alarm states/actions, dashboards, EventBridge, and SNS notifications.
-- **1.2 — Identify and remediate issues:** Use performance and availability metrics, events, Systems Manager Automation, Lambda, or other appropriate automation to diagnose and remediate operational problems.
-- **1.3 — Performance optimization:** Interpret compute, EBS, S3, shared-storage, RDS, and EC2 performance signals; choose changes that improve efficiency while accounting for cost and workload behavior.
+| Official task | What to study | Task guide |
+|---|---|---|
+| **1.1 — Implement metrics, alarms, and filters using AWS monitoring and logging services** | CloudWatch, CloudTrail, Managed Prometheus, CloudWatch agent, alarm configuration/actions, dashboards, and SNS notification paths. | [Monitoring and logging](01-task-1-1-monitoring-logging.md) |
+| **1.2 — Identify and remediate issues using monitoring and availability metrics** | Evidence-led diagnosis, performance/availability signals, EventBridge routing, and bounded Systems Manager Automation or other remediation. | [Analysis and remediation](02-task-1-2-remediation.md) |
+| **1.3 — Implement performance optimization strategies for compute, storage, and database resources** | Compute, EBS, S3, shared storage, RDS, and EC2 signals; changes should fit the measured bottleneck and cost constraints. | [Performance optimization](03-task-1-3-performance.md) |
+
+Use the [Domain 1 contexts index](contexts/README.md) for reusable scenarios. The task guides provide practice and a check for understanding; learner results remain in the progress notes below and [`PROGRESS.md`](../../../PROGRESS.md).
+
+## Services
+The service list follows the [official Domain 1 objectives](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html); examples are exam-scope coverage, not an exhaustive AWS catalog.
+
+- **Monitoring and audit:** Amazon CloudWatch (metrics, alarms, dashboards, agent), AWS CloudTrail, Amazon Managed Service for Prometheus, and Amazon SNS.
+- **Remediation and event routing:** Amazon EventBridge, AWS Lambda, AWS Systems Manager Automation, AWS DevOps Agent, and Kiro (as named in the current objective).
+- **Performance:** Amazon EC2 and placement groups, Amazon EBS, Amazon S3 (including lifecycle and transfer features), AWS DataSync, Amazon EFS, Amazon FSx, Amazon S3 Files, Amazon RDS, and RDS Proxy.
+
+### Cross-service impacts
+Monitoring and CloudTrail evidence help diagnose compute, storage, database, and network incidents; EventBridge/Lambda/Systems Manager can automate remediation but depend on appropriately scoped IAM permissions (see [Domain 3](../03-deployment-provisioning-automation/README.md) and [Domain 4](../04-security-compliance/README.md)). Performance changes to compute, storage, databases, or network paths can alter availability, recovery needs, and cost (see [Domain 2](../02-reliability-business-continuity/README.md) and [Domain 5](../05-networking-content-delivery/README.md)). Treat these as study connections, not claims that one service automatically configures another.
 
 ## Learning targets
-
 - Explain when to use metrics, logs, traces/events, and audit history.
 - Work through a symptom from alarm → related metrics/logs/events → likely cause → safe remediation → verification.
 - Understand CloudWatch alarm states and why missing data, dimensions, periods, and thresholds matter.
 - Compare representative storage/compute/database optimization choices using evidence rather than guesswork.
 
 ## Practice and evidence
-
 - **CLI:** inspect metrics/alarms/log groups and retrieve targeted evidence.
 - **Console:** navigate from an alarm or dashboard to the underlying signal and resource.
 - **IaC:** where useful, define a small alarm/dashboard/logging example with OpenTofu; review the plan before any apply.
 - **Demonstrated when:** independently diagnose a new monitoring scenario, state what evidence supports the conclusion, and select a proportionate fix and verification.
 
 ### Progress notes
-
 - Status: Learning — initial diagnostic, CLI alarm creation, and Console inspection completed; IaC comparison and further practice remain.
 - Questions/practice evidence (2026-09-28): Given rising API latency and HTTP 5xx with normal EC2 CPU, proposed checking VPC Flow Logs and EC2 logs, using `curl` to inspect response headers/body, and using `dig` conditionally if the hostname fails to resolve.
 - Strengths observed: Started from the user-visible symptom; suggested gathering response evidence; considered both application and infrastructure layers; made DNS checking conditional rather than automatic.

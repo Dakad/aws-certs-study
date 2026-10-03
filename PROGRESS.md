@@ -72,9 +72,9 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 ### 2026-09-28 — Baseline, account reconnaissance, and initial scenarios
 
 - **Completed:** Read-only AWS account reconnaissance and discussion of the exam timeline and CLI → Console → IaC learning approach. Reconnaissance was not a hands-on lab or domain assessment.
-- **Domain 1 evidence:** For an HTTP 500/API-latency symptom, proposed checking response headers/body with `curl`, EC2/application logs, VPC Flow Logs, and using `dig` if hostname resolution is suspect. This is good symptom-first evidence gathering. Follow-up: use Flow Logs when the network path is implicated; they do not explain an application-level HTTP response. Normal CPU does not rule out other bottlenecks. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
-- **Load balancers:** Had not used an ALB before and asked how ALB, NLB, and Gateway Load Balancer differ. This was a newly introduced topic, not a mistake. Health-check behavior remains a follow-up topic; see [Domain 5 notes](aws-cloudops/domain-5-networking.md).
-- **Reliability evidence:** Considered AZ resilience, audience geography, inter-region traffic costs, and whether application state can be separated in an availability discussion. Correctly recognized later that replication lag over five minutes does not meet a strict `<5-minute` RPO for that recovery copy. Clarify replica/recovery copy versus backup; see [Domain 2 notes](aws-cloudops/domain-2-reliability.md).
+- **Domain 1 evidence:** For an HTTP 500/API-latency symptom, proposed checking response headers/body with `curl`, EC2/application logs, VPC Flow Logs, and using `dig` if hostname resolution is suspect. This is good symptom-first evidence gathering. Follow-up: use Flow Logs when the network path is implicated; they do not explain an application-level HTTP response. Normal CPU does not rule out other bottlenecks. See [Domain 1 notes](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md).
+- **Load balancers:** Had not used an ALB before and asked how ALB, NLB, and Gateway Load Balancer differ. This was a newly introduced topic, not a mistake. Health-check behavior remains a follow-up topic; see [Domain 5 notes](aws-cloudops/domains/05-networking-content-delivery/README.md).
+- **Reliability evidence:** Considered AZ resilience, audience geography, inter-region traffic costs, and whether application state can be separated in an availability discussion. Correctly recognized later that replication lag over five minutes does not meet a strict `<5-minute` RPO for that recovery copy. Clarify replica/recovery copy versus backup; see [Domain 2 notes](aws-cloudops/domains/02-reliability-business-continuity/README.md).
 - **Tutor correction:** The tutor initially accepted “5 minutes” as a backup interval for a strict `<5-minute` RPO. That was incorrect: the interval must be shorter, with operational margin. This was a tutor assessment error and is recorded as such above.
 - **Next evidence:** Continue Domain 1 objectives before changing domains; obtain independent answers on alarm evaluation and monitoring/investigation.
 
@@ -83,7 +83,7 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Read-only check:** AWS SSO had expired and could not refresh non-interactively, so caller identity and live alarm settings were not re-verified. No AWS changes were made.
 - **Record-quality correction:** The original `put-metric-alarm` command was not saved. Do not reconstruct it and present it as the literal original command.
 - **Progress:** No new learner answer or mastery evidence was gathered in this session. Domain 1 remained Learning.
-- **Next step at that time:** Inspect the alarm in the Console and compare its visible fields with the recorded settings. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+- **Next step at that time:** Inspect the alarm in the Console and compare its visible fields with the recorded settings. See [Domain 1 notes](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md).
 
 ## Readiness
 

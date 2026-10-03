@@ -33,7 +33,7 @@ last_verified: YYYY-MM-DD
 
 ## Exam mapping
 
-- <Link to the relevant `../../domain-N-*.md` page and objective.>
+- <Link to the relevant `../../domains/<domain-folder>/README.md` page and objective.>
 
 ## Related nodes
 

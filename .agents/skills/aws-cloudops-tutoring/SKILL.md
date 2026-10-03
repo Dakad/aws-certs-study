@@ -7,7 +7,7 @@ description: Teach and track this learner's AWS CloudOps Engineer Associate prep
 
 ## Start from the learner's record
 
-- Read `ROADMAP.md` for the current phase sequence and exit criteria, `PROGRESS.md` for phase/domain status and the next exercise, and the relevant `aws-cloudops/domain-N-*.md` page before teaching or updating progress. Resume the recorded exercise; do not rely on a stale handoff.
+- Read `ROADMAP.md` for the current phase sequence and exit criteria, `PROGRESS.md` for phase/domain status and the next exercise, and the relevant `aws-cloudops/domains/*/README.md` before teaching or updating progress. Resume the recorded exercise; do not rely on a stale handoff.
 - The learner is a Senior Platform Engineer with production AWS and Kubernetes experience, newer to direct Terraform/OpenTofu authoring. Connect new concepts to operational experience without re-teaching familiar platform basics.
 - The target is AWS Certified CloudOps Engineer – Associate (SOA-C03), October 31, 2026. Playground access ends October 15, 2026; personal-account labs later are optional, not assumed.
 - Keep coverage balanced across the five official exam domains (22%, 22%, 22%, 16%, 18%). Networking/investigation gets modest extra practice, not permission to skip the rest or jump ahead.

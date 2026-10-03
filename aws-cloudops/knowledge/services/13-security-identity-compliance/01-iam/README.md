@@ -42,5 +42,5 @@ Each document ends with its own `Sources` section; there is no separate `sources
 
 See also:
 
-- [Domain 4 — Security and Compliance](../../../../domain-4-security.md)
+- [Domain 4 — Security and Compliance](../../../../domains/04-security-compliance/README.md)
 - [Relationship index](../../../relationships/README.md) — IAM + KMS and IAM + Organizations relationships can be documented there.
