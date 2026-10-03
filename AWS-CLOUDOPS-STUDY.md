@@ -25,7 +25,7 @@ Weights below are from the current AWS SOA-C03 exam guide. The schedule gives ev
 
 | Exam domain | Weight | Status | Evidence / next action |
 |---|---:|---|---|
-| [1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization](aws-cloudops/domain-1-monitoring.md) | 22% | Not started | Cover CloudWatch metrics/logs/alarms, agents, dashboards, investigation and performance signals. |
+| [1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization](aws-cloudops/domain-1-monitoring.md) | 22% | Learning | Reviewed a CloudWatch alarm's Console settings, History transition, and low-CPU graph; practice M-of-N evaluation and continue Domain 1 objectives. |
 | [2. Reliability and Business Continuity](aws-cloudops/domain-2-reliability.md) | 22% | Not started | Cover scaling, high availability, backups, restore/DR and failure handling. |
 | [3. Deployment, Provisioning, and Automation](aws-cloudops/domain-3-deployment.md) | 22% | Learning | Your CLI → Console inspection → OpenTofu rebuild approach is planned; execute and document a small isolated lab. |
 | [4. Security and Compliance](aws-cloudops/domain-4-security.md) | 16% | Not started | Cover IAM/security controls, data protection, audit/configuration and compliance scenarios. |
@@ -67,7 +67,7 @@ No technical answer has been assessed yet, so there are **no learner mistakes re
 
 | Date | Topic | Initial assumption / miss | Correction and evidence | Follow-up result |
 |---|---|---|---|---|
-| — | — | None assessed yet | — | — |
+| 2026-10-03 | CloudWatch alarm M-of-N evaluation | Initially did not know what 2-of-2 meant and predicted that 85% followed by 15% would trigger the alarm. | For this 2-of-2 alarm, both 5-minute Average datapoints must be >=80%; one breaching datapoint out of two does not meet the condition. | Correctly answered that 83% and 85% meet the >=80 threshold and would alarm. This shows threshold application in this exchange; independent explanation of the two-period requirement still needs retrieval practice. |
 
 ### Tutor adjustment
 
@@ -109,9 +109,10 @@ On Sep 28, the tutor over-focused on networking because it was identified as a w
 
 ### 2026-10-03 — Domain 1 Console check
 
-- **Observed:** The alarm is `OK` in the Console. The screenshot confirms the saved metric, threshold, period, evaluation, and missing-data settings. “No actions” is a separate action-configuration label, not the state reason; the actual state reason still needs to be read from History.
-- **Progress:** Console inspection completed; no AWS resource was changed. The screenshot's account and resource identifiers were not copied into this journal.
-- **Next:** Check the latest state-update entry in the alarm's History tab. Detailed, redacted settings and the safe IaC boundary are in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+- **Observed:** The alarm's History records a state transition from `INSUFFICIENT_DATA` to `OK`. The graph showed a continuous CPU line below 2%, including a datapoint around 1.54% at 19:40 UTC, and you reported no missing datapoints in the reviewed period. This supports `OK` reflecting observed non-breaching CPU rather than missing data being treated as good. “No actions” is a separate action-configuration label.
+- **Learning check:** You initially were unsure what 2-of-2 meant and predicted 85% then 15% would trigger. After correction that both 5-minute averages must be >=80%, you correctly answered yes for 83% and 85%, citing the >=80 threshold. This is evidence of applying the threshold in this exchange, not broad or mastered understanding; continue practicing M-of-N scenarios.
+- **Progress:** History and graph inspection completed; no AWS resource was changed. Account and resource identifiers were not copied into this journal.
+- **Next:** Continue Domain 1 with a short alarm-evaluation retrieval exercise, then resume the planned monitoring/logging objectives. Detailed, redacted settings and the safe IaC boundary are in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
 
 ## Readiness evidence
 
@@ -155,18 +156,18 @@ You can ask for **“show/update my study journal”** at any point. Keep this f
 
 - [AWS Certified CloudOps Engineer – Associate (SOA-C03) exam guide](https://docs.aws.amazon.com/pdfs/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03.pdf)
 
-## Handoff — 2026-10-02
+## Handoff — 2026-10-03
 
 ### Where we are
 
 - Study started with the account reconnaissance and a small Domain 1 CloudWatch alarm lab. The agreed overall coverage remains balanced across all five exam domains; Domain 2/RPO and ALB discussions were detours, not a change to the sequence.
 - This journal and its supporting study files live in this repository.
-- Domain 1 Console inspection completed on 2026-10-03; the alarm showed `OK`. “No actions” is not the state reason. Current study status and the next History-tab exercise are in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md). **Do not change or delete this existing-resource alarm for the lab.**
+- Domain 1 Console inspection, History review, and graph review completed on 2026-10-03. History showed `INSUFFICIENT_DATA` → `OK`; the graph showed continuous CPU below 2% with no gaps in the reviewed period, supporting observed low CPU as the reason it evaluated `OK`. “No actions” is not the state reason. The learner initially missed M-of-N evaluation, then correctly applied the >=80% threshold to an 83%/85% pair after explanation; independent transfer remains to be checked. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md). **Do not change or delete this existing-resource alarm for the lab.**
 - No AWS credentials were requested. Do not control or attempt to access the learner's laptop/Console. The learner will inspect the Console and may paste a screenshot for explanation.
 
 ### Next session — resume Domain 1 in order
 
-1. Continue with the **History** tab exercise in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md) to find the actual state reason.
+1. Continue Domain 1 with retrieval practice on how many datapoints must breach for an M-of-N alarm.
 2. Do not manage the existing alarm as a lab resource; use a separate disposable target for any future end-to-end IaC exercise.
 3. Continue remaining Domain 1 monitoring/logging objectives before moving on to the scheduled next exam domain.
 
