@@ -60,9 +60,21 @@ Include a source URL and `last_verified` for every figure.
 
 **Callouts.** Use `> [!IMPORTANT]`-style blockquotes for must-remember material. Each must stand alone: name the concept, say why it matters for SOA-C03, state the consequence of getting it wrong.
 
+## Quality bar
+
+A finished page should read like a carefully researched internal CloudOps knowledge base written for SOA-C03 preparation. It should not read like any of these:
+
+- an AI-generated encyclopedia article — generic, hedged, interchangeable with another service's page
+- an AWS marketing page — superlatives, no operational detail
+- copied or lightly paraphrased AWS documentation — restating the reference manual teaches nothing and goes stale
+- a generic certification cheat sheet — a list of facts with no reasoning behind them
+- a dump of CLI commands — commands belong in labs, with cost and cleanup
+- random notes with no domain mapping, no sources, and no stated boundaries
+
 ## Before finishing
 
 - Update the relevant category index and links when adding a page.
 - Check links, node IDs, domain mappings, Mermaid syntax, and source accuracy.
+- Re-read the page against the quality bar above, not just against the template.
 - Keep the five-domain coverage balanced; do not reorder the tutoring plan solely because a topic is interesting.
 - Do not mark a learner topic as mastered because a note was written or a lab ran once.

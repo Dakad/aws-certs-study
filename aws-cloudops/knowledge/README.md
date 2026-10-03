@@ -124,7 +124,7 @@ flowchart LR
 
 1. Give each service or concept one canonical page. Link to it instead of copying its explanation into domains, scenarios, or cheatsheets.
 2. Every node states its SOA-C03 domain mapping and links to authoritative AWS sources. The current exam guide defines scope; AWS service documentation defines behavior.
-3. Represent meaningful edges with a short, directional verb such as `routes-to`, `scales-with`, `measured-by`, `depends-on`, `protects`, or `contrasts-with`. Explain conditions and exceptions; a link alone does not prove causality.
+3. Represent meaningful edges with a short, directional verb from the controlled vocabulary in [`../../.agents/skills/aws-knowledge-graph/SKILL.md`](../../.agents/skills/aws-knowledge-graph/SKILL.md#edge-vocabulary) — `depends-on`, `integrates-with`, `commonly-used-with`, `troubleshoots-with`, `secured-by`, `monitored-by`, `automated-by`, `scales-with`, or `fails-over-to`. The skill owns that list; do not invent a new verb here. Explain conditions and exceptions; a link alone does not prove causality.
 4. Scenarios and future quiz questions must be original, link to the nodes they test, and explain why plausible alternatives do not fit. Do not copy exam dumps or another repository's prose/questions.
 5. Add a Mermaid diagram only when it clarifies a multi-step flow or several relationships. Keep ordinary navigation as relative Markdown links so GitHub renders it.
 6. Mark mutable facts with `last_verified` and re-check AWS defaults, limits, and behaviors against current official documentation before relying on them.
