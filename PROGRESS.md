@@ -69,6 +69,8 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Assessment:** Correctly applied the count on an immediate retest. Distinguishing a present non-breaching datapoint from missing data still needs later retrieval; this is not yet durable mastery.
 - **Safety:** No AWS mutation occurred in this Console review. Keep the existing-workload alarm read-only; no original CLI command was recorded.
 - **Next exercise:** An application has a rising HTTP 5xx rate while CPU remains low. Which signal would quantify the error rate over time, and which would reveal details for one failing request ID? State what each can establish.
+- **Guided signal selection:** Given rising `HTTPCode_Target_5XX_Count` and zero `HTTPCode_ELB_5XX_Count`, selected application/target logs as the next evidence. Correctly reasoned that the ALB did not generate the 5xx and that investigation should continue at the target/application layer. Refinement: this identifies the response origin, not a blanket absence of network faults; the target can be EC2, ECS, EKS, Lambda, or another target type, and downstream dependencies may be the cause.
+- **Next exercise:** Learn the three alarm states (`OK`, `ALARM`, `INSUFFICIENT_DATA`) as evaluation outcomes, then apply the same service/metric/log map to a guided case with an ALB-generated 5xx.
 
 ### 2026-09-28 — Baseline, account reconnaissance, and initial scenarios
 
