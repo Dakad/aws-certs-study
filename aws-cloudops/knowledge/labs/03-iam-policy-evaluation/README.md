@@ -78,6 +78,8 @@ If any prediction was wrong, that is the finding worth recording — the layer o
 
 Create a customer-managed KMS key with a key policy that does not grant your principal `kms:Decrypt`, then simulate `kms:Decrypt` against it. An encrypted S3 object that cannot be read fails in one of two places: S3 authorization, or KMS decryption. Name the evidence that distinguishes them, and say which one a `s3:GetObject` denial message points at.
 
+[Lab 05 — Data protection, secrets, and audit evidence](../05-data-protection-and-audit/README.md) carries this step out for real: it creates the customer-managed key, reads its key policy and its grants, proves which key encrypted the object, and reaches the same `simulate-principal-policy` limitation this step warns about. Run it after this lab to turn Step 4 from a reading exercise into an observation.
+
 ## Evidence to record
 
 Copy into [EVIDENCE.md](EVIDENCE.md). Redact account IDs and never record ARNs in full.

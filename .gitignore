@@ -1,5 +1,8 @@
 # OpenTofu / Terraform local data and state can contain secrets.
 .terraform/
+# Terragrunt copies the referenced module here and injects generated
+# provider.tf / backend.tf files, which can carry account-specific values.
+.terragrunt-cache/
 *.tfstate
 *.tfstate.*
 *.tfplan

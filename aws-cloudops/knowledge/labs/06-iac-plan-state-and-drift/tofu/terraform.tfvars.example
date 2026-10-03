@@ -1,0 +1,26 @@
+# Copy to terraform.tfvars and adjust. terraform.tfvars is gitignored; this
+# example file is the committed default.
+#
+# These values must match what cli/02-create-cli-managed-alarm.sh used, or the
+# first plan after `tofu import` will not be a no-op. That is the exercise, not
+# a mistake: a non-no-op plan after import is information, and Step 5 asks you
+# to explain exactly which attribute disagrees.
+
+region = "us-east-1"
+
+# Must match the NAME_PREFIX cli/02 ran with.
+name_prefix = "soa-c03-lab06"
+
+# Must match the LAB_ENV cli/02 ran with.
+environment = "study"
+
+alarm_threshold          = 80
+alarm_period             = 300
+alarm_evaluation_periods = 2
+metric_name              = "SyntheticLoad"
+
+# Must match the tags cli/02 applied. A tag present in AWS but absent here is
+# drift, exactly like an alarm threshold is.
+tags = {
+  soa-c03-lab06 = "true"
+}
