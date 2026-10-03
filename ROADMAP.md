@@ -23,10 +23,12 @@ Weights below are from the AWS SOA-C03 exam guide. All five domains receive plan
 These are calendar facts, not judgement calls. They drive the phase windows below and override any earlier allocation.
 
 1. **Phase 0 was not completed on Sep 30.** The mixed-domain diagnostic is the only input that lets the schedule be corrected by evidence rather than assumption, so it moves to **Oct 3** and becomes the first task of the remaining window. Rebalancing before the diagnostic exists is guesswork.
-2. **Playground access ends Oct 15.** Only Phase 3 (IaC lab) and Phase 4 (networking lab) genuinely require live AWS resources. Both must complete **before Oct 15**; a personal account is not a substitute unless its access method, scope, cost, and cleanup are confirmed first. Oct 15 is a wind-down day for verifying lab teardown, not a study day.
-3. **Two domains must not share one window.** The earlier Oct 11–14 pairing of Domain 5 and Domain 4 put 34% of the exam weight plus two labs into four days ending at the sandbox cutoff. Every phase now has a distinct window.
-4. **Domain 4 (16%) started last and was still `null` on Oct 3** while Domain 1 alarm evaluation consumed three sessions. Domain 4 needs no sandbox for policy-evaluation work, so it now opens the post-diagnostic window as the cheapest available coverage.
-5. **Practice-question volume must be scheduled, not assumed.** Phase 6 previously required "at least two timed mixed sets" with no question count or dates. It now carries explicit dates and a per-domain target.
+2. **Playground access ends Oct 15.** Three phases need live AWS: Phase 1 and Phase 3 share [Lab 01](aws-cloudops/knowledge/labs/01-disposable-alarm-and-iac/README.md), and Phase 4 runs [Lab 02](aws-cloudops/knowledge/labs/02-network-reachability/README.md). All of them must complete **before Oct 15**. Phase 5 needs none — [Lab 03](aws-cloudops/knowledge/labs/03-iam-policy-evaluation/README.md) is IAM-only and stays runnable afterwards. A personal account is not a substitute for the playground unless its access method, scope, cost, and cleanup are confirmed first.
+3. **Every live-AWS phase needs slack, not just a slot.** Scheduling a lab on Oct 14 leaves no recovery day if it overruns. Phases 1, 3, and 4 therefore finish by Oct 13, and Oct 14–15 are slack plus teardown verification.
+4. **Two domains must not share one window.** The earlier Oct 11–14 pairing of Domain 5 and Domain 4 put 34% of the exam weight plus two labs into four days ending at the sandbox cutoff. Every phase now has a distinct window.
+5. **Phase 1 precedes Phase 3.** Phase 3 reuses Phase 1's observe → configure → verify pattern, and both run against the same Lab 01 resources, which must exist before the OpenTofu comparison can replace them. Reversing the two would invert that dependency.
+6. **Domain 4 (16%) started last and was still `null` on Oct 3** while Domain 1 alarm evaluation consumed three sessions. Domain 4 needs no sandbox, so it opens the post-diagnostic window as the cheapest available coverage.
+7. **Practice-question volume must be scheduled, not assumed.** Phase 6 previously required "at least two timed mixed sets" with no question count or dates. It now carries explicit dates and a per-domain target.
 
 ## Phase summary
 
@@ -35,20 +37,20 @@ Rows are ordered by window, not by phase number; phase numbers stay stable so th
 | Phase | Focus / domain | Depends on | Window | Exit gate (summary) | Status |
 |---|---|---|---|---|---|
 | 0 | Foundation and baseline — all domains | — | Oct 3 | Objectives, lab guardrails, identity/region habits, and diagnostic baseline recorded. | ☐ pending |
-| 5 | Security and compliance — [Domain 4](aws-cloudops/domains/04-security-compliance/README.md) | 0 | Oct 4–5; reinforce Oct 22–25 | Explain an effective access decision, least-privilege correction, and verification. | ☐ null |
-| 3 | Deployment and automation — [Domain 3](aws-cloudops/domains/03-deployment-provisioning-automation/README.md) | 0; Phase 1 pattern is useful | Oct 6–7, live AWS | Complete a scoped CLI → Console → OpenTofu loop and explain plan, state, and cleanup. | ☐ pending |
-| 2 | Reliability and recovery — [Domain 2](aws-cloudops/domains/02-reliability-business-continuity/README.md) | 0 | Oct 8–9; reinforce Oct 16–18 | Choose a recovery design for explicit RTO/RPO needs and explain restore verification. | ☐ pending |
-| 4 | Networking and content delivery — [Domain 5](aws-cloudops/domains/05-networking-content-delivery/README.md) | 0; Phase 1 evidence skills | Oct 10–13, live AWS | Trace a fresh connectivity incident and complete a safe isolated network exercise. | ☐ pending |
-| 1 | Monitoring and investigation — [Domain 1](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) | 0 | Oct 14; reinforce Oct 16–18 | Independently explain an alarm evaluation and diagnose a fresh symptom from evidence. | ☐ pending |
+| 5 | Security and compliance — [Domain 4](aws-cloudops/domains/04-security-compliance/README.md) | 0 | Oct 4; reinforce Oct 22–25 | Explain an effective access decision, least-privilege correction, and verification. | ☐ null |
+| 1 | Monitoring and investigation — [Domain 1](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) | 0 | Oct 5–6, live AWS; reinforce Oct 16–18 | Independently explain an alarm evaluation and diagnose a fresh symptom from evidence. | ☐ pending |
+| 3 | Deployment and automation — [Domain 3](aws-cloudops/domains/03-deployment-provisioning-automation/README.md) | 0; Phase 1 pattern is useful | Oct 7–8, live AWS | Complete a scoped CLI → Console → OpenTofu loop and explain plan, state, and cleanup. | ☐ pending |
+| 2 | Reliability and recovery — [Domain 2](aws-cloudops/domains/02-reliability-business-continuity/README.md) | 0 | Oct 9–10; reinforce Oct 16–18 | Choose a recovery design for explicit RTO/RPO needs and explain restore verification. | ☐ pending |
+| 4 | Networking and content delivery — [Domain 5](aws-cloudops/domains/05-networking-content-delivery/README.md) | 0; Phase 1 evidence skills | Oct 11–13, live AWS | Trace a fresh connectivity incident and complete a safe isolated network exercise. | ☐ pending |
 | 6 | Cross-domain review and exam readiness — all domains | 1–5 studied | Oct 16–30 | Record and review at least two timed mixed sets, then assess readiness from the evidence. | ☐ null |
 
-**Oct 15 — sandbox wind-down.** Verify every lab resource from Phases 3 and 4 is deleted, confirm cost has stopped accruing, and record the teardown evidence in [PROGRESS.md](PROGRESS.md). Unused days here become Phase 6 recovery time.
+**Oct 14–15 — slack and sandbox wind-down.** Phases 1, 3, and 4 finish by Oct 13 so that two days remain for overruns. Use Oct 14 for overrun and Oct 15 to verify every resource from [Lab 01](aws-cloudops/knowledge/labs/01-disposable-alarm-and-iac/README.md) and [Lab 02](aws-cloudops/knowledge/labs/02-network-reachability/README.md) is deleted, confirm cost has stopped accruing, and record the teardown evidence in [PROGRESS.md](PROGRESS.md). Any unused time carries into Phase 6.
 
 Status key: `☐ pending` = started, exit gate not met; `☐ null` = not started; `☑ done` = exit gate met and evidence recorded. This overview mirrors the detailed evidence in [PROGRESS.md](PROGRESS.md); update the status only from that evidence.
 
 ## Phases and completion criteria
 
-The phases provide a sequence and clear exit evidence. The security and networking phases intentionally share a time window; their order can flex around the lab schedule. Dependencies identify learning prerequisites, not a requirement to finish every subtopic before previewing another domain. The status column above mirrors the phase state recorded in [PROGRESS.md](PROGRESS.md), which holds the detailed evidence.
+The phases provide a sequence and clear exit evidence. Dependencies identify learning prerequisites, not a requirement to finish every subtopic before previewing another domain. Phases 1 and 3 share one lab and one set of AWS resources, so they run back to back; the networking and security reinforcement blocks overlap later by design. The status column above mirrors the phase state recorded in [PROGRESS.md](PROGRESS.md), which holds the detailed evidence.
 
 ### Phase 0 — Foundation and baseline
 
@@ -61,46 +63,47 @@ The phases provide a sequence and clear exit evidence. The security and networki
 
 ### Phase 1 — Monitoring and investigation (Domain 1)
 
-- **Window:** Oct 14, then reinforce Oct 16–18 (was Oct 1–4)
+- **Window:** Oct 5–6, live AWS required, then reinforce Oct 16–18 (was Oct 1–4)
 - **Scope:** Metrics, alarms and M-of-N evaluation; logs/events; symptom-led investigation; performance signals and proportionate remediation.
-- **Domains / references:** Domain 1; [Domain 1 notes](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md).
+- **Domains / references:** Domain 1; [Domain 1 notes](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md); [Lab 01](aws-cloudops/knowledge/labs/01-disposable-alarm-and-iac/README.md).
 - **Depends on:** Phase 0.
-- **Note on pacing:** Phase 1 has already consumed Oct 1–3 through alarm M-of-N evaluation alone, so the remaining Domain 1 objectives — signal selection between metrics and logs, Flow Logs versus HTTP response evidence, missing-data treatment, and performance signals — have not been assessed. The Oct 14 session covers them without needing live AWS; Oct 16–18 is where the diagnostic's Domain 1 misses get repaired.
-- **Done when:** The learner independently explains a fresh alarm evaluation and diagnoses a new operational symptom from relevant evidence, distinguishing what metrics, logs, Flow Logs, and HTTP responses can and cannot establish. Any hands-on change uses a separate disposable target, never the existing workload alarm.
+- **Note on pacing:** Phase 1 consumed Oct 1–3 on alarm M-of-N evaluation alone, so the remaining Domain 1 objectives — signal selection between metrics and logs, Flow Logs versus HTTP response evidence, missing-data treatment, and performance signals — are still unassessed. Lab 01 supplies the disposable alarm target that the existing workload alarm cannot, which is why this phase needs live AWS and sits before the cutoff.
+- **Done when:** The learner independently explains a fresh alarm evaluation and diagnoses a new operational symptom from relevant evidence, distinguishing what metrics, logs, Flow Logs, and HTTP responses can and cannot establish. Any hands-on change uses the Lab 01 disposable target, never the existing workload alarm.
 
 ### Phase 2 — Reliability and recovery (Domain 2)
 
-- **Window:** Oct 8–9, then reinforce Oct 16–18 (was Oct 5–7)
+- **Window:** Oct 9–10, then reinforce Oct 16–18 (was Oct 5–7)
 - **Scope:** Scalability/elasticity, AZ resilience, load balancing, backup versus replication, restore, RTO/RPO, and recovery strategies/cost.
 - **Domains / references:** Domain 2; [Domain 2 notes](aws-cloudops/domains/02-reliability-business-continuity/README.md).
 - **Depends on:** Phase 0.
+- **No live AWS required.** The RTO/RPO and backup-versus-replica reasoning can be assessed without resources, which is why this phase can absorb an overrun from Phases 1, 3, or 4 and still finish inside the study window.
 - **Done when:** Given a new scenario, the learner chooses a recovery/availability design from explicit RTO and RPO requirements, distinguishes a backup from a replica, and explains how recovery would be verified.
 
 ### Phase 3 — Deployment and automation (Domain 3)
 
-- **Window:** Oct 6–7, live AWS required (was Oct 8–10)
+- **Window:** Oct 7–8, live AWS required (was Oct 8–10)
 - **Scope:** Provisioning/deployment patterns, Terraform and OpenTofu configuration/provider/resource graph, state and locking, reviewed plans, and Terragrunt's role in composing reusable modules into environment stacks.
-- **Domains / references:** Domain 3; [Domain 3 notes](aws-cloudops/domains/03-deployment-provisioning-automation/README.md), plus the existing OpenTofu/AWS lab guidance.
+- **Domains / references:** Domain 3; [Domain 3 notes](aws-cloudops/domains/03-deployment-provisioning-automation/README.md); [Lab 01](aws-cloudops/knowledge/labs/01-disposable-alarm-and-iac/README.md); plus the existing OpenTofu/AWS lab guidance.
 - **Depends on:** Phase 0; use Phase 1's observe → configure → verify pattern where helpful.
-- **Moved earlier deliberately:** This is the longest single exercise and the hardest to compress, and it needs live AWS. Scheduling it after the networking content would leave only four days before playground access ends, with no recovery day. It now runs immediately after the diagnostic so that any slip is absorbed by Oct 8–9 rather than by the sandbox cutoff.
-- **Done when:** The learner can explain configuration versus state and a plan's proposed changes, then complete a small isolated CLI → Console → OpenTofu exercise with an understood plan and verified cleanup. Do not apply IaC to the existing alarm.
+- **Runs immediately after Phase 1 on purpose.** Both use Lab 01's resources, so the CLI-created instance and alarm must still exist when the OpenTofu comparison begins — that comparison is the exercise. Placing this after the networking content would also have left only four days before playground access ends, with no recovery day.
+- **Done when:** The learner can explain configuration versus state and a plan's proposed changes, then complete the CLI → Console → OpenTofu loop with an understood plan and verified cleanup. Do not apply IaC to the existing alarm, and never build a second copy of a CLI-created resource without choosing recreate or import deliberately.
 
 ### Phase 4 — Networking and content delivery (Domain 5)
 
-- **Window:** Oct 10–13, live AWS required, then targeted reinforcement Oct 22–25 (was Oct 11–14; reinforce Oct 22–25)
+- **Window:** Oct 11–13, live AWS required, then targeted reinforcement Oct 22–25 (was Oct 11–14; reinforce Oct 22–25)
 - **Scope:** IP/CIDR and addressing; VPC/subnets/routes; security groups versus NACLs; DNS; ALB/NLB and target groups; endpoints/private connectivity; hybrid paths; Flow Logs and reachability investigation; CloudFront/edge and network cost.
-- **Domains / references:** Domain 5; [Domain 5 notes](aws-cloudops/domains/05-networking-content-delivery/README.md), [IP-addressing concepts](aws-cloudops/knowledge/concepts/01-networking/01-ip-addressing/README.md), and the load-balancing/observability material used in Domains 1–2.
+- **Domains / references:** Domain 5; [Domain 5 notes](aws-cloudops/domains/05-networking-content-delivery/README.md), [Lab 02](aws-cloudops/knowledge/labs/02-network-reachability/README.md), [IP-addressing concepts](aws-cloudops/knowledge/concepts/01-networking/01-ip-addressing/README.md), and the load-balancing/observability material used in Domains 1–2.
 - **Depends on:** Phase 0; Phase 1 concepts support evidence-led troubleshooting.
-- **Split:** Oct 10–11 covers addressing, routing, filtering, and DNS. Oct 12–13 is the isolated reachability/Flow Logs exercise, which must finish before Oct 15. Networking is a stated weaker area, so the Oct 22–25 reinforcement block is protected rather than traded for other domains.
+- **Split:** Oct 11–12 covers addressing, routing, filtering, and DNS. Oct 13 is the [Lab 02](aws-cloudops/knowledge/labs/02-network-reachability/README.md) reachability and Flow Logs exercise, which must finish before access ends. Networking is a stated weaker area, so the Oct 22–25 reinforcement block is protected rather than traded for other domains.
 - **Done when:** The learner traces a fresh connectivity incident hop-by-hop, chooses tests that discriminate between DNS, routing, filtering, listener/target, and return-path causes, and explains the remaining uncertainty. Any network lab is isolated and has a cost/cleanup check.
 
 ### Phase 5 — Security and compliance (Domain 4)
 
-- **Window:** Oct 4–5, then targeted reinforcement Oct 22–25 (was Oct 11–14; reinforce Oct 22–25)
+- **Window:** Oct 4, then targeted reinforcement Oct 22–25 (was Oct 11–14; reinforce Oct 22–25)
 - **Scope:** IAM identity/resource policies, roles and STS, least privilege, permissions boundaries/SCPs, data protection, secrets/certificates, audit, and configuration/compliance evidence.
-- **Domains / references:** Domain 4; [Domain 4 notes](aws-cloudops/domains/04-security-compliance/README.md) and [IAM study notes](aws-cloudops/knowledge/services/13-security-identity-compliance/01-iam/README.md).
+- **Domains / references:** Domain 4; [Domain 4 notes](aws-cloudops/domains/04-security-compliance/README.md), [Lab 03](aws-cloudops/knowledge/labs/03-iam-policy-evaluation/README.md), and [IAM study notes](aws-cloudops/knowledge/services/13-security-identity-compliance/01-iam/README.md).
 - **Depends on:** Phase 0; revisit Phase 4 network controls when a scenario crosses IAM and connectivity boundaries.
-- **Moved to open the post-diagnostic window:** Domain 4 was the only domain still `null` on Oct 3 and carries 16% of the exam. Policy evaluation, role assumption, and `AccessDenied` analysis need no disposable resources, so this is the highest coverage-per-hour work available and it should not wait for the sandbox-dependent phases. Network controls are revisited during the Oct 10–13 networking work rather than deferred to a shared window.
+- **Moved to open the post-diagnostic window, and it needs no sandbox.** Domain 4 was the only domain still `null` on Oct 3 and carries 16% of the exam. Lab 03 is IAM-only and costs nothing, so this is the highest coverage-per-hour work available and it does not compete for the days before access ends. It is also the only phase that remains fully runnable after Oct 15. Network controls are revisited during the Oct 11–13 networking work rather than deferred to a shared window.
 - **Done when:** The learner independently traces an `AccessDenied` scenario through the applicable policy layers, identifies the effective allow/deny and a least-privilege correction, then names evidence to verify the change. Reading imported notes alone does not complete this phase.
 
 ### Phase 6 — Cross-domain review and exam readiness
@@ -122,7 +125,7 @@ The phases provide a sequence and clear exit evidence. The security and networki
 - **Question volume:** The exam is 65 questions. Target roughly 13 questions per domain across the timed blocks — about 130 total — because a single pass understates the weakest areas and volume is what converts recognition into recall. A domain scoring well on three questions has not been shown to hold under a full mixed set.
 - **Done when:** At least two timed mixed practice sets are recorded, every miss has a domain/misconception and follow-up action, high-risk gaps have been revisited, and readiness is assessed from repeated evidence—not inferred from one score.
 
-Phase windows are a starting allocation, not a rigid syllabus. Adjust emphasis inside them using the Phase 0 diagnostic and timed-set results, while retaining coverage of all five weighted domains. Two things are not adjustable by preference: the Oct 15 playground cutoff, and the fact that Phase 3 and Phase 4 need live AWS. If those two lab phases are at risk on Oct 13, they take priority over the remaining content study, and the deferred content moves into the Oct 16–25 blocks.
+Phase windows are a starting allocation, not a rigid syllabus. Adjust emphasis inside them using the Phase 0 diagnostic and timed-set results, while retaining coverage of all five weighted domains. Two things are not adjustable by preference: the Oct 15 playground cutoff, and the fact that Phases 1, 3, and 4 need live AWS. If those lab phases are at risk on Oct 13, they take priority over the remaining content study, and the deferred content moves into the Oct 16–25 blocks. Phase 2 is the designated absorber for a Phase 1 or 3 overrun because it needs no AWS.
 
 ## Study method
 

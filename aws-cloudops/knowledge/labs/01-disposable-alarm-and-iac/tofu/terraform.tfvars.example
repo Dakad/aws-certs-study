@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars and fill in. terraform.tfvars is NOT gitignored,
+# so do not commit real values; the example file is the committed default.
+#
+# subnet_id must be a public subnet in a VPC with a 0.0.0.0/0 route to an
+# internet gateway, otherwise Session Manager will not reach the instance.
+# Find one with:
+#   aws ec2 describe-subnets \
+#     --filters Name=default-for-az \
+#     --query 'Subnets[].{Id:SubnetId,Vpc:VpcId,AZ:AvailabilityZone}'
+
+subnet_id = "subnet-REPLACE_ME"
+
+region       = "us-east-1"
+instance_type = "t4g.micro"
+ami_arch      = "arm64"
+
+# sns_email = "you@example.com"   # subscription stays pending until confirmed

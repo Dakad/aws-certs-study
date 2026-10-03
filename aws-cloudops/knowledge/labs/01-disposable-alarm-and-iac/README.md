@@ -1,12 +1,12 @@
 # Lab 01 — Disposable instance, CloudWatch alarm, and the OpenTofu loop
 
-**Exam domains:** [1. Monitoring](../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) (22%) and [3. Deployment and automation](../../domains/03-deployment-provisioning-automation/README.md) (22%)
-**Task guides:** [1.1 Monitoring and logging](../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/01-task-1-1-monitoring-logging.md), [1.2 Remediation](../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/02-task-1-2-remediation.md), [3.1 Provision and maintain](../../domains/03-deployment-provisioning-automation/01-task-3-1-provision-maintain.md)
+**Exam domains:** [1. Monitoring](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) (22%) and [3. Deployment and automation](../../../domains/03-deployment-provisioning-automation/README.md) (22%)
+**Task guides:** [1.1 Monitoring and logging](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/01-task-1-1-monitoring-logging.md), [1.2 Remediation](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/02-task-1-2-remediation.md), [3.1 Provision and maintain](../../../domains/03-deployment-provisioning-automation/01-task-3-1-provision-maintain.md)
 **Status:** Not yet run
 
 ## Why this lab exists
 
-The existing workload alarm `codex-study-cpu-high-ec2-lab` is attached to a real EC2 instance and must stay read-only — see the [Domain 1 notes](../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md). Without a disposable instance there is nowhere to practise alarm changes, missing-data treatment, or an IaC apply, because every AWS-native tool mutates.
+The existing workload alarm `codex-study-cpu-high-ec2-lab` is attached to a real EC2 instance and must stay read-only — see the [Domain 1 notes](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md). Without a disposable instance there is nowhere to practise alarm changes, missing-data treatment, or an IaC apply, because every AWS-native tool mutates.
 
 This lab creates one disposable instance and one alarm configured to mirror the existing alarm's shape, so the two can be compared directly. The same architecture is then recreated in OpenTofu, which makes it the Domain 3 exercise as well. Doing both against one small design is deliberate: the Domain 3 objective is about reading a plan and understanding state, not about IaC volume.
 
@@ -72,10 +72,10 @@ Record what the Console confirms and what it leaves ambiguous. "No actions" on t
 cd tofu
 export AWS_PROFILE=sso-apptweakplayground-admin
 tofu init
-tofu plan -out=tfplan
+tofu plan -out=tfplan.out
 ```
 
-Then **stop and read the plan before applying anything.** For each planned operation, be able to say: create, update, replace, or no-op, and why. `-out=tfplan` writes a plan file; it is gitignored and must never be committed.
+Then **stop and read the plan before applying anything.** For each planned operation, be able to say: create, update, replace, or no-op, and why. `-out=tfplan.out` writes a plan file; it is gitignored and must never be committed.
 
 Do not run `tofu apply` against resources the CLI already created. Pick one of these deliberately:
 

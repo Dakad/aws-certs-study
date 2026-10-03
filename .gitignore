@@ -3,6 +3,14 @@
 *.tfstate
 *.tfstate.*
 *.tfplan
+# Plan files written without the .tfplan extension (e.g. -out=tfplan).
+tfplan
+tfplan.*
+*.out
+# Variable files may hold account-specific values; commit only the examples.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
 crash.log
 crash.*.log
 override.tf
