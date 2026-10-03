@@ -45,7 +45,9 @@ IAM roles and policies constrain provisioning and operational automation (see [D
 
 ### Progress notes
 
-- Status: Not started
-- Questions/practice evidence: None yet
+- Status: Learning — initial diagnostic baseline completed; no hands-on policy investigation yet
+- Questions/practice evidence (2026-10-03): 4/4. Correctly applied explicit-deny precedence, the `AccessDenied` investigation sequence, Secrets Manager for runtime secrets, and CloudTrail for AWS API audit history.
+- Explicit-deny evaluation (2026-10-03): Correctly concluded that an SCP explicit deny of `s3:GetObject` on `*` overrides an EC2 role identity-policy allow for `reports/*`. This supports the baseline finding; continue with permissions boundaries and resource-policy interactions.
+- Permissions-boundary evaluation (2026-10-03): Correctly concluded that a boundary allowing only `s3:GetObject` blocks an identity-policy `s3:PutObject` allow. Future Domain 4 practice should use operational, multi-control scenarios rather than single-rule recall.
 - Mistakes and corrections: None assessed yet
 - Next action: Start with the policy evaluation layers and one AccessDenied investigation.

@@ -25,7 +25,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 
 | Phase | State | Evidence so far | Remaining gate / next action |
 |---|---|---|---|
-| 0. Foundation and baseline | `pending` | Exam scope and account/service reconnaissance discussed; lab boundaries established. | Record a mixed-domain diagnostic baseline and confirm CLI identity/region habits for the chosen lab account. |
+| 0. Foundation and baseline | `done` | Exam scope and account/service reconnaissance discussed; lab boundaries established; 23/25 mixed-domain diagnostic baseline completed. The learner independently verified the authorized read-only playground identity and configured region (`eu-west-1`) without recording account identifiers. | Exit gate met. Use the same identity/region check before a future lab mutation, then continue the scheduled domain phases. |
 | 1. Monitoring and investigation (D1) | `pending` | Alarm settings, History, and graph inspected; after correction, correctly applied 2-of-2 to 84%/81%. The earlier confusion between a valid non-breaching datapoint and insufficient data remains a follow-up. | Continue Domain 1 signal selection; later independently distinguish `OK` from `INSUFFICIENT_DATA`; keep the existing-workload alarm read-only. |
 | 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. RTO now independently recalled and correctly applied to a restoration-duration case. | Choose a recovery design from explicit RTO and RPO requirements, stating which requirement drives the backup interval and which drives the restore path. |
 | 3. Deployment and automation (D3) | `pending` | CLI → Console → OpenTofu approach selected; no isolated IaC exercise completed. | Complete a scoped lab, explain configuration/state/plan, compare tools, and verify cleanup; include Terragrunt composition when appropriate. |
@@ -100,6 +100,26 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Result:** 4/5 on the first five monitoring/investigation questions. Correctly selected target/application logs for target-generated ALB 5xx errors, metrics versus logs by purpose, CloudTrail for IAM/security-group API changes, and the limited conclusion from low CPU.
 - **Correction:** For a 2-of-3 alarm at `>=80%`, readings of 84%, 78%, and 82% enter `ALARM`: two present datapoints breach, so M=2 is met. The 78% reading is non-breaching, not a reason to remain `OK`.
 - **Evidence limit:** This is an initial baseline block, not durable Phase 1 mastery. Continue the timed mixed-domain diagnostic.
+
+### 2026-10-03 — Phase 0 diagnostic baseline: Domains 2 and 3 blocks
+
+- **Result:** 10/10 across reliability/recovery and deployment/automation.
+- **Demonstrated:** Correctly distinguished RPO from RTO; selected Multi-AZ for availability/failover rather than read scaling; identified functional recovery verification; and understood multi-AZ resilience limits. Correctly described OpenTofu plans, remote state locking, Terragrunt composition, infrastructure drift, and plan review as the apply safeguard.
+- **Evidence limit:** Strong initial baseline evidence, not domain completion or hands-on proof. Continue the final security, networking, and cross-domain baseline blocks.
+
+### 2026-10-03 — Phase 0 diagnostic baseline: Domains 4, 5, and cross-domain blocks
+
+- **Result:** 9/10. Total diagnostic baseline: **23/25**.
+- **Demonstrated:** Correctly applied explicit-deny precedence, an `AccessDenied` investigation sequence, Secrets Manager usage, and CloudTrail's audit purpose. Correctly selected a reachability investigation path, ALB Layer 7 routing, NAT Gateway egress for a private subnet, alarm `INSUFFICIENT_DATA` meaning, and the CLI → Console → import-or-recreate → reviewed-plan → cleanup workflow.
+- **Correction:** Security groups are stateful; network ACLs are stateless. This matters because return traffic is automatically allowed by a matching security-group flow, whereas a network ACL needs explicit rules in both directions.
+- **Phase 0 status:** The diagnostic baseline gate is complete. Phase 0 remains `pending` only until the chosen lab account/profile and default region are confirmed without storing credentials or account identifiers.
+
+### 2026-10-03 — Domain 4: explicit-deny evaluation
+
+- **Learner evidence:** Correctly concluded that an SCP explicit deny for `s3:GetObject` on `*` overrides an EC2 role identity-policy allow for `s3:GetObject` on `reports/*`.
+- **Assessment:** Correct application of explicit-deny precedence. Continue by distinguishing a permissions boundary (maximum permission ceiling) from a resource policy (an additional grant path).
+- **Tutor correction:** The learner correctly identified that a permissions boundary allowing only `s3:GetObject` blocks an identity-policy `s3:PutObject` allow. Continuing with single-policy recall after the 23/25 baseline is not useful at the learner's level. From here, use Associate-level operational scenarios with interacting services, evidence, trade-offs, and verification.
+- **Tutor correction — baseline boundary:** The 25-question Phase 0 diagnostic is complete. Do not present additional questions as baseline work or substitute ad-hoc questions for a stated phase activity. State the next phase, outcome, and activity before using any question as a learning check.
 
 ## Readiness
 

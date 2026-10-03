@@ -51,5 +51,6 @@ For one small isolated architecture, follow the user's preferred sequence:
 
 - Status: Learning — approach selected, lab not yet executed
 - Evidence: User proposed CLI creation → Console verification → Terraform recreation; account reconnaissance completed.
+- Phase 0 diagnostic baseline (2026-10-03): 5/5. Correctly defined an OpenTofu plan as proposed changes from configuration and current state, state locking as concurrency protection, Terragrunt as environment-stack composition, manual live changes as drift, and plan review as the primary pre-apply safeguard. This is recall evidence; no hands-on configuration/state/plan cycle has been completed.
 - Mistakes and corrections: None assessed yet
 - Next action: Choose a small, isolated, low-cost lab and define cleanup checks before provisioning.
