@@ -1,6 +1,6 @@
 # AWS CloudOps knowledge graph
 
-This is a lightweight, Markdown-first knowledge graph: pages are the nodes; labeled links in metadata and prose are the edges. The exam-domain pages remain the coverage map, while the study journal remains the source of truth for your progress and demonstrated understanding. No graph database or web app is needed to start.
+This is a lightweight, Markdown-first knowledge graph: pages are the nodes; labeled links in metadata and prose are the edges. The exam-domain pages remain the coverage map, while [`PROGRESS.md`](../../PROGRESS.md) is the source of truth for learner progress and demonstrated understanding. No graph database or web app is needed to start.
 
 ## Knowledge layers
 
@@ -128,7 +128,7 @@ flowchart LR
 4. Scenarios and future quiz questions must be original, link to the nodes they test, and explain why plausible alternatives do not fit. Do not copy exam dumps or another repository's prose/questions.
 5. Add a Mermaid diagram only when it clarifies a multi-step flow or several relationships. Keep ordinary navigation as relative Markdown links so GitHub renders it.
 6. Mark mutable facts with `last_verified` and re-check AWS defaults, limits, and behaviors against current official documentation before relying on them.
-7. A page being read, linked, or used in a successful lab is not proof of mastery. Record learner evidence and mistakes in the [study journal](../../AWS-CLOUDOPS-STUDY.md) and the relevant [domain page](../domain-1-monitoring.md) without inflating the status.
+7. A page being read, linked, or used in a successful lab is not proof of mastery. Record learner evidence and mistakes in [PROGRESS.md](../../PROGRESS.md) and the relevant [domain page](../domain-1-monitoring.md) without inflating the status.
 
 The repo-local authoring workflow for agents is [`../../.agents/skills/aws-knowledge-graph/SKILL.md`](../../.agents/skills/aws-knowledge-graph/SKILL.md).
 

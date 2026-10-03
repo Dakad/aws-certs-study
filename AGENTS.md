@@ -4,7 +4,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 ## Start here
 
-- For tutoring or progress updates, read `AWS-CLOUDOPS-STUDY.md` and the relevant `aws-cloudops/domain-*.md` page first. Resume the next action recorded in the journal.
+- For tutoring or progress updates, read `PROGRESS.md` and the relevant `aws-cloudops/domain-*.md` page first. Resume the next exercise recorded there.
 - Read `.agents/skills/README.md` and follow the relevant detailed skill: tutoring, knowledge graph, source research, quiz authoring, AWS/OpenTofu labs, or upstream note sync. These skills contain the workflows; this file sets repo-wide boundaries.
 - Keep study across all five SOA-C03 domains. Give networking/investigation modest extra practice, not disproportionate focus.
 
@@ -30,7 +30,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 ## Content and provenance
 
-- Keep original SOA-C03 notes, scenarios, and progress in their designated `aws-cloudops/` pages and `AWS-CLOUDOPS-STUDY.md`.
+- Keep original SOA-C03 notes and scenarios in their designated `aws-cloudops/` pages. Record learner progress in `PROGRESS.md` and the relevant domain page.
 - Third-party question banks are supplemental and must stay separate from SOA-C03 coverage and scores. Import only when explicitly requested and redistribution is permitted; preserve the complete license, source, and pinned upstream revision. Do not present them as official AWS exam questions.
 - Track imported upstream study notes in `aws-cloudops/knowledge/upstream-sources.yml`, including the permission scope, pinned revision, and mapping from upstream paths to local service/concept paths. Personal-study-only content must not be publicly redistributed.
 - The imported `jgyy/awsquiz` banks are YAML in `assets/quiz-banks/imported/jgyy-awsquiz/`. Their `accepted_correct_option_ids` is the source's answer pool; retain `answer_type` and `author_notes` when updating or transforming them.

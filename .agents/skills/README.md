@@ -10,6 +10,6 @@ These skills describe how to maintain and teach from this study repository:
 - [Upstream AWS note sync](aws-upstream-concept-sync/SKILL.md) — authorization-aware discovery, provenance, and safe syncing of third-party service and concept notes.
 - [Writing voice](reference/writing-voice.md) — shared prose standards, banned words, voice tests, and callout rules.
 
-Use the tutoring skill for lesson flow, the quiz skill for reusable question content, the graph skill for canonical knowledge, the research skill to verify AWS facts before they are written down, the upstream sync skill for explicitly requested source updates, and the lab skill for infrastructure exercises. They are complementary: learner evidence stays in the journal; reusable technical content stays in the graph.
+Use the tutoring skill for lesson flow, the quiz skill for reusable question content, the graph skill for canonical knowledge, the research skill to verify AWS facts before they are written down, the upstream sync skill for explicitly requested source updates, and the lab skill for infrastructure exercises. They are complementary: learner evidence stays in `PROGRESS.md` and relevant domain pages; reusable technical content stays in the graph.
 
 `reference/writing-voice.md` is not a workflow and has no trigger of its own. Read it when writing or revising study prose.
