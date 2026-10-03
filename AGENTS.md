@@ -8,6 +8,11 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 - Read `.agents/skills/README.md` and follow the relevant detailed skill: tutoring, knowledge graph, quiz authoring, or AWS/OpenTofu labs. These skills contain the workflows; this file sets repo-wide boundaries.
 - Keep study across all five SOA-C03 domains. Give networking/investigation modest extra practice, not disproportionate focus.
 
+## Canonical agent guidance
+
+- `.agents/` is the source of truth for repository agent guidance. Store skills in `.agents/skills/` and custom subagent definitions in `.agents/subagents/`.
+- `.cursor/agents/` and `.cursor/skills/` are compatibility symlinks to `.agents/subagents/` and `.agents/skills/`. Do not maintain duplicate files under `.cursor/`.
+
 ## Learning and progress
 
 - Teach from the learner's Senior Platform Engineer experience; focus on newer AWS CloudOps and direct Terraform/OpenTofu authoring concepts rather than re-teaching familiar Kubernetes/platform basics.
