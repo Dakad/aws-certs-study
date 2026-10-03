@@ -3,6 +3,7 @@
 **Exam target:** AWS Certified CloudOps Engineer – Associate (SOA-C03), October 31, 2026  
 **Study window:** September 28–October 30, 2026  
 **AWS playground access ends:** October 15, 2026  
+**Personal lab account:** Opened October 2, 2026; IAM users `dummy` (read-only) and `admin` (PowerUser); no access keys created. Available as an optional lab account after playground access ends.  
 **Status:** Started — baseline account reconnaissance complete; no domain mastery has been assessed yet.
 
 This is the durable progress record. Update it after each study session with evidence: what was attempted, what you got right, what needs work, and whether you can transfer the learning to a new scenario. Do not mark a topic mastered just because it was explained or a lab succeeded once.
@@ -42,7 +43,7 @@ Weights below are from the current AWS SOA-C03 exam guide. The schedule gives ev
 | Oct 8–10 | Domain 3: deployment and automation | CLI-create a small isolated lab, inspect it in Console, recreate it with OpenTofu, compare plan/state, clean up. |
 | Oct 11–14 | Domain 5 and targeted networking investigation, plus Domain 4 security review | Trace packet/reachability path; investigate routing, SG/NACL, DNS and logs; review IAM/data protection. Verify lab cleanup by Oct 14. |
 | Oct 15 | Playground access cutoff | Final read-only inventory and cleanup verification; retain notes, not credentials or sensitive account data. |
-| Oct 16–21 | Domains 1–3 reinforcement, balanced | Timed mixed questions; revisit weakest subtopics; optional personal-account lab only when necessary. |
+| Oct 16–21 | Domains 1–3 reinforcement, balanced | Timed mixed questions; revisit weakest subtopics; continue labs in the personal account if useful after confirming CLI authentication, scope, cost, and cleanup. |
 | Oct 22–25 | Domains 4–5 reinforcement | Mixed security/networking scenarios; explain evidence and eliminate plausible distractors. |
 | Oct 26–29 | Full mixed review | At least two timed practice sets; classify every miss by domain and misconception; target review from results. |
 | Oct 30 | Light final review | Key notes, rest, logistics; no new large lab. |
@@ -100,6 +101,11 @@ On Sep 28, the tutor over-focused on networking because it was identified as a w
 - **Record correction:** The journal contains the alarm settings but not the literal original `put-metric-alarm` command. Do not present a reconstructed command as the original.
 - **Progress:** No new learner answer or mastery evidence yet; Domain 1 remains Learning.
 - **Next:** Inspect the alarm in the AWS Console and compare the displayed fields with the saved settings below. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+
+### 2026-10-03 — Personal AWS lab account
+
+- **Update:** You opened a personal AWS account on October 2 so hands-on study can continue after playground access ends. It has IAM user `dummy` with read-only permissions and IAM user `admin` with PowerUser permissions; neither has access keys.
+- **Plan:** Treat this as an optional future lab environment, not an instruction to create resources. Before using its CLI, confirm a secure authentication method; keep the normal scope, cost, and cleanup review. No credentials or account identifiers are recorded here.
 
 ## Readiness evidence
 
