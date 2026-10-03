@@ -107,6 +107,12 @@ On Sep 28, the tutor over-focused on networking because it was identified as a w
 - **Update:** You opened a personal AWS account on October 2 so hands-on study can continue after playground access ends. It has IAM user `dummy` with read-only permissions and IAM user `admin` with PowerUser permissions; neither has access keys.
 - **Plan:** Treat this as an optional future lab environment, not an instruction to create resources. Before using its CLI, confirm a secure authentication method; keep the normal scope, cost, and cleanup review. No credentials or account identifiers are recorded here.
 
+### 2026-10-03 — Domain 1 Console check
+
+- **Observed:** The alarm is `OK` in the Console. The screenshot confirms the saved metric, threshold, period, evaluation, and missing-data settings. “No actions” is a separate action-configuration label, not the state reason; the actual state reason still needs to be read from History.
+- **Progress:** Console inspection completed; no AWS resource was changed. The screenshot's account and resource identifiers were not copied into this journal.
+- **Next:** Check the latest state-update entry in the alarm's History tab. Detailed, redacted settings and the safe IaC boundary are in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+
 ## Readiness evidence
 
 | Date | Source / set | Timed? | Overall | Domain breakdown | Main miss themes / next action |
@@ -155,16 +161,14 @@ You can ask for **“show/update my study journal”** at any point. Keep this f
 
 - Study started with the account reconnaissance and a small Domain 1 CloudWatch alarm lab. The agreed overall coverage remains balanced across all five exam domains; Domain 2/RPO and ALB discussions were detours, not a change to the sequence.
 - This journal and its supporting study files live in this repository.
-- A temporary CloudWatch alarm named `codex-study-cpu-high-ec2-lab` was previously observed on an EC2 `CPUUtilization` metric. Saved settings: no actions enabled, 5-minute average datapoints, 2 of 2 datapoints >=80%, and missing data not breaching. CLI previously showed it transition from initial `INSUFFICIENT_DATA` to `OK`; current state is unverified. It may incur a small CloudWatch charge. **Do not modify or delete it until the learner has inspected it in the Console and the next step is agreed.**
-- The literal original `put-metric-alarm` command was not saved. The current SSO token expired during a read-only verification attempt; do not invent the original command or initiate an interactive login on the learner's behalf.
+- Domain 1 Console inspection completed on 2026-10-03; the alarm showed `OK`. “No actions” is not the state reason. Current study status and the next History-tab exercise are in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md). **Do not change or delete this existing-resource alarm for the lab.**
 - No AWS credentials were requested. Do not control or attempt to access the learner's laptop/Console. The learner will inspect the Console and may paste a screenshot for explanation.
 
 ### Next session — resume Domain 1 in order
 
-1. Explain the saved alarm settings and be transparent that the literal original CLI command was not recorded; do not pretend a reconstructed command is exact.
-2. Learner opens **CloudWatch → Alarms → All alarms → `codex-study-cpu-high-ec2-lab`** and optionally shares a screenshot. Compare Console fields to the saved settings; do not assume the current state is still `OK`.
-3. Only after that review, present an OpenTofu configuration for the same alarm and explain it before any apply. Because an alarm with this name already exists, decide explicitly between deleting the CLI-created alarm before creating it with OpenTofu or importing it into state; do not blindly apply and do not mutate AWS until the learner understands the step.
-4. Complete the comparison and cleanup, then verify the alarm is gone. Continue remaining Domain 1 monitoring/logging objectives before moving on to the scheduled next exam domain.
+1. Continue with the **History** tab exercise in [Domain 1 notes](aws-cloudops/domain-1-monitoring.md) to find the actual state reason.
+2. Do not manage the existing alarm as a lab resource; use a separate disposable target for any future end-to-end IaC exercise.
+3. Continue remaining Domain 1 monitoring/logging objectives before moving on to the scheduled next exam domain.
 
 ### Tutor behavior — important
 
