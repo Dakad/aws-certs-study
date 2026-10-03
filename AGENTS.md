@@ -32,7 +32,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 - Keep original SOA-C03 notes, scenarios, and progress in their designated `aws-cloudops/` pages and `AWS-CLOUDOPS-STUDY.md`.
 - Third-party question banks are supplemental and must stay separate from SOA-C03 coverage and scores. Import only when explicitly requested and redistribution is permitted; preserve the complete license, source, and pinned upstream revision. Do not present them as official AWS exam questions.
-- The imported `jgyy/awsquiz` banks are YAML in `quiz-banks/imported/jgyy-awsquiz/`. Their `accepted_correct_option_ids` is the source's answer pool; retain `answer_type` and `author_notes` when updating or transforming them.
+- The imported `jgyy/awsquiz` banks are YAML in `assets/quiz-banks/imported/jgyy-awsquiz/`. Their `accepted_correct_option_ids` is the source's answer pool; retain `answer_type` and `author_notes` when updating or transforming them.
 - Never invent learner results, source provenance, AWS behavior, or exam scope. Verify mutable or answer-critical technical claims against current official sources as directed by the relevant skill.
 
 ## Repository workflow

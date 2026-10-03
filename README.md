@@ -14,6 +14,6 @@ The [knowledge graph](aws-cloudops/knowledge/README.md) connects canonical AWS s
 
 Repo-local agent guidance is indexed in [`.agents/skills/`](.agents/skills/README.md): dedicated skills cover tutoring, knowledge-graph maintenance, original quiz authoring, and safe CLI/Console/OpenTofu labs.
 
-An [imported third-party quiz collection](quiz-banks/README.md) is also available. Its Cloud Practitioner and AI Practitioner questions are kept separate from SOA-C03 study content.
+An [imported third-party quiz collection](assets/quiz-banks/README.md) is also available. Its Cloud Practitioner and AI Practitioner questions are kept separate from SOA-C03 study content.
 
 The study method is balanced across all five domains, with modest extra practice for networking and investigation. For hands-on topics, compare AWS CLI creation, Console inspection, and OpenTofu recreation. Review exact commands and cost/cleanup implications before AWS changes; never store credentials or sensitive account output here.

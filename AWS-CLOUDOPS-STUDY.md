@@ -154,7 +154,7 @@ You can ask for **“show/update my study journal”** at any point. Keep this f
 
 ## Official reference
 
-- [AWS Certified CloudOps Engineer – Associate (SOA-C03) exam guide](https://docs.aws.amazon.com/pdfs/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03.pdf)
+- Local copy: [AWS Certified CloudOps Engineer – Associate (SOA-C03) exam guide](assets/docs/soa-c03-exam-guide.pdf) ([official AWS source](https://docs.aws.amazon.com/pdfs/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03.pdf); download details and SHA-256 in [assets/docs/README.md](assets/docs/README.md)).
 
 ## Handoff — 2026-10-03
 
