@@ -48,7 +48,7 @@ echo "== 3. Deleting VPC Flow Logs and its IAM role =="
 VPC_ID="$(aws ec2 describe-vpcs --filters "Name=cidr,Values=${VPC_CIDR}" \
   --query 'Vpcs[0].VpcId' --output text 2>/dev/null || echo None)"
 if [[ "$VPC_ID" != "None" && -n "$VPC_ID" ]]; then
-  FLOW_IDS="$(aws ec2 describe-flow-logs --resource-id "$VPC_ID" \
+  FLOW_IDS="$(aws ec2 describe-flow-logs --filter "Name=resource-id,Values=${VPC_ID}" \
     --query 'FlowLogs[].FlowLogId' --output text)"
   for f in $FLOW_IDS; do
     [[ -z "$f" ]] && continue
@@ -119,7 +119,7 @@ check "load balancers" "$(aws elbv2 describe-load-balancers --names "${PREFIX}-a
   --query 'LoadBalancers[].LoadBalancerArn' --output text 2>/dev/null || echo None)"
 check "target groups" "$(aws elbv2 describe-target-groups --names "${PREFIX}-tg" \
   --query 'TargetGroups[].TargetGroupArn' --output text 2>/dev/null || echo None)"
-check "vpc flow logs" "$(aws ec2 describe-flow-logs --filters "Name=resource-id,Values=${VPC_ID}" \
+check "vpc flow logs" "$(aws ec2 describe-flow-logs --filter "Name=resource-id,Values=${VPC_ID}" \
   --query 'FlowLogs[].FlowLogId' --output text 2>/dev/null || echo None)"
 check "cw log groups" "$(aws logs describe-log-groups \
   --log-group-name-prefix "/aws/vpc/flowlogs/${PREFIX}" \

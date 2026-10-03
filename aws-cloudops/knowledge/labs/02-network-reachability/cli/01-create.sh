@@ -24,6 +24,13 @@ set -euo pipefail
 AWS_REGION="${AWS_REGION:-us-east-1}"
 VPC_CIDR="${VPC_CIDR:-10.60.0.0/16}"
 ALB_PORT="${ALB_PORT:-80}"
+# The lab derives two /24 public subnets and one unreachable target address from
+# VPC_CIDR, so it requires a /16. Fail loudly rather than building a broken lab.
+if [[ ! "$VPC_CIDR" =~ ^([0-9]{1,3})\.([0-9]{1,3})\.0\.0/16$ ]]; then
+  echo "ERROR: VPC_CIDR must be a /16 such as 10.60.0.0/16; got: $VPC_CIDR" >&2
+  exit 1
+fi
+VPC_BASE="${VPC_CIDR%/*}"
 PREFIX="soa-c03-lab02"
 TAG_KEY="soa-c03-lab02"
 TAG_VALUE="true"
@@ -59,19 +66,30 @@ echo "vpc: $VPC_ID"
 # --------------------------------------------------------------- subnets
 echo
 echo "== Creating public subnets in two AZs =="
-mapfile -t AZS < <(aws ec2 describe-availability-zones \
+# bash 3.2 compatible: no mapfile. Read the first two available AZs.
+AZ_LIST="$(aws ec2 describe-availability-zones \
   --filters Name=state,Values=available \
-  --query 'AvailabilityZones[].ZoneName' --output text | head -2)
-echo "azs: ${AZS[0]} ${AZS[1]}"
+  --query 'AvailabilityZones[].ZoneName' --output text | head -2 | tr '\t' '\n')"
+AZ1="$(printf '%s\n' "$AZ_LIST" | sed -n 1p)"
+AZ2="$(printf '%s\n' "$AZ_LIST" | sed -n 2p)"
+if [[ -z "$AZ1" || -z "$AZ2" ]]; then
+  echo "ERROR: need at least two available AZs in ${AWS_REGION}." >&2
+  exit 1
+fi
+echo "azs: $AZ1 $AZ2"
 
 SUBNET_IDS=()
-for i in 0 1; do
-  SUBNET_IDS+=("$(aws ec2 create-subnet --vpc-id "$VPC_ID" \
-    --cidr-block "10.60.$i.0/24" --availability-zone "${AZS[$i]}" \
-    --map-public-ip-on-launch \
-    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=${PREFIX}-public-${AZS[$i]}},{Key=${TAG_KEY},Value=${TAG_VALUE}}]" \
-    --query 'Subnet.SubnetId' --output text)")
-  echo "subnet ${AZS[$i]}: ${SUBNET_IDS[$i]}"
+i=0
+for AZ in "$AZ1" "$AZ2"; do
+  SUBNET="$(aws ec2 create-subnet --vpc-id "$VPC_ID" \
+    --cidr-block "${VPC_BASE}.${i}.0/24" --availability-zone "$AZ" \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=${PREFIX}-public-${AZ}},{Key=${TAG_KEY},Value=${TAG_VALUE}}]" \
+    --query 'Subnet.SubnetId' --output text)"
+  # create-subnet has no --map-public-ip-on-launch flag; set it afterwards.
+  aws ec2 modify-subnet-attribute --subnet-id "$SUBNET" --map-public-ip-on-launch
+  SUBNET_IDS+=("$SUBNET")
+  echo "subnet ${AZ}: ${SUBNET_IDS[$i]}"
+  i=$((i + 1))
 done
 
 # ------------------------------------------------------------------- IGW
@@ -113,7 +131,7 @@ ALB_ARN="$(aws elbv2 create-load-balancer \
   --scheme internet-facing \
   --type application \
   --ip-address-type ipv4 \
-  --tag-specifications "ResourceType=load-balancer,Tags=[{Key=${TAG_KEY},Value=${TAG_VALUE}}]" \
+  --tags "Key=${TAG_KEY},Value=${TAG_VALUE}" \
   --query 'LoadBalancers[0].LoadBalancerArn' --output text)"
 ALB_DNS="$(aws elbv2 describe-load-balancers --load-balancer-arns "$ALB_ARN" \
   --query 'LoadBalancers[0].DNSName' --output text)"
@@ -177,14 +195,15 @@ TG_ARN="$(aws elbv2 create-target-group \
   --health-check-protocol HTTP \
   --health-check-port "$ALB_PORT" \
   --health-check-path /healthz \
-  --health-check-matcher 200 \
+  --matcher 200 \
   --healthy-threshold-count 2 --unhealthy-threshold-count 2 \
   --health-check-interval-seconds 15 \
   --health-check-timeout-seconds 5 \
-  --tag-keys "${TAG_KEY}" --tag-values "${TAG_VALUE}" \
+  --tags "Key=${TAG_KEY},Value=${TAG_VALUE}" \
   --query 'TargetGroups[0].TargetGroupArn' --output text)"
 
-UNREACHABLE_IP="${VPC_CIDR%/*}.1.10"
+# Inside the /16 but outside both created /24s, and nothing listens there.
+UNREACHABLE_IP="${VPC_BASE}.255.254"
 aws elbv2 register-targets --target-group-arn "$TG_ARN" \
   --targets "Id=${UNREACHABLE_IP},Port=${ALB_PORT}"
 echo "target group: $TG_ARN"
@@ -217,12 +236,12 @@ aws iam put-role-policy --role-name "$FLOW_ROLE" --policy-name flow-logs-write \
 FLOW_ROLE_ARN="$(aws iam get-role --role-name "$FLOW_ROLE" --query 'Role.Arn' --output text)"
 
 aws ec2 create-flow-logs \
-  --resource-type VPC --resource-id "$VPC_ID" \
+  --resource-type VPC --resource-ids "$VPC_ID" \
   --traffic-type ALL \
   --log-destination-type cloud-watch-logs \
   --log-destination "arn:aws:logs:${AWS_REGION}:${ACCOUNT_ID}:log-group:${LOG_GROUP}" \
   --log-format '${version} ${vpc-id} ${flow-direction} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${packets} ${bytes} ${action}' \
-  --iam-role-arn "$FLOW_ROLE_ARN" \
+  --deliver-logs-permission-arn "$FLOW_ROLE_ARN" \
   --tag-specifications "ResourceType=flow-log,Tags=[{Key=${TAG_KEY},Value=${TAG_VALUE}}]" \
   --query 'FlowLogIds[0]' --output text >/dev/null
 echo "log group: $LOG_GROUP   flow log enabled on the VPC (traffic ALL)"

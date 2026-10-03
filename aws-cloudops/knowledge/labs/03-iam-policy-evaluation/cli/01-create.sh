@@ -26,6 +26,7 @@ fi
 
 echo "== Step 0: identity =="
 CALLER_ARN="$(aws sts get-caller-identity --query Arn --output text)"
+ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
 echo "caller principal: $CALLER_ARN"
 echo "(do not copy this ARN into any file in this repository)"
 
@@ -77,7 +78,7 @@ aws iam put-role-policy --role-name "$ROLE_NAME" --policy-name allow-s3-list \
 aws iam attach-role-policy --role-name "$ROLE_NAME" \
   --policy-arn "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" >/dev/null
 aws iam attach-role-policy --role-name "$ROLE_NAME" \
-  --policy-arn "$(aws iam get-policy --policy-name "$DENY_POLICY_NAME" --query Policy.Arn --output text)" >/dev/null
+  --policy-arn "arn:aws:iam::${ACCOUNT_ID}:policy/${DENY_POLICY_NAME}" >/dev/null
 
 aws iam create-instance-profile --instance-profile-name "${ROLE_NAME}-profile" \
   --tags "Key=soa-c03-lab03,Value=true" >/dev/null
