@@ -19,6 +19,20 @@ The exam schedule and planned evidence live in [`ROADMAP.md`](ROADMAP.md). Keep 
 
 Status meanings: **Not started** = not yet studied; **Learning** = explanation or guided practice completed; **Practiced** = hands-on exercise or several relevant questions completed; **Demonstrated** = independently solved a new scenario and explained the reasoning.
 
+## Phase tracker
+
+Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADMAP.md) have been met; it is not the same as the domain learning status above. Use `null` for not started, `pending` for started but exit criteria not yet met, and `done` only when evidence for the exit criteria is recorded.
+
+| Phase | State | Evidence so far | Remaining gate / next action |
+|---|---|---|---|
+| 0. Foundation and baseline | `pending` | Exam scope and account/service reconnaissance discussed; lab boundaries established. | Record a mixed-domain diagnostic baseline and confirm CLI identity/region habits for the chosen lab account. |
+| 1. Monitoring and investigation (D1) | `pending` | Alarm settings, History, and graph inspected; applied the `>=80%` threshold to one 83%/85% example after explanation. | Independently solve a fresh M-of-N case and continue Domain 1 objectives; keep the existing-workload alarm read-only. |
+| 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. | Independently distinguish RTO/RPO and choose a recovery design in a new scenario. |
+| 3. Deployment and automation (D3) | `pending` | CLI → Console → OpenTofu approach selected; no isolated IaC exercise completed. | Complete a scoped lab, explain configuration/state/plan, compare tools, and verify cleanup; include Terragrunt composition when appropriate. |
+| 4. Networking and content delivery (D5) | `pending` | Read-only account reconnaissance and introductory load-balancer discussion completed. | Trace a fresh reachability incident systematically and complete a safe isolated networking exercise. |
+| 5. Security and compliance (D4) | `null` | No learner study or assessment recorded yet. | Start with policy evaluation layers and an `AccessDenied` scenario. |
+| 6. Cross-domain review and exam readiness | `null` | No timed practice baseline yet. | Begin after studying the domain phases; complete and review at least two timed mixed practice sets. |
+
 ## Demonstrated strengths
 
 - **Operational evidence gathering:** For an HTTP 500 symptom, proposed checking the response with `curl`, application/EC2 logs, and using `dig` when name resolution is suspect. This shows a useful symptom-first approach; choosing Flow Logs should follow evidence that network-path investigation is relevant.

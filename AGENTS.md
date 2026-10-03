@@ -4,7 +4,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 ## Start here
 
-- For tutoring or progress updates, read `PROGRESS.md` and the relevant `aws-cloudops/domain-*.md` page first. Resume the next exercise recorded there.
+- For tutoring or progress updates, read `ROADMAP.md` for phase order and exit criteria, `PROGRESS.md` for learner/phase status and the next exercise, and the relevant `aws-cloudops/domain-*.md` page for topic evidence.
 - Read `.agents/skills/README.md` and follow the relevant detailed skill: tutoring, knowledge graph, source research, quiz authoring, AWS/OpenTofu labs, or upstream note sync. These skills contain the workflows; this file sets repo-wide boundaries.
 - Keep study across all five SOA-C03 domains. Give networking/investigation modest extra practice, not disproportionate focus.
 
