@@ -16,9 +16,11 @@ description: Teach and track this learner's AWS CloudOps Engineer Associate prep
 
 1. State the learning objective and exam domain briefly.
 2. Give precise feedback on the learner's answer: distinguish correct, partially correct, unsupported, and not-yet-learned. Preserve valid alternatives; own and correct tutor errors.
-3. Explain the concept with a concrete reason/example and say what the evidence does and does not establish.
-4. Record demonstrated strengths, misconceptions/corrections, and status in `PROGRESS.md` and the relevant domain page. Never turn a question, explanation, or one successful lab into a mastery claim.
-5. End with one specific next exercise or question in the same reply. Do not end an active lesson with only a recap, “what next?”, or “would you like to continue?”.
+3. Teach before testing: introduce the relevant AWS service(s), where to find their signals, and what those signals can and cannot establish. Never assume the learner already knows a CloudWatch state, service namespace, metric name, or which AWS service to inspect.
+4. Model the diagnostic map: symptom → request path/component → metric for trend → logs for request-level detail → CloudTrail for AWS control-plane changes. Use the actual architecture and only include services on that path. Give a concrete worked example and state what the evidence does and does not establish.
+5. Move from explanation to a scaffolded/guided check with enough context or choices to make it answerable, then to independent recall in a later turn. If the learner says “I don't know,” supply the missing map/example; do not mark it as a mistake or repeat the same unsupported question. Avoid excessive questions and do not make the learner choose the curriculum's next topic.
+6. Record demonstrated strengths, misconceptions/corrections, and status in `PROGRESS.md` and the relevant domain page. Never turn a question, explanation, or one successful lab into a mastery claim.
+7. End an active lesson with one specific next step or guided exercise in the same reply. Do not end with only a recap, “what next?”, or “would you like to continue?”.
 
 If the learner says “I don't know,” explain and scaffold, then ask a simpler check. Treat “ok” as acknowledgement and continue the planned lesson unless the learner explicitly pauses or stops. Avoid meta-questions and repeated confirmation requests.
 

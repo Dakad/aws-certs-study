@@ -11,7 +11,7 @@ The exam schedule and planned evidence live in [`ROADMAP.md`](ROADMAP.md). Keep 
 
 | SOA-C03 domain | Status | Evidence so far | Next evidence needed |
 |---|---|---|---|
-| 1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization (22%) | Learning | Inspected a CloudWatch CPU alarm's settings, history, and graph. Correctly applied the `>=80%` threshold to an 83%/85% pair after learning that 2-of-2 requires both datapoints to breach. | Independently solve a fresh M-of-N scenario; continue the remaining monitoring and investigation objectives. |
+| 1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization (22%) | Learning | Inspected a CloudWatch CPU alarm's settings, history, and graph. After correction of the 84%/78% case, correctly identified 84%/81% as `ALARM` because both datapoints breach and M=2 is met. | Continue with metrics-versus-logs signal selection; later revisit missing-data treatment independently, then continue remaining monitoring and investigation objectives. |
 | 2. Reliability and Business Continuity (22%) | Learning | Discussed AZ resilience, geographic placement, cost, and application state. Correctly connected replication lag over five minutes to missing a strict `<5-minute` RPO for that recovery copy. | Distinguish RPO from RTO in a new scenario and practice recovery-design tradeoffs. |
 | 3. Deployment, Provisioning, and Automation (22%) | Learning | Selected a CLI → Console → OpenTofu learning approach; no end-to-end IaC lab has been completed. | Complete a small isolated lab, explain the plan/state, and verify cleanup. |
 | 4. Security and Compliance (16%) | Not started | No learner performance assessed yet. | Explain policy evaluation layers and investigate one `AccessDenied` scenario. |
@@ -26,7 +26,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 | Phase | State | Evidence so far | Remaining gate / next action |
 |---|---|---|---|
 | 0. Foundation and baseline | `pending` | Exam scope and account/service reconnaissance discussed; lab boundaries established. | Record a mixed-domain diagnostic baseline and confirm CLI identity/region habits for the chosen lab account. |
-| 1. Monitoring and investigation (D1) | `pending` | Alarm settings, History, and graph inspected; applied the `>=80%` threshold to one 83%/85% example after explanation. | Independently solve a fresh M-of-N case and continue Domain 1 objectives; keep the existing-workload alarm read-only. |
+| 1. Monitoring and investigation (D1) | `pending` | Alarm settings, History, and graph inspected; after correction, correctly applied 2-of-2 to 84%/81%. The earlier confusion between a valid non-breaching datapoint and insufficient data remains a follow-up. | Continue Domain 1 signal selection; later independently distinguish `OK` from `INSUFFICIENT_DATA`; keep the existing-workload alarm read-only. |
 | 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. | Independently distinguish RTO/RPO and choose a recovery design in a new scenario. |
 | 3. Deployment and automation (D3) | `pending` | CLI → Console → OpenTofu approach selected; no isolated IaC exercise completed. | Complete a scoped lab, explain configuration/state/plan, compare tools, and verify cleanup; include Terragrunt composition when appropriate. |
 | 4. Networking and content delivery (D5) | `pending` | Read-only account reconnaissance and introductory load-balancer discussion completed. | Trace a fresh reachability incident systematically and complete a safe isolated networking exercise. |
@@ -47,6 +47,7 @@ These are evidence-backed early strengths, not final ratings or predictions of e
 | Date | Topic | Initial understanding | Correction / current evidence | Follow-up |
 |---|---|---|---|---|
 | 2026-10-03 | CloudWatch 2-of-2 alarm | Initially unclear on “2-of-2” and predicted that an 85% datapoint followed by 15% would trigger the alarm. | Both datapoints in the evaluation window must meet the `>=80%` threshold. After explanation, correctly answered that 83% and 85% would trigger it. | Retrieve the M-of-N rule again with a new pair of values, including one breaching and one non-breaching datapoint. |
+| 2026-10-03 | Present non-breaching datapoint vs. missing data | For present readings of 84% and 78% in a 2-of-2 `>=80%` alarm, correctly observed that 78% was below threshold but answered `INSUFFICIENT_DATA`. | With both readings present, only one breaches, so the 2-of-2 condition is false and the state is `OK`; a valid non-breaching datapoint is not missing data. Immediate retest: correctly answered `ALARM` for 84%/81%, explaining both breach and M=2 is met. | Continue Domain 1 signal selection; revisit missing-data treatment later with an explicit missing point. |
 | 2026-09-28 | Strict RPO `<5 minutes` | Answered “5 minutes” for the maximum backup interval. | Five-minute intervals only support an idealized `<=5-minute` age; a strict `<5-minute` target needs a shorter interval and operational margin. The tutor initially accepted the answer incorrectly. | Revisit with a recovery-point age and replication-lag example. |
 | 2026-09-28 | ALB unhealthy targets | Suggested dropping a request or returning 5xx / “upstream not available.” | A 503 can occur when there are no usable registered targets. If all registered targets are unhealthy, ALB fails open and still routes to them; a target may then return an error. | Continue learning target groups and health-check behavior in an isolated example. |
 
@@ -64,10 +65,10 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 ### 2026-10-03 — Domain 1 CloudWatch Console review
 
 - **Completed:** Compared the alarm's threshold/settings with its History and graph. The graph's continuous sub-2% CPU data explains why the alarm evaluated `OK`; “No actions” describes notification/action configuration, not the alarm state reason.
-- **Learner evidence:** Initially did not know what 2-of-2 meant and predicted that 85% then 15% would trigger it. After the rule was explained, correctly applied the `>=80%` threshold to 83% and 85%.
-- **Assessment:** Some threshold application demonstrated; independent explanation of the datapoint count and transfer to a fresh example remain untested.
+- **Learner evidence:** Initially did not know what 2-of-2 meant and predicted that 85% then 15% would trigger it. After the rule was explained, applied the `>=80%` threshold to 83%/85%. On 84%/78%, recognized 78% as non-breaching but called the state `INSUFFICIENT_DATA`; after correction, correctly answered `ALARM` for 84%/81% because both breach and M=2 is met.
+- **Assessment:** Correctly applied the count on an immediate retest. Distinguishing a present non-breaching datapoint from missing data still needs later retrieval; this is not yet durable mastery.
 - **Safety:** No AWS mutation occurred in this Console review. Keep the existing-workload alarm read-only; no original CLI command was recorded.
-- **Next exercise:** Given a 2-of-2 alarm with a 5-minute period and datapoints of 86% then 74%, state whether it enters alarm and explain both the threshold and datapoint-count requirements.
+- **Next exercise:** An application has a rising HTTP 5xx rate while CPU remains low. Which signal would quantify the error rate over time, and which would reveal details for one failing request ID? State what each can establish.
 
 ### 2026-09-28 — Baseline, account reconnaissance, and initial scenarios
 
@@ -84,6 +85,12 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Record-quality correction:** The original `put-metric-alarm` command was not saved. Do not reconstruct it and present it as the literal original command.
 - **Progress:** No new learner answer or mastery evidence was gathered in this session. Domain 1 remained Learning.
 - **Next step at that time:** Inspect the alarm in the Console and compare its visible fields with the recorded settings. See [Domain 1 notes](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md).
+
+### 2026-10-03 — Tutor process correction: teach the service/signal map first
+
+- **Learner feedback:** The learner was asked to choose CloudWatch/AWS services and signals for a 5xx investigation before being taught how to identify the request path, which service emits which signal, or what an alarm state means. The question depended on knowledge not yet introduced.
+- **Tutor correction:** Do not treat unfamiliar service names, metric namespaces, or alarm states as a learner knowledge gap before teaching them. Introduce the service map and signal purpose, demonstrate a worked example, then use scaffolded practice before independent recall. Ask fewer, purposeful questions; do not make the learner select the next topic.
+- **Next step:** Resume the learner's manually updated M-of-N exercise as written. Before introducing a new signal-selection exercise, teach the request-path-to-service/metric/log map and work through an example first.
 
 ## Readiness
 

@@ -17,6 +17,8 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 - Teach from the learner's Senior Platform Engineer experience; focus on newer AWS CloudOps and direct Terraform/OpenTofu authoring concepts rather than re-teaching familiar Kubernetes/platform basics.
 - Give specific feedback and explain with concrete examples. Preserve partially correct answers and valid alternatives; distinguish learner misconceptions from unclear tutoring or question wording.
+- Teach the map before testing recall: introduce the relevant AWS service(s), where their signals appear, and what each signal can establish before asking the learner to choose a service, metric, log, or alarm state. Do not assume familiarity with CloudWatch alarm states or metric names that have not been taught.
+- For troubleshooting, model the path from symptom to request path/component, metric for trends, logs for request-level detail, and CloudTrail for AWS control-plane changes. Demonstrate one worked example before guided practice, then independent recall.
 - Track strengths, mistakes, and mastery only from observed answers or actions. A written note, generated question, or successful lab alone is not evidence of mastery.
 - During an active lesson, finish with one concrete next exercise or question. Do not end with only a recap or a vague “what next?” prompt.
 
