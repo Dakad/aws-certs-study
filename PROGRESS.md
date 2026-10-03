@@ -12,7 +12,7 @@ The exam schedule and planned evidence live in [`ROADMAP.md`](ROADMAP.md). Keep 
 | SOA-C03 domain | Status | Evidence so far | Next evidence needed |
 |---|---|---|---|
 | 1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization (22%) | Learning | Inspected a CloudWatch CPU alarm's settings, history, and graph. After correction of the 84%/78% case, correctly identified 84%/81% as `ALARM` because both datapoints breach and M=2 is met. | Continue with metrics-versus-logs signal selection; later revisit missing-data treatment independently, then continue remaining monitoring and investigation objectives. |
-| 2. Reliability and Business Continuity (22%) | Learning | Discussed AZ resilience, geographic placement, cost, and application state. Correctly connected replication lag over five minutes to missing a strict `<5-minute` RPO for that recovery copy. | Distinguish RPO from RTO in a new scenario and practice recovery-design tradeoffs. |
+| 2. Reliability and Business Continuity (22%) | Learning | Discussed AZ resilience, geographic placement, cost, and application state. Correctly connected replication lag over five minutes to missing a strict `<5-minute` RPO for that recovery copy. Independently distinguished RTO from RPO: ruled out the data-loss and backup-frequency readings, and judged a 100-minute restoration against a 1-hour RTO as missed because it bounds the user's wait rather than the start time. | Choose a recovery design from explicit RTO *and* RPO requirements; retrieve the `<5` versus `<=5` backup-interval boundary. |
 | 3. Deployment, Provisioning, and Automation (22%) | Learning | Selected a CLI → Console → OpenTofu learning approach; no end-to-end IaC lab has been completed. | Complete a small isolated lab, explain the plan/state, and verify cleanup. |
 | 4. Security and Compliance (16%) | Not started | No learner performance assessed yet. | Explain policy evaluation layers and investigate one `AccessDenied` scenario. |
 | 5. Networking and Content Delivery (18%) | Learning | Completed read-only account reconnaissance; discussed load-balancer layers/protocols and AZ, state, and traffic-cost considerations. No troubleshooting lab or independent assessment yet. | Diagnose a fresh reachability incident from evidence, then perform a safe isolated networking lab. |
@@ -27,7 +27,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 |---|---|---|---|
 | 0. Foundation and baseline | `pending` | Exam scope and account/service reconnaissance discussed; lab boundaries established. | Record a mixed-domain diagnostic baseline and confirm CLI identity/region habits for the chosen lab account. |
 | 1. Monitoring and investigation (D1) | `pending` | Alarm settings, History, and graph inspected; after correction, correctly applied 2-of-2 to 84%/81%. The earlier confusion between a valid non-breaching datapoint and insufficient data remains a follow-up. | Continue Domain 1 signal selection; later independently distinguish `OK` from `INSUFFICIENT_DATA`; keep the existing-workload alarm read-only. |
-| 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. | Independently distinguish RTO/RPO and choose a recovery design in a new scenario. |
+| 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. RTO now independently recalled and correctly applied to a restoration-duration case. | Choose a recovery design from explicit RTO and RPO requirements, stating which requirement drives the backup interval and which drives the restore path. |
 | 3. Deployment and automation (D3) | `pending` | CLI → Console → OpenTofu approach selected; no isolated IaC exercise completed. | Complete a scoped lab, explain configuration/state/plan, compare tools, and verify cleanup; include Terragrunt composition when appropriate. |
 | 4. Networking and content delivery (D5) | `pending` | Read-only account reconnaissance and introductory load-balancer discussion completed. | Trace a fresh reachability incident systematically and complete a safe isolated networking exercise. |
 | 5. Security and compliance (D4) | `null` | No learner study or assessment recorded yet. | Start with policy evaluation layers and an `AccessDenied` scenario. |
@@ -38,6 +38,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 - **Operational evidence gathering:** For an HTTP 500 symptom, proposed checking the response with `curl`, application/EC2 logs, and using `dig` when name resolution is suspect. This shows a useful symptom-first approach; choosing Flow Logs should follow evidence that network-path investigation is relevant.
 - **Systems tradeoff awareness:** In a reliability discussion, considered AZ resilience, the audience's geography, inter-region traffic cost, and whether application state can be separated.
 - **Cross-tool learning design:** Proposed creating with AWS CLI, inspecting in the Console, and recreating with Terraform/OpenTofu. This makes observed state, configuration, and repeatability comparable.
+- **RTO/RPO discrimination:** Correctly separated recovery-time objectives from recovery-point objectives unprompted, and rejected the "recovery must begin within the RTO" reading in favour of the restoration-time reading.
 - **Alarm threshold application:** After correction, identified that two 5-minute average datapoints of 83% and 85% both satisfy the `>=80%` threshold. This is one exchange, not yet independent mastery of M-of-N evaluation.
 
 These are evidence-backed early strengths, not final ratings or predictions of exam performance.
@@ -93,6 +94,12 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Learner feedback:** The learner was asked to choose CloudWatch/AWS services and signals for a 5xx investigation before being taught how to identify the request path, which service emits which signal, or what an alarm state means. The question depended on knowledge not yet introduced.
 - **Tutor correction:** Do not treat unfamiliar service names, metric namespaces, or alarm states as a learner knowledge gap before teaching them. Introduce the service map and signal purpose, demonstrate a worked example, then use scaffolded practice before independent recall. Ask fewer, purposeful questions; do not make the learner select the next topic.
 - **Next step:** Resume the learner's manually updated M-of-N exercise as written. Before introducing a new signal-selection exercise, teach the request-path-to-service/metric/log map and work through an example first.
+
+### 2026-10-03 — Phase 0 diagnostic baseline: Domain 1 block
+
+- **Result:** 4/5 on the first five monitoring/investigation questions. Correctly selected target/application logs for target-generated ALB 5xx errors, metrics versus logs by purpose, CloudTrail for IAM/security-group API changes, and the limited conclusion from low CPU.
+- **Correction:** For a 2-of-3 alarm at `>=80%`, readings of 84%, 78%, and 82% enter `ALARM`: two present datapoints breach, so M=2 is met. The 78% reading is non-breaching, not a reason to remain `OK`.
+- **Evidence limit:** This is an initial baseline block, not durable Phase 1 mastery. Continue the timed mixed-domain diagnostic.
 
 ## Readiness
 
