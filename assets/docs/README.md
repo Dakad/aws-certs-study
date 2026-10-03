@@ -1,4 +1,6 @@
-# Official SOA-C03 exam guide
+# Documents
+
+## SOA-C03 exam guide
 
 - **Document:** AWS Certified CloudOps Engineer – Associate Exam Guide (SOA-C03)
 - **Official source:** https://docs.aws.amazon.com/pdfs/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03.pdf
