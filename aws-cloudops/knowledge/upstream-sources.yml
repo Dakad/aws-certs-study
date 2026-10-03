@@ -1,0 +1,90 @@
+schema_version: 1
+checked_at: "2026-10-03"
+repository: https://github.com/GabrielAlmeidaFlores/AWS-CloudOps-Engineer-Associate-Doc
+checked_revision: 14fd84dd958b4bf5196f95645fbc6036646cdf3a
+license:
+  status: author-permission-no-license-declared
+  evidence:
+    - GitHub repository API returned license: null.
+    - The checked repository tree contains no LICENSE or COPYING file.
+    - Permission to copy was granted directly by the upstream author (GabrielAlmeidaFlores) to the repository owner, reported by the owner on 2026-10-03. No upstream commit, LICENSE file, or other in-repository artifact records this grant.
+  redistribution_decision: copy-authorized-personal-study-use-only
+  scope_restriction: personal-study-use-only
+  attribution_required: true
+  attribution: "Source: GabrielAlmeidaFlores/AWS-CloudOps-Engineer-Associate-Doc"
+  redistribution_restricted: true
+  distribution_note: >-
+    The grant covers personal study use in this repository. Do not treat these
+    imports as freely redistributable content. This repository has a GitHub
+    remote (git@github.com:Dakad/aws-cloudops-study.git); confirm the author's
+    position on publishing before pushing these directories to a public remote.
+copied_revision: 14fd84dd958b4bf5196f95645fbc6036646cdf3a
+last_sync_completed: "2026-10-03"
+sync_result: copied-authorized
+copy_verification: >-
+  At import, all 16 Markdown files were re-downloaded from the pinned revision
+  and compared by SHA-256; all were byte-identical. During the later flattening,
+  filenames were preserved; the two collection README files were adapted to
+  use local navigation links and distinguish imported notes from graph-native
+  canonical pages, and one link to a topic not present locally was changed to a
+  forward reference. The other 13 files remain unchanged. Per-file outcomes below
+  record which three diverge, with SHA-256 prefixes for both sides so a later sync
+  can tell a local edit from an upstream change. No binary assets or unrelated
+  content imported.
+local_root: aws-cloudops/knowledge
+sources:
+  - topic: IP addressing
+    path: 02-concepts/01-networking/01-ip-addressing
+    upstream_path: 02-concepts/01-networking/01-ip-addressing
+    local_path: concepts/01-networking/01-ip-addressing
+    url: https://github.com/GabrielAlmeidaFlores/AWS-CloudOps-Engineer-Associate-Doc/tree/14fd84dd958b4bf5196f95645fbc6036646cdf3a/02-concepts/01-networking/01-ip-addressing
+    outcome: copied
+    files:
+      - path: 01-concepts.md
+        outcome: copied
+      - path: 02-aws-addressing.md
+        outcome: copied
+      - path: 03-troubleshooting.md
+        outcome: copied
+      - path: 04-comparisons.md
+        outcome: copied
+      - path: 05-exam-traps.md
+        outcome: copied
+      - path: 06-limits-defaults.md
+        outcome: copied-modified
+        local_change: Dead upstream link to ../02-ipv4-ipv6/README.md replaced with prose, because that topic has no local page yet.
+        upstream_sha256_prefix: dcd3ca572c1c
+        local_sha256_prefix: 52546982c53c
+      - path: 07-quick-review.md
+        outcome: copied
+      - path: README.md
+        outcome: copied-modified
+        local_change: Roadmap step numbers removed; dead upstream links to the VPC service page and Domain 5 replaced with one working relative link to the local domain page.
+        upstream_sha256_prefix: 712aedb7312c
+        local_sha256_prefix: 765b7cd053a7
+  - topic: IAM
+    path: 01-services/13-security-identity-compliance/01-iam
+    upstream_path: 01-services/13-security-identity-compliance/01-iam
+    local_path: services/13-security-identity-compliance/01-iam
+    url: https://github.com/GabrielAlmeidaFlores/AWS-CloudOps-Engineer-Associate-Doc/tree/14fd84dd958b4bf5196f95645fbc6036646cdf3a/01-services/13-security-identity-compliance/01-iam
+    outcome: copied
+    files:
+      - path: 01-concepts.md
+        outcome: copied
+      - path: 02-security.md
+        outcome: copied
+      - path: 03-troubleshooting.md
+        outcome: copied
+      - path: 04-comparisons.md
+        outcome: copied
+      - path: 05-exam-traps.md
+        outcome: copied
+      - path: 06-limits-defaults.md
+        outcome: copied
+      - path: 07-quick-review.md
+        outcome: copied
+      - path: README.md
+        outcome: copied-modified
+        local_change: Canonical-home wording changed to state these are imported study notes rather than a graph-native canonical page; three dead upstream links replaced with the local Domain 4 page and the relationships index.
+        upstream_sha256_prefix: 9e98251cd15a
+        local_sha256_prefix: ecae9710362a
