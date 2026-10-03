@@ -5,7 +5,7 @@
 
 This file is the current source of truth for learner progress. Update it after each session with observed evidence: what you attempted, what you explained correctly, what needs work, and whether you transferred the idea to a new scenario. A topic is not mastered because it was explained or a lab succeeded once.
 
-The existing `AWS-CLOUDOPS-STUDY.md` is retained unchanged for now while its schedule and historical notes are considered for a separate `ROADMAP.md`. Do not add new progress entries there; keep new learner evidence here and in the relevant domain page.
+The exam schedule and planned evidence live in [`ROADMAP.md`](ROADMAP.md). Keep actual learner evidence here and in the relevant domain page; do not duplicate the schedule in this file.
 
 ## Domain status
 
@@ -55,9 +55,21 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 - **Safety:** No AWS mutation occurred in this Console review. Keep the existing-workload alarm read-only; no original CLI command was recorded.
 - **Next exercise:** Given a 2-of-2 alarm with a 5-minute period and datapoints of 86% then 74%, state whether it enters alarm and explain both the threshold and datapoint-count requirements.
 
-### Earlier sessions
+### 2026-09-28 — Baseline, account reconnaissance, and initial scenarios
 
-Earlier reconnaissance and discussions are summarized above. The learner proposed HTTP response, application-log, and conditional DNS checks; discussed load-balancer choice and availability tradeoffs; and correctly interpreted replication lag against an RPO target. See the domain pages for topic-specific evidence and next exercises.
+- **Completed:** Read-only AWS account reconnaissance and discussion of the exam timeline and CLI → Console → IaC learning approach. Reconnaissance was not a hands-on lab or domain assessment.
+- **Domain 1 evidence:** For an HTTP 500/API-latency symptom, proposed checking response headers/body with `curl`, EC2/application logs, VPC Flow Logs, and using `dig` if hostname resolution is suspect. This is good symptom-first evidence gathering. Follow-up: use Flow Logs when the network path is implicated; they do not explain an application-level HTTP response. Normal CPU does not rule out other bottlenecks. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
+- **Load balancers:** Had not used an ALB before and asked how ALB, NLB, and Gateway Load Balancer differ. This was a newly introduced topic, not a mistake. Health-check behavior remains a follow-up topic; see [Domain 5 notes](aws-cloudops/domain-5-networking.md).
+- **Reliability evidence:** Considered AZ resilience, audience geography, inter-region traffic costs, and whether application state can be separated in an availability discussion. Correctly recognized later that replication lag over five minutes does not meet a strict `<5-minute` RPO for that recovery copy. Clarify replica/recovery copy versus backup; see [Domain 2 notes](aws-cloudops/domain-2-reliability.md).
+- **Tutor correction:** The tutor initially accepted “5 minutes” as a backup interval for a strict `<5-minute` RPO. That was incorrect: the interval must be shorter, with operational margin. This was a tutor assessment error and is recorded as such above.
+- **Next evidence:** Continue Domain 1 objectives before changing domains; obtain independent answers on alarm evaluation and monitoring/investigation.
+
+### 2026-10-02 — Resume the CloudWatch alarm comparison
+
+- **Read-only check:** AWS SSO had expired and could not refresh non-interactively, so caller identity and live alarm settings were not re-verified. No AWS changes were made.
+- **Record-quality correction:** The original `put-metric-alarm` command was not saved. Do not reconstruct it and present it as the literal original command.
+- **Progress:** No new learner answer or mastery evidence was gathered in this session. Domain 1 remained Learning.
+- **Next step at that time:** Inspect the alarm in the Console and compare its visible fields with the recorded settings. See [Domain 1 notes](aws-cloudops/domain-1-monitoring.md).
 
 ## Readiness
 

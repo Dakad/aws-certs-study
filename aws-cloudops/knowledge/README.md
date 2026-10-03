@@ -117,7 +117,7 @@ flowchart LR
   Scenario -->|practiced in| Lab[Lab]
   Service -->|mapped to| Domain[Exam domain]
   Concept -->|mapped to| Domain
-  Scenario -->|records evidence in| Journal[Study journal]
+  Scenario -->|records evidence in| Progress[Progress record]
 ```
 
 ## Authoring rules

@@ -2,7 +2,7 @@
 
 Personal study workspace for the AWS Certified CloudOps Engineer – Associate (SOA-C03) exam, targeted for October 31, 2026.
 
-Start with [PROGRESS.md](PROGRESS.md) for current domain status, evidence, strengths, corrections, and the next exercise. The exam schedule and older combined study notes remain in [AWS-CLOUDOPS-STUDY.md](AWS-CLOUDOPS-STUDY.md) while a possible move to `ROADMAP.md` is considered. Each exam domain has its own page:
+Start with [PROGRESS.md](PROGRESS.md) for current domain status, evidence, strengths, corrections, and the next exercise. See [ROADMAP.md](ROADMAP.md) for the exam schedule, domain objectives, access constraints, and planned evidence. Each exam domain has its own page:
 
 - [1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization](aws-cloudops/domain-1-monitoring.md)
 - [2. Reliability and Business Continuity](aws-cloudops/domain-2-reliability.md)
