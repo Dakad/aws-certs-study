@@ -1,7 +1,7 @@
 # Domain 4 — Security and Compliance
 
 **Exam weight:** 16% of scored content  
-**Status:** Not started  
+**Status:** Practiced — access-control scenarios; Lab 03 pending  
 **Official objective:** [AWS Domain 4 guide](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain4.html) (scope checked 2026-10-03)
 
 ## What this domain is about
@@ -45,9 +45,20 @@ IAM roles and policies constrain provisioning and operational automation (see [D
 
 ### Progress notes
 
-- Status: Learning — initial diagnostic baseline completed; no hands-on policy investigation yet
+- Status: Practiced — initial diagnostic and five access-control scenarios completed; no hands-on policy investigation yet. Phase 5 remains pending; broader Domain 4 mastery is not established.
 - Questions/practice evidence (2026-10-03): 4/4. Correctly applied explicit-deny precedence, the `AccessDenied` investigation sequence, Secrets Manager for runtime secrets, and CloudTrail for AWS API audit history.
 - Explicit-deny evaluation (2026-10-03): Correctly concluded that an SCP explicit deny of `s3:GetObject` on `*` overrides an EC2 role identity-policy allow for `reports/*`. This supports the baseline finding; continue with permissions boundaries and resource-policy interactions.
 - Permissions-boundary evaluation (2026-10-03): Correctly concluded that a boundary allowing only `s3:GetObject` blocks an identity-policy `s3:PutObject` allow. Future Domain 4 practice should use operational, multi-control scenarios rather than single-rule recall.
-- Mistakes and corrections: None assessed yet
-- Next action: Start with the policy evaluation layers and one AccessDenied investigation.
+- Next action: Read-only review of [Lab 03](../../knowledge/labs/03-iam-policy-evaluation/README.md) policies and cleanup scripts before creation. During the lab, state expected positive, negative, and regression outcomes before running tests.
+
+#### 2026-10-04 — S3/KMS access-control block
+
+- **Progress:** 5/5 scenarios reviewed, 0 remaining; four guided cases followed by one independent combined case. This is block completion, not a perfect score. Lab 03 is not started; no AWS tests or changes were performed.
+- **Terminology:** After explanation, correctly identified customer-managed key administration. The initial unfamiliar term reflected a tutor sequencing issue, not a learner misconception. See the canonical [KMS notes](../../knowledge/services/kms/README.md).
+- **Boundary mismatch:** Correctly proposed extending K2 decryption coverage and keeping encryption denied; the tutor specified the boundary as the correction target and added actual S3 download verification.
+- **Key-policy investigation:** Correctly chose the key policy as the next check when identity and boundary permissions were sufficient. This was a diagnostic hypothesis, not a confirmed root cause.
+- **Transport restriction:** Correctly identified HTTP as the blocked request context and HTTPS as the fix. The tutor supplied the missing HTTP-denial negative test.
+- **Cross-account case:** Correctly proposed adding `kms:Decrypt` to the caller role IAM policy and an encryption test. The tutor corrected unnecessary key-policy modification because its permission was already established, scoped the IAM allow to K3's full key ARN, and specified expected test outcomes.
+- **Independent combined case:** Correctly separated the HTTP restriction and K2 boundary gap, proposed HTTPS plus a scoped boundary correction, and selected HTTPS/HTTP/encryption tests. The tutor completed expected success/denial outcomes and added the K1 regression check. Fix order was not scored as a mistake.
+- **Evidence limits:** One independent combined diagnosis is evidence of applying the taught rules, not whole-domain mastery. Verification completeness and hands-on evidence remain follow-ups; learner-proposed tests are not executed results.
+- **Tutor process:** Reconciled this README and [PROGRESS.md](../../../PROGRESS.md) after the learner pointed out the missing repository updates. Keep both current during active tutoring and show the finite block counter before subsequent scenarios.

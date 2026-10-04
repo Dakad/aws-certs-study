@@ -1,7 +1,7 @@
 # AWS CloudOps study progress
 
-**Last updated:** 2026-10-03  
-**Overall:** Study started; no practice-exam baseline and no domain mastery has been established.
+**Last updated:** 2026-10-04  
+**Overall:** Phase 0 diagnostic complete (23/25); Domain 4 access-control scenarios practiced. No timed practice-exam baseline or domain mastery has been established.
 
 This file is the current source of truth for learner progress. Update it after each session with observed evidence: what you attempted, what you explained correctly, what needs work, and whether you transferred the idea to a new scenario. A topic is not mastered because it was explained or a lab succeeded once.
 
@@ -14,7 +14,7 @@ The exam schedule and planned evidence live in [`ROADMAP.md`](ROADMAP.md). Keep 
 | 1. Monitoring, Logging, Analysis, Remediation, and Performance Optimization (22%) | Learning | Inspected a CloudWatch CPU alarm's settings, history, and graph. After correction of the 84%/78% case, correctly identified 84%/81% as `ALARM` because both datapoints breach and M=2 is met. | Continue with metrics-versus-logs signal selection; later revisit missing-data treatment independently, then continue remaining monitoring and investigation objectives. |
 | 2. Reliability and Business Continuity (22%) | Learning | Discussed AZ resilience, geographic placement, cost, and application state. Correctly connected replication lag over five minutes to missing a strict `<5-minute` RPO for that recovery copy. Independently distinguished RTO from RPO: ruled out the data-loss and backup-frequency readings, and judged a 100-minute restoration against a 1-hour RTO as missed because it bounds the user's wait rather than the start time. | Choose a recovery design from explicit RTO *and* RPO requirements; retrieve the `<5` versus `<=5` backup-interval boundary. |
 | 3. Deployment, Provisioning, and Automation (22%) | Learning | Selected a CLI → Console → OpenTofu learning approach; no end-to-end IaC lab has been completed. | Complete a small isolated lab, explain the plan/state, and verify cleanup. |
-| 4. Security and Compliance (16%) | Not started | No learner performance assessed yet. | Explain policy evaluation layers and investigate one `AccessDenied` scenario. |
+| 4. Security and Compliance (16%) | Practiced | Completed five access-control scenarios on 2026-10-04: four guided cases and a final independent combined diagnosis. Correctly identified HTTP enforcement and K2 permissions-boundary coverage as separate blockers and proposed scoped corrections. | Complete Lab 03; independently state expected positive, negative, and regression-test outcomes. Broader Domain 4 coverage remains open. |
 | 5. Networking and Content Delivery (18%) | Learning | Completed read-only account reconnaissance; discussed load-balancer layers/protocols and AZ, state, and traffic-cost considerations. No troubleshooting lab or independent assessment yet. | Diagnose a fresh reachability incident from evidence, then perform a safe isolated networking lab. |
 
 Status meanings: **Not started** = not yet studied; **Learning** = explanation or guided practice completed; **Practiced** = hands-on exercise or several relevant questions completed; **Demonstrated** = independently solved a new scenario and explained the reasoning.
@@ -30,7 +30,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 | 2. Reliability and recovery (D2) | `pending` | Discussed AZ resilience, geography/cost, application state, RPO, and replication lag. RTO now independently recalled and correctly applied to a restoration-duration case. | Choose a recovery design from explicit RTO and RPO requirements, stating which requirement drives the backup interval and which drives the restore path. |
 | 3. Deployment and automation (D3) | `pending` | CLI → Console → OpenTofu approach selected; no isolated IaC exercise completed. | Complete a scoped lab, explain configuration/state/plan, compare tools, and verify cleanup; include Terragrunt composition when appropriate. |
 | 4. Networking and content delivery (D5) | `pending` | Read-only account reconnaissance and introductory load-balancer discussion completed. | Trace a fresh reachability incident systematically and complete a safe isolated networking exercise. |
-| 5. Security and compliance (D4) | `null` | No learner study or assessment recorded yet. | Start with policy evaluation layers and an `AccessDenied` scenario. |
+| 5. Security and compliance (D4) | `pending` | Five-scenario block complete; final combined case correctly diagnosed without answer scaffolding. Verification expectations still needed tutor completion; no hands-on policy lab yet. | Review Lab 03 policies and cleanup, then complete the scoped lab lifecycle. Independently explain verification outcomes before closing the phase gate. |
 | 6. Cross-domain review and exam readiness | `null` | No timed practice baseline yet. | Begin after studying the domain phases; complete and review at least two timed mixed practice sets. |
 
 ## Demonstrated strengths
@@ -40,6 +40,7 @@ Phase state measures whether a phase's completion criteria in [ROADMAP.md](ROADM
 - **Cross-tool learning design:** Proposed creating with AWS CLI, inspecting in the Console, and recreating with Terraform/OpenTofu. This makes observed state, configuration, and repeatability comparable.
 - **RTO/RPO discrimination:** Correctly separated recovery-time objectives from recovery-point objectives unprompted, and rejected the "recovery must begin within the RTO" reading in favour of the restoration-time reading.
 - **Alarm threshold application:** After correction, identified that two 5-minute average datapoints of 83% and 85% both satisfy the `>=80%` threshold. This is one exchange, not yet independent mastery of M-of-N evaluation.
+- **Combined access-control diagnosis (2026-10-04):** In the final independent case, separated the HTTP bucket-policy restriction from missing K2 coverage in the permissions boundary, proposed HTTPS and a targeted boundary update, and selected useful HTTPS, HTTP, and KMS encryption tests. Expected test outcomes still needed tutor completion.
 
 These are evidence-backed early strengths, not final ratings or predictions of exam performance.
 
@@ -47,12 +48,14 @@ These are evidence-backed early strengths, not final ratings or predictions of e
 
 | Date | Topic | Initial understanding | Correction / current evidence | Follow-up |
 |---|---|---|---|---|
+| 2026-10-04 | Cross-account KMS correction scope | Correctly proposed adding `kms:Decrypt` to the caller's IAM policy, but also proposed a key-policy addition despite the scenario already establishing that permission. | Keep the already-sufficient key policy unchanged; scope the missing IAM allow to K3's full key ARN. Inspection is valid, but the stated evidence does not justify changing both policies. | Distinguish a policy worth inspecting from a policy that needs modification. |
+| 2026-10-04 | Verification completeness | Proposed relevant tests, but sometimes omitted positive/negative checks or described the outcome as “see what happens.” | State expected outcomes before testing, using the application role: encrypted HTTPS download succeeds, HTTP and encryption remain denied, and an existing K1 download still succeeds. These expectations were supplied by the tutor, not independently stated in the final answer. | Apply this verification discipline in Lab 03; do not equate proposed tests with executed results. |
 | 2026-10-03 | CloudWatch 2-of-2 alarm | Initially unclear on “2-of-2” and predicted that an 85% datapoint followed by 15% would trigger the alarm. | Both datapoints in the evaluation window must meet the `>=80%` threshold. After explanation, correctly answered that 83% and 85% would trigger it. | Retrieve the M-of-N rule again with a new pair of values, including one breaching and one non-breaching datapoint. |
 | 2026-10-03 | Present non-breaching datapoint vs. missing data | For present readings of 84% and 78% in a 2-of-2 `>=80%` alarm, correctly observed that 78% was below threshold but answered `INSUFFICIENT_DATA`. | With both readings present, only one breaches, so the 2-of-2 condition is false and the state is `OK`; a valid non-breaching datapoint is not missing data. Immediate retest: correctly answered `ALARM` for 84%/81%, explaining both breach and M=2 is met. | Continue Domain 1 signal selection; revisit missing-data treatment later with an explicit missing point. |
 | 2026-09-28 | Strict RPO `<5 minutes` | Answered “5 minutes” for the maximum backup interval. | Five-minute intervals only support an idealized `<=5-minute` age; a strict `<5-minute` target needs a shorter interval and operational margin. The tutor initially accepted the answer incorrectly. | Revisit with a recovery-point age and replication-lag example. |
 | 2026-09-28 | ALB unhealthy targets | Suggested dropping a request or returning 5xx / “upstream not available.” | A 503 can occur when there are no usable registered targets. If all registered targets are unhealthy, ALB fails open and still routes to them; a target may then return an error. | Continue learning target groups and health-check behavior in an isolated example. |
 
-No other learner mistakes are recorded. Questions and “I don't know” responses are not mistakes by themselves.
+Questions and “I don't know” responses are not mistakes by themselves. Verification omissions above are evidence gaps, not proof that the learner misunderstood every underlying rule.
 
 ## Hands-on evidence
 
@@ -62,6 +65,20 @@ No other learner mistakes are recorded. Questions and “I don't know” respons
 | 2026-09-28–2026-10-03 | CloudWatch CPU alarm observation | An alarm was created on an existing EC2 workload before the exact command was shown. The original command was not saved. On 2026-10-03, the learner inspected its Console settings, history, and graph; history showed `INSUFFICIENT_DATA` → `OK`, while the reviewed CPU graph remained below 2% with no gaps. No new AWS change was made during the Console review. | Existing alarm is not a disposable lab resource. Do not edit, import, apply IaC to, or delete it. Use a separate disposable target for any future end-to-end IaC exercise. |
 
 ## Session log
+
+### 2026-10-04 — Domain 4: S3/KMS access-control scenarios
+
+- **Block progress:** 5/5 scenarios reviewed; 0 remaining. This is a completion counter, not a 5/5 correctness score or a timed practice-exam result. The first four cases were guided; the final case combined the taught rules independently. Lab 03 has not started.
+- **Terminology warm-up:** After explanation, correctly identified customer-managed keys as the category the customer can administer. Requesting an explanation of the term was a tutor sequencing issue, not a learner mistake.
+- **Scenario 1 — K2 boundary mismatch:** Correctly proposed allowing `kms:Decrypt` on K2 in addition to K1; the tutor made the permissions-boundary target explicit. Correctly expected K2 decryption to work and encryption to remain denied; the tutor added end-to-end S3 download verification.
+- **Scenario 2 — Key-policy investigation:** Correctly selected the K2 key policy as the next investigation target when IAM and boundary permissions were sufficient. The answer was an appropriate hypothesis, not proof of the blocking statement. The tutor explained direct authorization versus IAM-policy delegation.
+- **Scenario 3 — Transport restriction:** Correctly diagnosed the HTTP bucket-policy deny and proposed changing the failed request to HTTPS. Supplied the positive retry; the tutor added the negative check that HTTP must remain denied.
+- **Scenario 4 — Cross-account access:** Correctly proposed adding `kms:Decrypt` to the caller role's IAM policy and an encryption negative test. The tutor clarified that the owner-account key policy already permitted access, specified the key ARN scope, and added the expected denial and positive download check.
+- **Scenario 5 — Independent combined case:** Correctly identified both blockers and proposed the two needed changes: HTTPS and K2 decryption coverage in the boundary. Selected HTTPS, HTTP, and encryption tests. The tutor supplied explicit expected outcomes, use of the application role, and the K1 regression check. Changing the boundary before the client scheme was not treated as an error; both fixes were needed.
+- **Assessment:** Domain 4 is Practiced. One independent combined diagnosis supports transfer of the taught rules, not whole-domain mastery. Phase 5 remains pending because verification expectations still needed coaching; Lab 03 and broader security/compliance coverage remain open.
+- **Safety:** Discussion only; no AWS calls, resource changes, or tests were executed in this block.
+- **Tutor process correction:** Progress was initially tracked in chat without updating the repository. At the learner's request, reconciled this file and the [Domain 4 README](aws-cloudops/domains/04-security-compliance/README.md). Future active tutoring should record observed answers and corrections in both canonical records, while retaining the visible completed/total counter.
+- **Next step:** Read-only review of [Lab 03](aws-cloudops/knowledge/labs/03-iam-policy-evaluation/README.md) policies and cleanup scripts before any creation; then follow the explained CLI → learner-led Console → OpenTofu → verified-cleanup workflow. No additional scenario is scheduled in this five-case block.
 
 ### 2026-10-03 — Domain 1 CloudWatch Console review
 
