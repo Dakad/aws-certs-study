@@ -10,7 +10,7 @@ digraph service_relationships_cloudwatch {
   node_eventbridge [label="Amazon EventBridge\nDomains: 1, 3"];
   node_lambda [label="AWS Lambda\nDomains: 1, 3"];
   node_rds [label="Amazon RDS\nDomains: 1, 2"];
-  node_s3 [label="Amazon S3\nDomains: 1, 2, 3"];
+  node_s3 [label="Amazon S3\nDomains: 1, 2, 3, 4"];
   node_sns [label="Amazon Simple Notification Service\nDomains: 1"];
   node_ssm_automation [label="AWS Systems Manager Automation\nDomains: 1, 3"];
   node_cloudwatch -> node_ec2 [label="collects-metrics-from"];

@@ -28,7 +28,7 @@ flowchart LR
   node_eventbridge["Amazon EventBridge<br/>Domains: 1, 3"]
   node_lambda["AWS Lambda<br/>Domains: 1, 3"]
   node_rds["Amazon RDS<br/>Domains: 1, 2"]
-  node_s3["Amazon S3<br/>Domains: 1, 2, 3"]
+  node_s3["Amazon S3<br/>Domains: 1, 2, 3, 4"]
   node_sns["Amazon Simple Notification Service<br/>Domains: 1"]
   node_ssm_automation["AWS Systems Manager Automation<br/>Domains: 1, 3"]
   node_cloudwatch -->|collects metrics from| node_ec2
@@ -54,7 +54,7 @@ flowchart LR
   node_guardduty["Amazon GuardDuty<br/>Domains: 4"]
   node_kms["AWS Key Management Service (KMS)<br/>Domains: 4"]
   node_organizations["AWS Organizations &amp; Service Control Policies (SCPs)<br/>Domains: 4"]
-  node_s3["Amazon S3<br/>Domains: 1, 2, 3"]
+  node_s3["Amazon S3<br/>Domains: 1, 2, 3, 4"]
   node_securityhub["AWS Security Hub<br/>Domains: 4"]
   node_sns["Amazon Simple Notification Service<br/>Domains: 1"]
   node_cloudtrail -->|integrates with| node_cloudwatch
@@ -100,7 +100,7 @@ flowchart LR
   node_iam["AWS Identity and Access Management (IAM)<br/>Domains: 4"]
   node_kms["AWS Key Management Service (KMS)<br/>Domains: 4"]
   node_rds["Amazon RDS<br/>Domains: 1, 2"]
-  node_s3["Amazon S3<br/>Domains: 1, 2, 3"]
+  node_s3["Amazon S3<br/>Domains: 1, 2, 3, 4"]
   node_secretsmanager["AWS Secrets Manager<br/>Domains: 4"]
   node_kms -->|secured by| node_iam
   node_kms -->|encrypts for| node_secretsmanager

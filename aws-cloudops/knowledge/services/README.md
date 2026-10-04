@@ -11,7 +11,7 @@ Use [`../templates/topic.md`](../templates/topic.md) with `kind: service`. Map e
 - [Amazon EC2](ec2/README.md) — Domains 1, 2, and 3
 - [Elastic Load Balancing](elb/README.md) — Domains 1, 2, and 5
 - [Amazon EventBridge](eventbridge/README.md) — Domains 1 and 3
-- [Amazon S3](s3/README.md) — Domains 1, 2, and 3
+- [Amazon S3](s3/README.md) — Domains 1, 2, 3, and 4
 - [Amazon RDS](rds/README.md) — Domains 1 and 2
 - [AWS Lambda](lambda/README.md) — Domains 1 and 3
 - [Amazon SNS](sns/README.md) — Domain 1

@@ -24,6 +24,8 @@ The separation is about the kind of knowledge being explained, not whether a top
 
 If a topic seems to fit both layers, keep service-specific behavior with the service and the cross-cutting principle with the concept, then link the two. IAM, for example, is a service; least privilege is a concept.
 
+Access-control study material remains in the canonical service notes: [IAM boundaries, STS, and verification](services/iam/README.md), [Organizations SCPs](services/organizations/README.md), [S3 request controls](services/s3/README.md#authorization-and-request-context), and [KMS authorization](services/kms/README.md). No separate concept page is needed to restate these mechanisms.
+
 ## Directory structure
 
 The layout below follows the upstream taxonomy, but removes its top-level `01-services/` and `02-concepts/` wrappers because this repo already separates those layers directly under `knowledge/`. Only the IAM and IP-addressing upstream collections are currently present; add other topic directories as they become useful.

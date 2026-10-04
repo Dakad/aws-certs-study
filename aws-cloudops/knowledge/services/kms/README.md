@@ -41,6 +41,8 @@ sources:
     url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
   - title: "IAM policy evaluation logic"
     url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+  - title: "AWS KMS condition keys: kms:ViaService"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/conditions-kms.html#conditions-kms-via-service"
   - title: "Using server-side encryption with AWS KMS keys (SSE-KMS)"
     url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html"
   - title: "Protecting data in transit with encryption"
@@ -168,6 +170,12 @@ CloudTrail also records changes such as `PutKeyPolicy`, `DisableKey`, and grant 
 An ordinary SSE-KMS download needs `s3:GetObject` on the object and `kms:Decrypt` on its key. Uploads use `kms:GenerateDataKey`; multipart uploads also need `kms:Decrypt`. Therefore, denying `kms:Encrypt` alone does **not** prove that S3 uploads are impossible. Cross-account sharing of SSE-KMS objects requires a customer-managed key, not `aws/s3`. [S3 SSE-KMS permissions](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html)
 
 Encryption at rest does not replace TLS. SSE-KMS GET/PUT requests must use TLS. A bucket-policy deny when `aws:SecureTransport` is `false` independently enforces HTTPS; changing KMS permissions cannot fix that deny. In the combined HTTP/K2 case, changing the client to HTTPS exposes the remaining K2 boundary failure. Keep the transport guardrail and correct the boundary separately. [SSE-KMS request requirements](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html), [HTTPS enforcement](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryptionInTransit.html)
+
+### S3-mediated decrypt versus a direct KMS call
+
+`kms:ViaService` restricts key use through supported services using forward access sessions. S3 can request KMS operations on behalf of the caller; its regional value here is `s3.eu-north-1.amazonaws.com`. This is request context, not a value the caller can add to make a direct KMS call look like S3. [AWS ViaService rules](https://docs.aws.amazon.com/kms/latest/developerguide/conditions-kms.html#conditions-kms-via-service)
+
+If the only applicable decrypt allows require that value, a `ReportsRole` session can read an authorized SSE-KMS object through S3 while direct `kms:Decrypt` remains denied. That negative test is expected; it does not justify removing the condition. A bucket-policy endpoint deny must be corrected in S3, not with broader key permissions. See [S3 request controls](../s3/README.md#authorization-and-request-context) and [IAM simulator evidence and verification](../iam/README.md#simulator-evidence-and-verification).
 
 ### Define verification outcomes before testing
 

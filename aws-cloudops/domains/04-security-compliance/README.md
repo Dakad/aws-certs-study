@@ -17,7 +17,7 @@ Apply and troubleshoot access controls, meet policy/compliance requirements, and
 
 Use the [Domain 4 contexts index](contexts/README.md) for reusable scenarios, the graph-native [AWS IAM node](../../knowledge/services/iam/README.md), and the existing [imported IAM notes](../../knowledge/services/13-security-identity-compliance/01-iam/README.md) for additional service detail. The task guides provide practice and checks; learner results remain in the progress notes below and [`PROGRESS.md`](../../../PROGRESS.md).
 
-The original [effective-permissions concept](../../knowledge/concepts/02-security/02-policies/README.md) covers boundary/SCP scope, implicit versus explicit deny, and simulator/live evidence. Today's service-specific distinctions are in [IAM role credentials](../../knowledge/services/iam/README.md#roles-sts-and-the-credentials-actually-used), [S3 endpoint/HTTPS controls](../../knowledge/services/s3/README.md#authorization-and-request-context), and [KMS service-mediated decrypt](../../knowledge/services/kms/README.md#s3-mediated-decrypt-versus-a-direct-kms-call).
+The [IAM service note](../../knowledge/services/iam/README.md#permissions-boundaries-and-effective-permissions) covers boundary/SCP scope and implicit versus explicit deny, with [simulator/live evidence](../../knowledge/services/iam/README.md#simulator-evidence-and-verification). Today's other service-specific distinctions are in [IAM role credentials](../../knowledge/services/iam/README.md#roles-sts-and-the-credentials-actually-used), [S3 endpoint/HTTPS controls](../../knowledge/services/s3/README.md#authorization-and-request-context), and [KMS service-mediated decrypt](../../knowledge/services/kms/README.md#s3-mediated-decrypt-versus-a-direct-kms-call).
 
 ## Services
 

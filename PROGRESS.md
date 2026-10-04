@@ -74,7 +74,7 @@ Questions and “I don't know” responses are not mistakes by themselves. Verif
 ### 2026-10-04 — Tutoring format and canonical notes updated
 
 - Saved teaching preferences in the [tutoring skill](.agents/skills/aws-cloudops-tutoring/SKILL.md): phase objective/goal/services/exit criteria first, concise explanation before scenarios, faster movement past demonstrated basics, operational multi-control questions, a small non-spoiling hint immediately after each question, and a visible finite progress counter. Learning mode remains the default; no personal-background details are added.
-- Added the original [effective-permissions concept](aws-cloudops/knowledge/concepts/02-security/02-policies/README.md) and expanded canonical IAM/S3/KMS notes from the lesson. Source verification and documentation updates are not new learner mastery or executed test evidence. Phase 5 is complete; the next scheduled block remains Domain 1 on October 5.
+- Expanded canonical IAM/S3/KMS notes from the lesson; the initially separate effective-permissions page was consolidated into the [IAM service note](aws-cloudops/knowledge/services/iam/README.md#permissions-boundaries-and-effective-permissions) at the learner's request. Source verification and documentation updates are not new learner mastery or executed test evidence. Phase 5 is complete; the next scheduled block remains Domain 1 on October 5.
 
 ### 2026-10-04 — Phase 5 exit gate met
 

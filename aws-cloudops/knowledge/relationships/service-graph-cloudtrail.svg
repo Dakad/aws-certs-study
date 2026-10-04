@@ -89,15 +89,15 @@
 <!-- node_s3 -->
 <g id="node7" class="node">
 <title>node_s3</title>
-<path fill="none" stroke="black" d="M470,-213.5C470,-213.5 379,-213.5 379,-213.5 373,-213.5 367,-207.5 367,-201.5 367,-201.5 367,-186 367,-186 367,-180 373,-174 379,-174 379,-174 470,-174 470,-174 476,-174 482,-180 482,-186 482,-186 482,-201.5 482,-201.5 482,-207.5 476,-213.5 470,-213.5"/>
+<path fill="none" stroke="black" d="M477.5,-213.5C477.5,-213.5 371.5,-213.5 371.5,-213.5 365.5,-213.5 359.5,-207.5 359.5,-201.5 359.5,-201.5 359.5,-186 359.5,-186 359.5,-180 365.5,-174 371.5,-174 371.5,-174 477.5,-174 477.5,-174 483.5,-174 489.5,-180 489.5,-186 489.5,-186 489.5,-201.5 489.5,-201.5 489.5,-207.5 483.5,-213.5 477.5,-213.5"/>
 <text xml:space="preserve" text-anchor="middle" x="424.5" y="-196.2" font-family="Arial" font-size="14.00">Amazon S3</text>
-<text xml:space="preserve" text-anchor="middle" x="424.5" y="-180.45" font-family="Arial" font-size="14.00">Domains: 1, 2, 3</text>
+<text xml:space="preserve" text-anchor="middle" x="424.5" y="-180.45" font-family="Arial" font-size="14.00">Domains: 1, 2, 3, 4</text>
 </g>
 <!-- node_cloudtrail&#45;&gt;node_s3 -->
 <g id="edge2" class="edge">
 <title>node_cloudtrail&#45;&gt;node_s3</title>
-<path fill="none" stroke="black" d="M86.81,-303.56C113.37,-288.58 145,-270.75 145,-270.75 145,-270.75 253.75,-237.75 253.75,-237.75 253.75,-237.75 308.35,-223.6 355.62,-211.34"/>
-<polygon fill="black" stroke="black" points="356.24,-214.8 365.04,-208.9 354.48,-208.02 356.24,-214.8"/>
+<path fill="none" stroke="black" d="M86.81,-303.56C113.37,-288.58 145,-270.75 145,-270.75 145,-270.75 253.75,-237.75 253.75,-237.75 253.75,-237.75 302.83,-225.03 348.21,-213.27"/>
+<polygon fill="black" stroke="black" points="349.06,-216.66 357.86,-210.76 347.3,-209.89 349.06,-216.66"/>
 <text xml:space="preserve" text-anchor="middle" x="176.88" y="-273.25" font-family="Arial" font-size="10.00">integrates&#45;with</text>
 </g>
 <!-- node_securityhub -->

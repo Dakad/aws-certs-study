@@ -9,7 +9,7 @@ digraph service_relationships_cloudtrail {
   node_guardduty [label="Amazon GuardDuty\nDomains: 4"];
   node_kms [label="AWS Key Management Service (KMS)\nDomains: 4"];
   node_organizations [label="AWS Organizations & Service Control Policies (SCPs)\nDomains: 4"];
-  node_s3 [label="Amazon S3\nDomains: 1, 2, 3"];
+  node_s3 [label="Amazon S3\nDomains: 1, 2, 3, 4"];
   node_securityhub [label="AWS Security Hub\nDomains: 4"];
   node_sns [label="Amazon Simple Notification Service\nDomains: 1"];
   node_cloudtrail -> node_cloudwatch [label="integrates-with"];
