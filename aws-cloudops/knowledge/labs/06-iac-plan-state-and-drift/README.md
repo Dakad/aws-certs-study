@@ -2,6 +2,7 @@
 
 **Exam domain:** [3. Deployment and automation](../../../domains/03-deployment-provisioning-automation/README.md) (22%)  
 **Task guides:** [3.1 Provision and maintain](../../../domains/03-deployment-provisioning-automation/01-task-3-1-provision-maintain.md), [3.2 Automation and deployment failures](../../../domains/03-deployment-provisioning-automation/02-task-3-2-automation.md)  
+**Knowledge nodes:** [Amazon S3](../../services/s3/README.md), [CloudWatch](../../services/cloudwatch/README.md), [Amazon SNS](../../services/sns/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists

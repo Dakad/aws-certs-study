@@ -2,6 +2,7 @@
 
 **Exam domains:** [2. Reliability and business continuity](../../../domains/02-reliability-business-continuity/README.md) (20%) and [4. Security and compliance](../../../domains/04-security-compliance/README.md) (18%)
 **Task guides:** [2.2 High availability & resilience](../../../domains/02-reliability-business-continuity/02-task-2-2-high-availability-resilience.md), [2.3 Backup & restore](../../../domains/02-reliability-business-continuity/03-task-2-3-backup-restore.md), [4.2 Data & infrastructure protection](../../../domains/04-security-compliance/02-task-4-2-data-infrastructure-protection.md)
+**Knowledge nodes:** [Amazon RDS](../../services/rds/README.md), [AWS KMS](../../services/kms/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists

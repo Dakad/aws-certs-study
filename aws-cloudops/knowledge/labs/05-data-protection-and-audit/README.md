@@ -2,6 +2,7 @@
 
 **Exam domain:** [4. Security and Compliance](../../../domains/04-security-compliance/README.md) (16%)
 **Task guides:** [4.2 Data and infrastructure protection](../../../domains/04-security-compliance/02-task-4-2-data-infrastructure-protection.md), [4.1 Security and compliance tools](../../../domains/04-security-compliance/01-task-4-1-security-compliance-tools.md)
+**Knowledge nodes:** [AWS KMS](../../services/kms/README.md), [Amazon S3](../../services/s3/README.md), [AWS Secrets Manager](../../services/secretsmanager/README.md), [CloudTrail](../../services/cloudtrail/README.md), [AWS Config](../../services/config/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists

@@ -2,6 +2,7 @@
 
 **Exam domain:** [5. Networking and Content Delivery](../../../domains/05-networking-content-delivery/README.md) (18%), with a [Domain 2.2](../../../domains/02-reliability-business-continuity/02-task-2-2-high-availability-resilience.md) overlap on ALB health checks
 **Task guides:** [5.1 Networking and connectivity](../../../domains/05-networking-content-delivery/01-task-5-1-networking-connectivity.md), [5.3 Network troubleshooting](../../../domains/05-networking-content-delivery/03-task-5-3-network-troubleshooting.md)
+**Knowledge nodes:** [Elastic Load Balancing](../../services/elb/README.md), [CloudWatch](../../services/cloudwatch/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists

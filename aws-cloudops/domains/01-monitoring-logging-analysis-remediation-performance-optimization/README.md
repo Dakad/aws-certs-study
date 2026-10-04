@@ -20,9 +20,9 @@ Use the [Domain 1 contexts index](contexts/README.md) for reusable scenarios. Th
 ## Services
 The service list follows the [official Domain 1 objectives](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html); examples are exam-scope coverage, not an exhaustive AWS catalog.
 
-- **Monitoring and audit:** Amazon CloudWatch (metrics, alarms, dashboards, agent), AWS CloudTrail, Amazon Managed Service for Prometheus, and Amazon SNS.
-- **Remediation and event routing:** Amazon EventBridge, AWS Lambda, AWS Systems Manager Automation, AWS DevOps Agent, and Kiro (as named in the current objective).
-- **Performance:** Amazon EC2 and placement groups, Amazon EBS, Amazon S3 (including lifecycle and transfer features), AWS DataSync, Amazon EFS, Amazon FSx, Amazon S3 Files, Amazon RDS, and RDS Proxy.
+- **Monitoring and audit:** [Amazon CloudWatch](../../knowledge/services/cloudwatch/README.md) (metrics, alarms, dashboards, agent), [AWS CloudTrail](../../knowledge/services/cloudtrail/README.md), Amazon Managed Service for Prometheus, and [Amazon SNS](../../knowledge/services/sns/README.md).
+- **Remediation and event routing:** [Amazon EventBridge](../../knowledge/services/eventbridge/README.md), [AWS Lambda](../../knowledge/services/lambda/README.md), [AWS Systems Manager Automation](../../knowledge/services/ssm-automation/README.md), AWS DevOps Agent, and Kiro (as named in the current objective).
+- **Performance:** [Amazon EC2](../../knowledge/services/ec2/README.md) and placement groups, Amazon EBS, [Amazon S3](../../knowledge/services/s3/README.md) (including lifecycle and transfer features), AWS DataSync, Amazon EFS, Amazon FSx, Amazon S3 Files, [Amazon RDS](../../knowledge/services/rds/README.md), and RDS Proxy.
 
 ### Cross-service impacts
 Monitoring and CloudTrail evidence help diagnose compute, storage, database, and network incidents; EventBridge/Lambda/Systems Manager can automate remediation but depend on appropriately scoped IAM permissions (see [Domain 3](../03-deployment-provisioning-automation/README.md) and [Domain 4](../04-security-compliance/README.md)). Performance changes to compute, storage, databases, or network paths can alter availability, recovery needs, and cost (see [Domain 2](../02-reliability-business-continuity/README.md) and [Domain 5](../05-networking-content-delivery/README.md)). Treat these as study connections, not claims that one service automatically configures another.

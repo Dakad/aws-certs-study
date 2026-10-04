@@ -2,6 +2,7 @@
 
 **Exam domains:** [1. Monitoring](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) (22%) and [3. Deployment and automation](../../../domains/03-deployment-provisioning-automation/README.md) (22%)
 **Task guides:** [1.1 Monitoring and logging](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/01-task-1-1-monitoring-logging.md), [1.2 Remediation](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/02-task-1-2-remediation.md), [3.1 Provision and maintain](../../../domains/03-deployment-provisioning-automation/01-task-3-1-provision-maintain.md)
+**Knowledge nodes:** [Amazon EC2](../../services/ec2/README.md), [CloudWatch](../../services/cloudwatch/README.md), [Amazon SNS](../../services/sns/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists
