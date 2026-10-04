@@ -28,7 +28,7 @@ By the end you can:
 
 | Item | Note |
 |---|---|
-| Scope | The authorized playground (`sso-apptweakplayground-admin`) or a personal account. Never a shared or production AppTweak account. |
+| Scope | The authorized playground (`sso-apptweakplayground-apptweakadmin`) or a personal account. Never a shared or production AppTweak account. |
 | Cost | **Zero.** IAM is free, the policy simulator is free, and no compute, storage, or load balancer is created. There is nothing here that can accrue a bill. |
 | Resources | One IAM role, one managed policy, one permissions boundary, one instance profile. All named `soa-c03-lab03-*` so they are easy to find and delete. |
 | Side effects | The role's trust policy allows only your own principal to assume it, so nobody else can use it. No wildcards in any allow. |
@@ -48,7 +48,7 @@ You need your own principal ARN for the trust policy. The script reads it at run
 ### Step 1 — Create the denial
 
 ```bash
-AWS_PROFILE=sso-apptweakplayground-admin ./cli/01-create.sh
+AWS_PROFILE=sso-apptweakplayground-apptweakadmin ./cli/01-create.sh
 ```
 
 This creates a role whose identity policy allows `s3:ListAllMyBuckets`, plus a managed policy containing an explicit `Deny` on `s3:*`. The role also gets a permissions boundary that permits nothing at all, so you can add and remove one more constraint independently.

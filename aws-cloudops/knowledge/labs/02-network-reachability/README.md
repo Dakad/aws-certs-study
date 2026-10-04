@@ -34,7 +34,7 @@ The lab makes the 503 deterministic:
 
 | Item | Note |
 |---|---|
-| Scope | The authorized playground (`sso-apptweakplayground-admin`) or a personal account. Never a shared or production AppTweak account. |
+| Scope | The authorized playground (`sso-apptweakplayground-apptweakadmin`) or a personal account. Never a shared or production AppTweak account. |
 | CIDR | `10.60.0.0/16`. Chosen to be obviously outside the learner's other work. Confirm nothing in the account already uses it. |
 | **NAT gateway** | **Deliberately absent.** At roughly $0.045/hour plus $0.045/GB it is the single most common way a networking lab generates an unexpected bill. Nothing in this lab needs outbound internet from a private subnet. |
 | Application load balancer | Roughly $0.0225/hour, so about **$0.55/day**. This is the dominant cost. Delete it the day you finish. |
@@ -58,7 +58,7 @@ An empty result is what you want. A non-empty result means pick a different CIDR
 ### Step 1 — Create
 
 ```bash
-AWS_PROFILE=sso-apptweakplayground-admin ./cli/01-create.sh
+AWS_PROFILE=sso-apptweakplayground-apptweakadmin ./cli/01-create.sh
 ```
 
 Read the script before running it. It creates the VPC, two subnets in different AZs, an internet gateway, a route table, an ALB with a security group, a target group with an unreachable IP target, a fixed-response 503 default action, and VPC Flow Logs to a CloudWatch log group.

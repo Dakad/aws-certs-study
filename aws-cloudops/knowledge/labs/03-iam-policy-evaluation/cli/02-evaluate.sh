@@ -49,7 +49,7 @@ GUIDE
 echo
 echo "== Real call as the assumed role =="
 CREDS_FILE="$(mktemp)"
-if aws sts assume-role --role-arn "$ROLE_ARN" --query 'Credentials' --output json > "$CREDS_FILE" 2>/dev/null; then
+if aws sts assume-role --role-arn "$ROLE_ARN" --role-session-name soa-c03-lab03 --query 'Credentials' --output json > "$CREDS_FILE" 2>/dev/null; then
   export AWS_ACCESS_KEY_ID="$(jq -r '.AccessKeyId' "$CREDS_FILE")"
   export AWS_SECRET_ACCESS_KEY="$(jq -r '.SecretAccessKey' "$CREDS_FILE")"
   export AWS_SESSION_TOKEN="$(jq -r '.SessionToken' "$CREDS_FILE")"

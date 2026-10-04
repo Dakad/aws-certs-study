@@ -1,6 +1,7 @@
 # AWS CloudOps study progress
 
 **Last updated:** 2026-10-04  
+**Current playground study profile:** `sso-apptweakplayground-apptweakadmin` — `ApptweakAdmin`, region `eu-west-1`. The learner verified SSO login and caller identity on 2026-10-04. Use this profile for future study commands; keep mutations scoped to the agreed lab.
 **Overall:** Phase 0 diagnostic complete (23/25); Domain 4 access-control scenarios practiced. No timed practice-exam baseline or domain mastery has been established.
 
 This file is the current source of truth for learner progress. Update it after each session with observed evidence: what you attempted, what you explained correctly, what needs work, and whether you transferred the idea to a new scenario. A topic is not mastered because it was explained or a lab succeeded once.
@@ -65,6 +66,27 @@ Questions and “I don't know” responses are not mistakes by themselves. Verif
 | 2026-09-28–2026-10-03 | CloudWatch CPU alarm observation | An alarm was created on an existing EC2 workload before the exact command was shown. The original command was not saved. On 2026-10-03, the learner inspected its Console settings, history, and graph; history showed `INSUFFICIENT_DATA` → `OK`, while the reviewed CPU graph remained below 2% with no gaps. No new AWS change was made during the Console review. | Existing alarm is not a disposable lab resource. Do not edit, import, apply IaC to, or delete it. Use a separate disposable target for any future end-to-end IaC exercise. |
 
 ## Session log
+
+### 2026-10-04 — Lab 03 setup retry with ApptweakAdmin
+
+- **Commit:** Sealed the profile/progress updates and the one-line AssumeRole session-name fix in local commit `bc8754ea` (`Use ApptweakAdmin profile for study labs`). Not pushed.
+- **Preflight:** Re-verified `sso-apptweakplayground-apptweakadmin` uses the intended playground and `ApptweakAdmin`. Lab-prefixed role, managed-policy and instance-profile listings succeeded and were empty.
+- **Setup result:** Ran the reviewed existing creation script. Its first mutation, `iam:CreatePolicy` for `soa-c03-lab03-boundary`, returned `AccessDenied`: no identity-based policy allows that action. This is a setup-identity denial, not the intentional denial by the lab role, which was never created.
+- **Resource state:** Repeated all three lab-prefixed listings after the failure; all were empty. No lab resources were created, no cleanup mutation was required, and no SSO permissions were changed.
+- **Progress / next step:** Provisioning is blocked on authorized IAM management permissions. Evaluation, Console inspection and IaC remain unexecuted; Domain 4 stays Practiced, Phase 5 pending, and the scenario block complete (5/5, 0 remaining). Obtain scoped lab permissions through the account administrator or explicitly agree on an alternative environment/exercise before retrying.
+
+### 2026-10-04 — Playground study profile changed
+
+- **Learner action:** Configured `sso-apptweakplayground-apptweakadmin`, completed SSO login, and ran `sts get-caller-identity`. Shared output confirms `ApptweakAdmin` in the intended playground account. Account identifiers and authentication URLs are not retained here.
+- **Going forward:** Use the new profile for study commands. The previous `PlaygroundAdmin` profile remains unchanged; its earlier permission denials remain valid historical evidence.
+- **Next step:** Repeat Lab 03's read-only IAM preflight with the new profile. Successful login and identity verification do not establish its IAM inspection/management permissions or complete the lab. No new provisioning or policy-evaluation result is recorded; Domain 4 remains Practiced, Phase 5 pending, and the scenario block complete (5/5, 0 remaining).
+
+### 2026-10-04 — Lab 03: read-only preflight
+
+- **Observed:** Confirmed the configured playground profile's caller identity. No lab-prefixed roles were returned by `ListRoles`. `ListPolicies`, `ListInstanceProfiles`, and exact-name `GetPolicy`/`GetInstanceProfile` checks returned `AccessDenied`, stating that no identity-based policy allows those actions. Policy/profile existence is therefore unverified, not confirmed absent.
+- **Safety:** No AWS mutation or lab resource creation was attempted. The script change remains limited to the requested AssumeRole session-name argument; the separate simulator argument issue remains unresolved.
+- **Progress:** Preparation started; provisioning, policy evaluation, Console inspection, IaC and cleanup are not executed. Five scenarios remain complete (5/5, 0 remaining); Domain 4 remains Practiced and Phase 5 pending. This preflight adds no learner mastery evidence.
+- **Next step:** Confirm an authorized lab profile with the required IAM inspection and scoped management permissions before creation. Do not broaden permissions or switch accounts implicitly.
 
 ### 2026-10-04 — Domain 4: S3/KMS access-control scenarios
 

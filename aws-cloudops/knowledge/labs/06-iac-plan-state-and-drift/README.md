@@ -25,7 +25,7 @@ By the end you can:
 
 | Item | Note |
 |---|---|
-| Scope | Authorized playground (`sso-apptweakplayground-admin`) or personal account. Never shared/production. |
+| Scope | Authorized playground (`sso-apptweakplayground-apptweakadmin`) or personal account. Never shared/production. |
 | Identity | Confirm with `aws sts get-caller-identity` before first mutation; re-confirm if session fails. |
 | Resources | 2 SNS topics, 2 CloudWatch alarms, 1 S3 bucket (versioned, encrypted), 1 DynamoDB table (on-demand). |
 | CloudWatch/SNS | No charge. No metric data published; alarms never breach. |

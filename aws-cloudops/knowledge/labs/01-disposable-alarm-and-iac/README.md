@@ -24,7 +24,7 @@ By the end you can:
 
 | Item | Note |
 |---|---|
-| Scope | The authorized playground (`sso-apptweakplayground-admin`) or a personal account. Never a shared or production AppTweak account. |
+| Scope | The authorized playground (`sso-apptweakplayground-apptweakadmin`) or a personal account. Never a shared or production AppTweak account. |
 | Identity | Confirm with `aws sts get-caller-identity` before the first mutation and re-confirm if the session fails mid-lab. |
 | Instance | `t4g.micro`, Linux. On-demand in us-east-1 is roughly $0.0116/hour, so under $0.30/day. |
 | Storage | `gp3`, 1 GiB, deleted with the instance. |
@@ -51,7 +51,7 @@ Read the output aloud: which account, which identity ARN, which region. Everythi
 ### Step 1 — Create with the CLI
 
 ```bash
-AWS_PROFILE=sso-apptweakplayground-admin ./cli/01-create.sh
+AWS_PROFILE=sso-apptweakplayground-apptweakadmin ./cli/01-create.sh
 ```
 
 Before running it, read it. It resolves the current Amazon Linux 2023 AMI through the SSM public parameter rather than hardcoding an AMI ID, so it does not silently rot. It creates the SSM instance role, the instance, the SNS topic, and the alarm.
@@ -71,7 +71,7 @@ Record what the Console confirms and what it leaves ambiguous. "No actions" on t
 
 ```bash
 cd tofu
-export AWS_PROFILE=sso-apptweakplayground-admin
+export AWS_PROFILE=sso-apptweakplayground-apptweakadmin
 tofu init
 tofu plan -out=tfplan.out
 ```

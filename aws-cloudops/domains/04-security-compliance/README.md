@@ -49,7 +49,24 @@ IAM roles and policies constrain provisioning and operational automation (see [D
 - Questions/practice evidence (2026-10-03): 4/4. Correctly applied explicit-deny precedence, the `AccessDenied` investigation sequence, Secrets Manager for runtime secrets, and CloudTrail for AWS API audit history.
 - Explicit-deny evaluation (2026-10-03): Correctly concluded that an SCP explicit deny of `s3:GetObject` on `*` overrides an EC2 role identity-policy allow for `reports/*`. This supports the baseline finding; continue with permissions boundaries and resource-policy interactions.
 - Permissions-boundary evaluation (2026-10-03): Correctly concluded that a boundary allowing only `s3:GetObject` blocks an identity-policy `s3:PutObject` allow. Future Domain 4 practice should use operational, multi-control scenarios rather than single-rule recall.
-- Next action: Read-only review of [Lab 03](../../knowledge/labs/03-iam-policy-evaluation/README.md) policies and cleanup scripts before creation. During the lab, state expected positive, negative, and regression outcomes before running tests.
+- Next action: Obtain authorized scoped IAM management permissions for [Lab 03](../../knowledge/labs/03-iam-policy-evaluation/README.md), or explicitly agree on an alternative environment/exercise. The new profile permits the tested listings but denied `iam:CreatePolicy`. During the lab, state expected positive, negative, and regression outcomes before running tests.
+
+#### 2026-10-04 — Lab 03 setup retry
+
+- Re-verified the new playground `ApptweakAdmin` identity. All three lab-prefixed IAM listings succeeded and were empty before setup.
+- The existing creation script failed on its first write: `iam:CreatePolicy` for `soa-c03-lab03-boundary`, because no identity-based policy allows the action. This is the caller's provisioning permission failure, not a denial from a lab role or boundary already in place.
+- Post-failure listings confirmed no lab roles, policies or instance profiles. No lab resources were created and no SSO permissions were changed. Policy evaluation remains unexecuted; Domain 4 stays Practiced and Phase 5 pending. These are assistant-observed operational results, not new learner mastery evidence.
+
+#### 2026-10-04 — New study profile verified by the learner
+
+- Configured `sso-apptweakplayground-apptweakadmin` and shared successful SSO login and STS identity output confirming `ApptweakAdmin` in the intended playground account. This is the study profile to use going forward; the previous profile remains unchanged.
+- Identity is verified; IAM permissions still need read-only checks. No lab resource creation or policy evaluation is inferred from the login. Domain 4 remains Practiced and Phase 5 pending; the five-scenario block remains complete.
+
+#### 2026-10-04 — Lab 03 preflight
+
+- Confirmed playground caller identity; no lab-prefixed roles appeared in `ListRoles`. Policy/profile listing and exact-name inspection returned `AccessDenied` because the corresponding identity-policy allows were missing. Their existence remains unverified.
+- No AWS resources were created or changed. Preparation started, but hands-on policy evaluation has not run; Domain 4 remains Practiced and Phase 5 pending. The requested session-name fix is in place; the separate simulator argument issue remains unresolved.
+- Resume after an authorized lab profile with sufficient scoped IAM permissions is confirmed. This is operational preflight evidence, not a learner assessment or lab completion.
 
 #### 2026-10-04 — S3/KMS access-control block
 
