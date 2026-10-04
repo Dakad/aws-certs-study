@@ -32,3 +32,6 @@ override.tf.json
 
 # Local OS/editor files.
 .DS_Store
+
+# Python bytecode generated while validating local tools.
+__pycache__/
