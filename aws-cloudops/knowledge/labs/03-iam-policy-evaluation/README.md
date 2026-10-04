@@ -3,7 +3,7 @@
 **Exam domain:** [4. Security and Compliance](../../../domains/04-security-compliance/README.md) (16%)
 **Task guides:** [4.1 Security and compliance tools](../../../domains/04-security-compliance/01-task-4-1-security-compliance-tools.md), [4.2 Data and infrastructure protection](../../../domains/04-security-compliance/02-task-4-2-data-infrastructure-protection.md)
 **Knowledge nodes:** [AWS IAM](../../services/iam/README.md), [AWS Organizations and SCPs](../../services/organizations/README.md)
-**Status:** Not yet run
+**Status:** IAM-only evaluation, learner Console inspection and exact-target cleanup verified on 2026-10-04 using `personal-cloudops-lab` in `eu-north-1`; all four IAM resources absent. Identity-denial, boundary-denial, successful bucket-list and restored scoped-boundary configurations were tested. Controlled model isolates the boundary restriction; live SSM has a separate Organizations restriction. Original denied-baseline principal simulation and IaC recreation were not performed; supplemental KMS exercise deferred, no KMS resources created. See [evidence and cleanup](EVIDENCE.md).
 
 ## Why this lab exists
 

@@ -37,7 +37,7 @@ Rows are ordered by window, not by phase number; phase numbers stay stable so th
 | Phase | Focus / domain | Depends on | Window | Exit gate (summary) | Status |
 |---|---|---|---|---|---|
 | 0 | Foundation and baseline — all domains | — | Oct 3 | Objectives, lab guardrails, identity/region habits, and diagnostic baseline recorded. | ☑ done |
-| 5 | Security and compliance — [Domain 4](aws-cloudops/domains/04-security-compliance/README.md) | 0 | Oct 4; reinforce Oct 22–25 | Explain an effective access decision, least-privilege correction, and verification. | ☐ pending |
+| 5 | Security and compliance — [Domain 4](aws-cloudops/domains/04-security-compliance/README.md) | 0 | Oct 4; reinforce Oct 22–25 | Explain an effective access decision, least-privilege correction, and verification. | ☑ done (Oct 4; reinforcement remains) |
 | 1 | Monitoring and investigation — [Domain 1](aws-cloudops/domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) | 0 | Oct 5–6, live AWS; reinforce Oct 16–18 | Independently explain an alarm evaluation and diagnose a fresh symptom from evidence. | ☐ pending |
 | 3 | Deployment and automation — [Domain 3](aws-cloudops/domains/03-deployment-provisioning-automation/README.md) | 0; Phase 1 pattern is useful | Oct 7–8, live AWS | Complete a scoped CLI → Console → OpenTofu loop and explain plan, state, and cleanup. | ☐ pending |
 | 2 | Reliability and recovery — [Domain 2](aws-cloudops/domains/02-reliability-business-continuity/README.md) | 0 | Oct 9–10; reinforce Oct 16–18 | Choose a recovery design for explicit RTO/RPO needs and explain restore verification. | ☐ pending |
