@@ -7,7 +7,7 @@ This is a lightweight, Markdown-first knowledge graph: pages are the nodes; labe
 | Layer | What belongs here |
 |---|---|
 | [Services](services/README.md) | Canonical page for one AWS service and its operational behavior |
-| [Concepts](#services-and-concepts) | Cross-service principles and distinctions |
+| [Concepts](concepts/README.md) | Cross-service principles and distinctions |
 | [Relationships](relationships/README.md) | Explicit behavior or dependency between two or more nodes |
 | [Scenarios](scenarios/README.md) | Original questions that test reasoning across linked nodes |
 | [Labs](labs/README.md) | Hands-on work that observes or changes real AWS resources |
@@ -37,6 +37,7 @@ knowledge/
 │   └── 13-security-identity-compliance/
 │       └── 01-iam/                         # imported upstream service notes
 ├── concepts/
+│   ├── README.md
 │   ├── 01-networking/
 │   │   ├── 01-ip-addressing/               # imported upstream concept notes
 │   │   ├── 02-ipv4-ipv6/
