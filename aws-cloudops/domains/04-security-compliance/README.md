@@ -15,15 +15,15 @@ Apply and troubleshoot access controls, meet policy/compliance requirements, and
 | **4.1 — Implement and manage security and compliance tools and policies** | IAM features, access auditing, multi-account controls, Trusted Advisor security checks, and continuous compliance monitoring. | [Security and compliance tools](01-task-4-1-security-compliance-tools.md) |
 | **4.2 — Implement strategies to protect data and infrastructure** | Data classification, encryption at rest/in transit, secret storage, and findings from security services such as Security Hub, GuardDuty, Config, and Inspector. | [Data and infrastructure protection](02-task-4-2-data-infrastructure-protection.md) |
 
-Use the [Domain 4 contexts index](contexts/README.md) for reusable scenarios and the existing [IAM canonical notes](../../knowledge/services/13-security-identity-compliance/01-iam/README.md) for service detail. The task guides provide practice and checks; learner results remain in the progress notes below and [`PROGRESS.md`](../../../PROGRESS.md).
+Use the [Domain 4 contexts index](contexts/README.md) for reusable scenarios, the graph-native [AWS IAM node](../../knowledge/services/iam/README.md), and the existing [imported IAM notes](../../knowledge/services/13-security-identity-compliance/01-iam/README.md) for additional service detail. The task guides provide practice and checks; learner results remain in the progress notes below and [`PROGRESS.md`](../../../PROGRESS.md).
 
 ## Services
 
 The service list follows the [official Domain 4 objectives](https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain4.html); examples are exam-scope coverage, not an exhaustive AWS catalog.
 
-- **Identity and governance:** AWS Identity and Access Management (IAM), AWS CloudTrail, IAM Access Analyzer, IAM policy simulator, AWS Organizations and service control policies (SCPs), IAM Identity Center, and AWS Trusted Advisor.
-- **Compliance and findings:** AWS Config (including conformance packs), AWS Security Hub, Amazon GuardDuty, Amazon Inspector, and AWS Security Agent.
-- **Data and infrastructure protection:** AWS Key Management Service (AWS KMS), AWS Certificate Manager (ACM), and AWS secret-storage services such as AWS Secrets Manager and Systems Manager Parameter Store.
+- **Identity and governance:** [AWS Identity and Access Management (IAM)](../../knowledge/services/iam/README.md), [AWS CloudTrail](../../knowledge/services/cloudtrail/README.md), [IAM Access Analyzer](../../knowledge/services/access-analyzer/README.md), IAM policy simulator, [AWS Organizations and service control policies (SCPs)](../../knowledge/services/organizations/README.md), IAM Identity Center, and AWS Trusted Advisor.
+- **Compliance and findings:** [AWS Config](../../knowledge/services/config/README.md) (including conformance packs), [AWS Security Hub](../../knowledge/services/securityhub/README.md), [Amazon GuardDuty](../../knowledge/services/guardduty/README.md), [Amazon Inspector](../../knowledge/services/inspector/README.md), and AWS Security Agent.
+- **Data and infrastructure protection:** [AWS Key Management Service (AWS KMS)](../../knowledge/services/kms/README.md), AWS Certificate Manager (ACM), and AWS secret-storage services such as [AWS Secrets Manager](../../knowledge/services/secretsmanager/README.md) and Systems Manager Parameter Store.
 
 ### Cross-service impacts
 

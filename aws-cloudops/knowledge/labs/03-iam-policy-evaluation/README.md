@@ -2,6 +2,7 @@
 
 **Exam domain:** [4. Security and Compliance](../../../domains/04-security-compliance/README.md) (16%)
 **Task guides:** [4.1 Security and compliance tools](../../../domains/04-security-compliance/01-task-4-1-security-compliance-tools.md), [4.2 Data and infrastructure protection](../../../domains/04-security-compliance/02-task-4-2-data-infrastructure-protection.md)
+**Knowledge nodes:** [AWS IAM](../../services/iam/README.md), [AWS Organizations and SCPs](../../services/organizations/README.md)
 **Status:** Not yet run
 
 ## Why this lab exists

@@ -8,11 +8,23 @@ Use [`../templates/topic.md`](../templates/topic.md) with `kind: service`. Map e
 
 - [CloudWatch](cloudwatch/README.md) — Domain 1
 - [CloudTrail](cloudtrail/README.md) — Domains 1 and 4
+- [Amazon EC2](ec2/README.md) — Domains 1, 2, and 3
+- [Elastic Load Balancing](elb/README.md) — Domains 1, 2, and 5
+- [Amazon EventBridge](eventbridge/README.md) — Domains 1 and 3
+- [Amazon S3](s3/README.md) — Domains 1, 2, and 3
+- [Amazon RDS](rds/README.md) — Domains 1 and 2
+- [AWS Lambda](lambda/README.md) — Domains 1 and 3
+- [Amazon SNS](sns/README.md) — Domain 1
+- [AWS Systems Manager Automation](ssm-automation/README.md) — Domains 1 and 3
 - [IAM Access Analyzer](access-analyzer/README.md) — Domain 4
 - [AWS Organizations and SCPs](organizations/README.md) — Domain 4
 - [AWS KMS](kms/README.md) — Domain 4
 - [AWS Secrets Manager](secretsmanager/README.md) — Domain 4
 - [AWS Security Hub](securityhub/README.md) — Domain 4
+- [AWS IAM](iam/README.md) — Domain 4
+- [AWS Config](config/README.md) — Domain 4
+- [Amazon GuardDuty](guardduty/README.md) — Domain 4
+- [Amazon Inspector](inspector/README.md) — Domain 4
 
 ## Imported IAM study notes
 

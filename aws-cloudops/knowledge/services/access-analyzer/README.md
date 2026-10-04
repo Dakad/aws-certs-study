@@ -72,6 +72,12 @@ IAM Access Analyzer uses automated reasoning to identify external access to supp
 
 - [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) - Task 4.1 (access auditing, least-privilege validation)
 
+## Related nodes
+
+- [AWS IAM](../iam/README.md) — secured-by
+- [AWS Organizations and SCPs](../organizations/README.md) — integrates-with
+- [CloudTrail](../cloudtrail/README.md) — integrates-with
+
 ## Must-remember numbers
 
 | Figure | Value |

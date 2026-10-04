@@ -117,6 +117,14 @@ AWS Secrets Manager centrally stores, manages, and rotates secrets (database cre
   - Auditing: CloudTrail logs (`GetSecretValue`, `RotateSecret`, `PutResourcePolicy`)
   - DR: Cross-region replication, promote replica
 
+## Related nodes
+
+- [AWS KMS](../kms/README.md) — encrypts-with
+- [AWS IAM](../iam/README.md) — secured-by
+- [AWS Lambda](../lambda/README.md) — integrates-with
+- [Amazon RDS](../rds/README.md) — integrates-with
+- [CloudTrail](../cloudtrail/README.md) — audited-by
+
 ## Must-remember numbers
 
 | Figure | Value |

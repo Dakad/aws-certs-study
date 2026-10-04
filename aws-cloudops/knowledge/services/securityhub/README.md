@@ -96,6 +96,16 @@ Controls can have multiple findings. Their overall status is derived from the ap
 
 - **[Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md)** - Task 4.1 (Implement compliance monitoring and security tools)
 
+## Related nodes
+
+- [AWS Config](../config/README.md) — aggregates-findings-from
+- [Amazon GuardDuty](../guardduty/README.md) — aggregates-findings-from
+- [Amazon Inspector](../inspector/README.md) — aggregates-findings-from
+- [IAM Access Analyzer](../access-analyzer/README.md) — aggregates-findings-from
+- [AWS Organizations and SCPs](../organizations/README.md) — integrates-with
+- [CloudTrail](../cloudtrail/README.md) — integrates-with
+- [AWS IAM](../iam/README.md) — integrates-with
+
 ## Must-remember numbers
 
 | Figure | Value |
