@@ -118,14 +118,6 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 
 - [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) — Task 4.2 (Data protection: encryption at rest/in transit, key management, KMS)
 
-## Related nodes
-
-- [AWS IAM](../iam/README.md) — secured-by
-- [AWS Secrets Manager](../secretsmanager/README.md) — encrypts-for
-- [Amazon S3](../s3/README.md) — encrypts-for
-- [Amazon RDS](../rds/README.md) — encrypts-for
-- [CloudTrail](../cloudtrail/README.md) — audited-by
-
 ## Must-remember numbers
 
 | Figure | Value |

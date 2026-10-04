@@ -143,18 +143,6 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
   - Task 1.2: Identify and remediate issues (Skills 1.2.1–1.2.3)
   - Task 1.3: Performance optimization (Skills 1.3.1–1.3.6)
 
-## Related nodes
-
-- [Amazon EC2](../ec2/README.md) — collects-metrics-from
-- [Amazon S3](../s3/README.md) — collects-metrics-from
-- [Amazon RDS](../rds/README.md) — collects-metrics-from
-- [AWS Lambda](../lambda/README.md) — collects-metrics-from
-- [Elastic Load Balancing](../elb/README.md) — collects-metrics-from
-- [Amazon EventBridge](../eventbridge/README.md) — integrates-with
-- [AWS Systems Manager Automation](../ssm-automation/README.md) — automated-by
-- [Amazon SNS](../sns/README.md) — notifies-via
-- [CloudTrail](../cloudtrail/README.md) — integrates-with
-
 ## Must-remember numbers
 
 | Figure | Value | Context |

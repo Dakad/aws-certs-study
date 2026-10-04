@@ -105,13 +105,6 @@ Authorization is request- and principal-dependent. IAM determines which identity
 
 - [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) - Task 4.1 (multi-account controls, SCPs, access auditing)
 
-## Related nodes
-
-- [AWS IAM](../iam/README.md) — secured-by
-- [CloudTrail](../cloudtrail/README.md) — integrates-with
-- [IAM Access Analyzer](../access-analyzer/README.md) — integrates-with
-- [AWS Config](../config/README.md) — integrates-with
-
 ## Must-remember numbers
 
 | Figure | Value |

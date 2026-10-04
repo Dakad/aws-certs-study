@@ -124,17 +124,6 @@ CloudTrail records AWS API calls and account activity as events for governance, 
 - [Domain 1: Monitoring, Logging, Analysis, Remediation](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md) — Task 1.1 (audit logging)
 - [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) — Task 4.1 (access auditing, CloudTrail evidence)
 
-## Related nodes
-
-- [CloudWatch](../cloudwatch/README.md) — integrates-with
-- [Amazon S3](../s3/README.md) — integrates-with
-- [Amazon SNS](../sns/README.md) — integrates-with
-- [AWS KMS](../kms/README.md) — secured-by
-- [AWS Config](../config/README.md) — audited-by
-- [AWS Organizations and SCPs](../organizations/README.md) — integrates-with
-- [AWS Security Hub](../securityhub/README.md) — integrates-with
-- [Amazon GuardDuty](../guardduty/README.md) — integrates-with
-
 ## Must-remember numbers
 
 | Figure | Value |
