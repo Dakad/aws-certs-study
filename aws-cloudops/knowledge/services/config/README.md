@@ -33,8 +33,11 @@ AWS Config records supported resource configurations and relationships over time
 ## Common confusion
 
 - **Common mistake** — AWS Config replaces CloudTrail for change investigation.
-- **Actual AWS behavior** — Config records resource configuration and compliance history; CloudTrail records management events that identify the API activity behind a change.
-- **Why it matters** — Start with Config to establish the changed state, then use CloudTrail when the investigation needs the actor and API call.
+- **Actual AWS behavior** — Config records resource configuration and compliance history, while CloudTrail records management events that identify the API activity behind a change. [What Is AWS Config?](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html) [Working with CloudTrail event history](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html)
+- **Why it matters** — Domain 4 Task 4.1 change investigations start with Config to establish the changed state, then use CloudTrail when the actor and API call are required.
+
+> [!IMPORTANT]
+> **Configuration history versus API audit history** determines the correct investigation service. For SOA-C03 Domain 4, using Config when the question requires the actor or API call risks an incomplete change investigation.
 
 ## Exam mapping
 

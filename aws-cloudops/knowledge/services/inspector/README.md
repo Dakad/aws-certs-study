@@ -31,8 +31,11 @@ Amazon Inspector is a vulnerability-management service that discovers eligible E
 ## Common confusion
 
 - **Common mistake** — Amazon Inspector is only an EC2 vulnerability scanner.
-- **Actual AWS behavior** — Inspector scans EC2 instances, ECR images, and Lambda functions, with separate scan types and resource-specific behavior.
+- **Actual AWS behavior** — Inspector has separate scan types for EC2 instances, ECR images, and Lambda functions, with resource-specific behavior. [Automated scan types in Amazon Inspector](https://docs.aws.amazon.com/inspector/latest/user/scanning-resources.html)
 - **Why it matters** — Domain 4 finding scenarios require selecting the service scope that matches the affected workload.
+
+> [!IMPORTANT]
+> **Amazon Inspector scan scope** includes EC2, ECR, and Lambda through separate scan types. For SOA-C03 Domain 4, treating Inspector as EC2-only risks missing the service that produces findings for a container image or Lambda function.
 
 ## Exam mapping
 

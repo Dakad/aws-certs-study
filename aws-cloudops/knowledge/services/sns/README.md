@@ -33,7 +33,12 @@ Amazon Simple Notification Service (Amazon SNS) is a managed publisher-to-subscr
 
 ## Common confusion
 
-- Publishing to an SNS topic is not proof that every endpoint received the message. Confirm delivery and failure metrics for the topic, and account for subscriptions filtered out by policy.
+- **Common mistake** — A successful publish to an SNS topic proves that every subscribed endpoint received the message.
+- **Actual AWS behavior** — SNS reports successful deliveries, failed deliveries, and messages rejected by subscription filter policies as separate CloudWatch metrics; filtered messages are not delivery failures. [Monitoring Amazon SNS topics using CloudWatch](https://docs.aws.amazon.com/sns/latest/dg/sns-monitoring-using-cloudwatch.html)
+- **Why it matters** — Domain 1 Task 1.1 requires troubleshooting CloudWatch alarm notifications sent through SNS; the delivery and filtering metrics distinguish a failed notification from an intentionally rejected subscription.
+
+> [!IMPORTANT]
+> **SNS publish versus endpoint delivery** is a separate distinction. For SOA-C03 Domain 1 notification troubleshooting, assuming publish success means endpoint receipt risks diagnosing a filter-policy rejection as a CloudWatch or SNS delivery failure.
 
 ## Exam mapping
 

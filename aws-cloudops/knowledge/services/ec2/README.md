@@ -38,8 +38,12 @@ Amazon EC2 provides virtual compute capacity as instances. Its resource model in
 
 ## Common confusion
 
-- EC2 status checks prove the application is healthy -> They establish only the scope of the corresponding EC2 check; application checks are separate and opt-in.
-- An AMI or instance can be used without considering location -> AMIs are Regional and instances are Availability Zone-specific.
+- **Common mistake** — Passing EC2-managed status checks proves that the application is healthy.
+- **Actual AWS behavior** — System, instance, and attached-EBS checks run automatically, but application status checks are opt-in HTTP or HTTPS checks that you configure and associate with an instance. [Status checks for Amazon EC2 instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-system-instance-status-check.html)
+- **Why it matters** — [Domain 1](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md), Task 1.3, Skill 1.3.6 maps EC2 monitoring and associated storage/networking optimization.
+
+> [!IMPORTANT]
+> **EC2 status checks versus application health:** For SOA-C03, distinguish infrastructure and guest checks from an application-level HTTP/HTTPS check; treating a passing EC2 status check as endpoint health can lead to the incorrect conclusion that an unavailable application needs no investigation.
 
 ## Exam mapping
 

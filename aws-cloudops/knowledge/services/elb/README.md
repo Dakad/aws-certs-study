@@ -42,8 +42,16 @@ Elastic Load Balancing distributes incoming traffic across registered targets an
 
 ## Common confusion
 
-- ALB and NLB differ only by performance -> ALB performs Layer 7 request routing; NLB performs Layer 4 connection and flow routing.
-- A target-group health check replaces Auto Scaling -> Health checks affect routing. Replacing capacity requires a separately configured mechanism.
+- **Common mistake** — ALB and NLB differ only by performance characteristics.
+- **Actual AWS behavior** — An ALB performs Layer 7 request routing using listener rules, while an NLB routes Layer 4 connections and flows. See [What is an Application Load Balancer?](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) and [What is a Network Load Balancer?](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html).
+- **Why it matters** — Domain 5 Task 5.3 troubleshooting and Domain 2 Task 2.2 availability decisions start with choosing the load balancer that can inspect the required traffic information.
+
+- **Common mistake** — A target-group health check replaces unhealthy capacity automatically.
+- **Actual AWS behavior** — Target-group health checks control routing eligibility; replacement capacity requires a separately configured mechanism such as an Auto Scaling group. See [What is an Application Load Balancer?](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
+- **Why it matters** — Domain 2 Task 2.2 requires separating ELB health-based routing from the capacity mechanism needed to restore availability.
+
+> [!IMPORTANT]
+> **Concept: target-group health checks versus capacity replacement.** For SOA-C03 availability decisions, ELB health checks decide where traffic is routed, not whether a replacement target is created. Treating an unhealthy-target signal as automatic recovery can leave a workload without healthy capacity. See [What is Elastic Load Balancing?](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html).
 
 ## Exam mapping
 

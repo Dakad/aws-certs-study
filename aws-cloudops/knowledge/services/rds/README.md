@@ -38,8 +38,12 @@ Amazon RDS is a managed relational-database service that manages common administ
 
 ## Common confusion
 
-- Multi-AZ is a read-scaling feature -> A Multi-AZ DB instance standby provides failover support and does not serve read traffic.
-- A read replica provides synchronous failover -> DB instance read replicas use asynchronous replication and can be stale.
+- **Common mistake** — Enabling Multi-AZ on an RDS DB instance adds a reader for read scaling.
+- **Actual AWS behavior** — A Multi-AZ DB instance deployment has one standby that provides failover support but does not serve read traffic; reader instances are a characteristic of a Multi-AZ DB cluster deployment. [Configuring and managing a Multi-AZ deployment for Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
+- **Why it matters** — [Domain 2](../../../domains/02-reliability-business-continuity/README.md), Task 2.2 tests choosing Multi-AZ for high availability rather than read-demand scaling.
+
+> [!IMPORTANT]
+> **RDS Multi-AZ DB instance versus read scaling:** For SOA-C03, a DB-instance standby is a failover mechanism, not a read endpoint; choosing it to solve read pressure risks an incorrect architecture and leaves the performance requirement unmet.
 
 ## Exam mapping
 

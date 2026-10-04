@@ -31,8 +31,11 @@ IAM controls authentication and authorization for AWS requests. It defines princ
 ## Common confusion
 
 - **Common mistake** — An identity-policy `Allow` is sufficient for access.
-- **Actual AWS behavior** — Explicit denies override allows, and permissions boundaries plus applicable organization policies can limit a principal's permissions.
+- **Actual AWS behavior** — Explicit denies override allows, and permissions boundaries plus applicable organization policies can limit a principal's permissions. [IAM policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html)
 - **Why it matters** — Domain 4 access investigations require locating the effective permission boundary rather than adding broader permissions.
+
+> [!IMPORTANT]
+> **Effective IAM permissions** are constrained by explicit denies, permissions boundaries, and applicable organization policies. For SOA-C03 Domain 4, treating an identity-policy allow as decisive risks granting broader access while leaving the actual denial unresolved.
 
 ## Exam mapping
 

@@ -36,7 +36,12 @@ Amazon EventBridge is a serverless event service for connecting producers and co
 
 ## Common confusion
 
-- EventBridge is not merely a notification topic: it selects and routes structured events by rule. Use Amazon SNS when the requirement is publisher-to-subscriber notification fanout rather than event-pattern routing.
+- **Common mistake** — EventBridge is just a notification topic, so it is interchangeable with Amazon SNS.
+- **Actual AWS behavior** — An EventBridge rule matches event data against an event pattern and sends matching events to its configured targets; use SNS when the requirement is publisher-to-subscriber notification fanout rather than event-pattern routing. [Rules in Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html)
+- **Why it matters** — Domain 1 Task 1.2 requires selecting the service that routes, enriches, delivers, and troubleshoots events and event bus rules.
+
+> [!IMPORTANT]
+> **EventBridge rule matching** decides whether an event reaches a target. For SOA-C03 Domain 1 event-routing questions, treating it as SNS fanout risks choosing a design that cannot filter structured events by an event pattern.
 
 ## Exam mapping
 

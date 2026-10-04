@@ -63,7 +63,7 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 - Missing data treatment is configurable: `missing` (default), `notBreaching`, `breaching`, `ignore`.
 - Evaluation range: CloudWatch retrieves more datapoints than Evaluation Periods (wider window) to handle missing data; exact count depends on period and resolution.
 - Standard-resolution metrics have one-minute granularity. Five-minute intervals are service-specific publishing cadences, such as EC2 basic monitoring.
-- High-resolution custom metric data is retained for 3 hours; data at 1-minute resolution for 15 days, 5-minute resolution for 63 days, and 1-hour resolution for 455 days.
+- High-resolution custom metric data is retained for 3 hours; data at 1-minute resolution for 15 days, 5-minute resolution for 63 days, and 1-hour resolution for 455 days. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html).
 
 ## Alarm configuration (must-know fields)
 
@@ -123,18 +123,25 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 | EventBridge event | All alarms | Emitted on every state change; enables custom routing |
 
 > [!IMPORTANT]
-> EC2 actions (stop/terminate/reboot/recover) **only work on alarms watching EC2 metrics** (`AWS/EC2` namespace). They do not work on custom metrics or other service metrics.
+> **Concept: EC2 alarm actions.** For SOA-C03 remediation selection, stop, terminate, reboot, and recover actions work only on metric alarms that watch `AWS/EC2` metrics. Choosing one for a custom or other-service metric leaves the intended remediation unable to run. See [CloudWatch Alarm Actions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-actions.html).
 
 ## Common confusion
 
-- **"No actions" on an alarm** → This is an action-configuration label, not the alarm's state reason. The alarm still evaluates and changes state; it simply has no configured SNS/Lambda/EC2/ASG action to fire on transition.
-- **Missing data vs. non-breaching data** → A valid low datapoint (e.g., 78% on a >=80% threshold) is *not* missing data. With M-of-N, if enough real datapoints exist to fill the evaluation window, the missing-data treatment is ignored entirely.
-- **INSUFFICIENT_DATA at creation** → Normal behavior ("Initial alarm creation"); transitions to OK/ALARM once enough datapoints are available.
-- **Premature ALARM transitions** → CloudWatch avoids false alarms when the oldest breaching datapoint in the evaluation range is at least as old as M (Datapoints to Alarm) and all newer points are breaching or missing — even if total points < M.
-- **Alarm period vs. metric resolution** → A 10-second alarm period requires high-resolution data; it does not resample a one-minute datapoint.
-- **Composite alarm vs. metric math alarm** → Composite = boolean logic (AND/OR/NOT) over *other alarms*; metric math = single alarm evaluating an expression (e.g., `m1/m2 * 100`). Composite reduces action noise.
-- **Anomaly detection bands** → Use `LessThanLowerOrGreaterThanUpperThreshold` operator; model trains on up to 2 weeks of data; not suitable for sparse or highly seasonal metrics without tuning.
-- **Cross-account dashboards** → Requires CloudWatch cross-account observability enabled; source accounts share metrics/logs with monitoring account via sink.
+- **Common mistake** — “No actions” means the alarm is not evaluating, or it explains the alarm state.
+- **Actual AWS behavior** — “No actions” only means that no action ARN is configured; the alarm still evaluates and changes state, but nothing fires on a transition. See [CloudWatch Alarm Actions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-actions.html).
+- **Why it matters** — Domain 1 Task 1.1 requires selecting and interpreting alarm configuration without confusing notification/remediation setup with the monitored condition.
+
+- **Common mistake** — A valid non-breaching datapoint is missing data, so missing-data treatment decides the result.
+- **Actual AWS behavior** — A datapoint below a `>=` threshold is present and non-breaching; when enough real datapoints fill the M-of-N evaluation window, CloudWatch does not apply missing-data treatment. See [CloudWatch Missing Data Treatment](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html).
+- **Why it matters** — Domain 1 Task 1.1 alarm-state questions depend on counting breaching datapoints correctly; treating a valid low value as missing can produce the wrong `OK`, `ALARM`, or `INSUFFICIENT_DATA` conclusion.
+
+- **Common mistake** — A short alarm period makes standard-resolution metrics more granular.
+- **Actual AWS behavior** — A 10-second alarm period requires high-resolution metric data; it does not resample a one-minute datapoint. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html).
+- **Why it matters** — Domain 1 Task 1.1 requires an alarm period that matches the available metric resolution, or the alarm cannot provide the intended detection speed.
+
+- **Common mistake** — Composite alarms and metric-math alarms are interchangeable ways to combine metrics.
+- **Actual AWS behavior** — A composite alarm applies boolean logic to other alarms, while a metric-math alarm evaluates an expression; composite alarms can suppress action noise. See [Composite Alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/composite-alarms.html).
+- **Why it matters** — Domain 1 Task 1.2 scenarios distinguish a calculated operational threshold from alarm-level gating of notifications or remediation.
 
 ## Exam mapping
 
@@ -145,14 +152,22 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 
 ## Must-remember numbers
 
-| Figure | Value | Context |
-|--------|-------|---------|
-| Max metric retention | 15 months | Downsampled over time |
-| Max alarm evaluation periods | 1,000 | For high-res alarms |
-| Max metrics per GetMetricData | 500 | Per call |
-| Max dashboards per account | 500 | Soft limit |
-| Max log groups per account | 1,000,000 | |
-| Max metric filters per log group | 100 | |
-| `PutMetricData` request rate | 500 requests/second | Per account/Region; adjustable |
-| Anomaly detection training window | Up to 2 weeks | |
-| Alarm history retention | 14 days | |
+| Figure | Value | SOA-C03 decision and source |
+|--------|-------|------------------------------|
+| Standard-resolution metric granularity | 1 minute | Select an alarm period that the metric can support. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html). |
+| High-resolution custom metric granularity | 1 second | Required when the scenario needs a 10-second alarm period. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html). |
+
+## Good to know
+
+| Figure | Value | Operational context and source |
+|--------|-------|--------------------------------|
+| Metric retention | 15 months | Metrics are downsampled over time. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html). |
+| High-resolution custom metric retention | 3 hours | One-minute data is retained for 15 days, five-minute data for 63 days, and one-hour data for 455 days. See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html). |
+| Maximum alarm evaluation periods | 1,000 | Applies to high-resolution alarms. See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| Maximum metrics per `GetMetricData` call | 500 | Per call. See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| Maximum dashboards per account | 500 | Soft limit. See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| Maximum log groups per account | 1,000,000 | See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| Maximum metric filters per log group | 100 | See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| `PutMetricData` request rate | 500 requests/second | Per account and Region; adjustable. See [CloudWatch Service Quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html). |
+| Anomaly detection training window | Up to 2 weeks | See [CloudWatch metrics concepts and retention](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html). |
+| Alarm history retention | 14 days | See [CloudWatch Alarm Actions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-actions.html). |

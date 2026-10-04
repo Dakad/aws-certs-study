@@ -44,6 +44,9 @@ last_verified: 2026-10-04
 
 AWS Security Hub provides a centralized view of security posture across AWS accounts and Regions. It aggregates, normalizes, and prioritizes findings from AWS services and partner tools into the AWS Security Finding Format (ASFF), supports continuous compliance checks against standards, and can send findings to EventBridge for automated response.
 
+> [!IMPORTANT]
+> **Security Hub aggregates and tracks findings; it does not remediate their underlying causes.** For SOA-C03 Domain 4 findings decisions, use Security Hub to prioritize and route evidence, then remediate with the responsible service or automation; treating a workflow update as a fix leaves the issue unresolved.
+
 ## Behavior and boundaries
 
 - **Finding aggregation**: Collects findings from Config (config rules), GuardDuty (threat detection), Inspector (vulnerability scans), IAM Access Analyzer (external access), Firewall Manager (policy compliance), and integrated partner products
@@ -84,13 +87,29 @@ Controls can have multiple findings. Their overall status is derived from the ap
 
 ## Common confusion
 
-- **Security Hub != GuardDuty/Inspector**: Security Hub *aggregates* findings from these services; it does not perform threat detection or vulnerability scanning itself.
-- **Control status != finding workflow**: Control status summarizes compliance findings; `Workflow.Status` tracks investigation work on one finding.
-- **`RESOLVED` != `ARCHIVED`**: A workflow resolution does not change a finding's `RecordState` to `ARCHIVED`.
-- **Suppression != remediation**: A suppressed finding remains a finding; suppression is not a fix to the underlying issue.
-- **Cross-Region aggregation is per account**: It can be configured for standalone accounts as well as administered accounts, and only enabled linked Regions contribute data.
-- **Finding format is ASFF**: Original service finding formats (GuardDuty, Inspector) are transformed. Query/automate against ASFF fields, not source-specific fields.
-- **Security Hub does not enforce remediation**: It detects and prioritizes; remediation is separate (Systems Manager, Lambda, manual).
+**Common mistake** — Security Hub performs the threat detection and vulnerability scanning that created its GuardDuty or Inspector findings.
+
+**Actual AWS behavior** — Security Hub receives findings from controls, integrated AWS services, partner products, and custom integrations, then normalizes them to ASFF; the source service performs its own detection or assessment. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html)
+
+**Why it matters** — Domain 4 Task 4.1 requires selecting the source security service to investigate or configure, while using Security Hub as the centralized findings view.
+
+**Common mistake** — Changing `Workflow.Status` to `RESOLVED` archives a finding or prevents another finding for the same issue.
+
+**Actual AWS behavior** — Workflow status tracks an individual investigation and does not affect generation of new findings; `RecordState` is a separate active-or-archived field. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/findings-workflow-status.html)
+
+**Why it matters** — Domain 4 Task 4.1 requires distinguishing investigation progress from evidence retention and remediation of the underlying control failure.
+
+**Common mistake** — Suppressing a finding fixes the underlying security issue.
+
+**Actual AWS behavior** — A suppressed finding indicates that no action is needed after review; it remains a finding and does not remediate the resource or prevent a new finding for the same issue. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/findings-workflow-status.html)
+
+**Why it matters** — Domain 4 Task 4.1 requires choosing suppression only for reviewed, expected results, not as a substitute for remediation.
+
+**Common mistake** — Cross-Region aggregation automatically enables Security Hub everywhere or collects data from every Region.
+
+**Actual AWS behavior** — Aggregation collects from linked Regions where Security Hub is enabled for that account; it does not enable Security Hub in linked Regions automatically. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/finding-aggregation.html)
+
+**Why it matters** — Domain 4 Task 4.1 multi-account and multi-Region compliance scenarios require verifying regional enablement before interpreting an empty aggregate view.
 
 ## Exam mapping
 
@@ -98,10 +117,13 @@ Controls can have multiple findings. Their overall status is derived from the ap
 
 ## Must-remember numbers
 
+No SOA-C03 decision figure is retained for Security Hub; the exam-critical decision is to distinguish source, status, and remediation above.
+
+## Good to know
+
 | Figure | Value |
 |--------|-------|
-| Active finding retention | Expires after 90 days without an update |
-| Archived finding retention | Expires after 30 days without an update |
-| Max custom insights per account and Region | 100 |
-| Standards enabled | Per account, per Region |
-| Max member accounts | 10,000 per administrator account, per Region |
+| Active finding retention | Expires after 90 days without an update. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html) |
+| Archived finding retention | Expires after 30 days without an update. [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html) |
+| Maximum custom insights per account and Region | 100. [AWS documentation](https://docs.aws.amazon.com/general/latest/gr/sechub.html) |
+| Maximum member accounts per administrator account and Region | 10,000. [AWS documentation](https://docs.aws.amazon.com/general/latest/gr/sechub.html) |

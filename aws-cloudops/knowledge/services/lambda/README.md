@@ -38,8 +38,12 @@ AWS Lambda runs function code in response to events or API calls without the cus
 
 ## Common confusion
 
-- `Errors` includes throttled requests -> Throttles are reported separately and do not increment `Errors`.
-- Serverless means no operational responsibility -> Lambda removes server management, not responsibility for event permissions, failure handling, or function behavior.
+- **Common mistake** — `Errors` includes Lambda invocation requests rejected because of throttling.
+- **Actual AWS behavior** — `Errors` counts function or runtime errors; throttled requests are reported in `Throttles` and count as neither `Invocations` nor `Errors`. [Types of metrics for Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-metrics-types.html)
+- **Why it matters** — [Domain 1](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md), Tasks 1.1 and 1.2 require choosing the signal that distinguishes a function failure from concurrency pressure.
+
+> [!IMPORTANT]
+> **Lambda `Errors` versus `Throttles`:** For SOA-C03, use the separate metrics to choose code/runtime investigation or concurrency remediation; treating throttles as errors risks an incorrect diagnosis and the wrong operational response.
 
 ## Exam mapping
 

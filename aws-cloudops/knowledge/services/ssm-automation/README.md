@@ -37,7 +37,12 @@ AWS Systems Manager Automation runs predefined or custom Automation runbooks to 
 
 ## Common confusion
 
-- An Automation runbook is not a Run Command document: Automation documents orchestrate runbook steps against AWS resources, while the document types and schemas are distinct.
+- **Common mistake** — An Automation runbook and a Run Command document are interchangeable Systems Manager documents.
+- **Actual AWS behavior** — Automation runbooks are Systems Manager documents of type `Automation`, with sequential steps and a distinct schema from `Command` documents. [AWS Systems Manager Automation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html)
+- **Why it matters** — Domain 1 Task 1.2 and Domain 3 Task 3.2 require choosing runbooks for remediation and management automation rather than selecting the wrong Systems Manager document type.
+
+> [!IMPORTANT]
+> **Automation runbook type** determines how Systems Manager orchestrates remediation. For SOA-C03 Domains 1 and 3, confusing it with Run Command risks choosing a document that cannot express the required multi-step automation.
 
 ## Exam mapping
 

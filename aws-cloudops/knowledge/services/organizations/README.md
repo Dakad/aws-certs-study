@@ -32,6 +32,9 @@ last_verified: 2026-10-04
 
 AWS Organizations centrally manages multiple AWS accounts. Service Control Policies (SCPs) set maximum-permission guardrails for IAM users and roles in member accounts. They define what actions can be allowed, but do not grant permissions themselves. SCPs are one organizational input to authorization, not a universal policy-evaluation formula.
 
+> [!IMPORTANT]
+> **An SCP sets a permission ceiling; it does not grant access.** For SOA-C03 Domain 4 authorization decisions, both the applicable SCP and a permission-granting policy must allow the request; treating an SCP allow as permission causes an avoidable access failure.
+
 ## Behavior and boundaries
 
 - **Organization structure**: Management account (payer) + member accounts. Organizational Units (OUs) group accounts for policy attachment.
@@ -87,12 +90,29 @@ Authorization is request- and principal-dependent. IAM determines which identity
 
 ## Common confusion
 
-- **SCP != IAM Policy**: SCP filters what can be allowed; IAM policy grants. SCP `Allow` alone does nothing without matching IAM permission.
-- **Management account exemption**: SCPs never restrict the management account. Test from a member account.
-- **Implicit deny in SCP**: If an action is not listed in an allow-list SCP, it is denied for affected member-account identities.
-- **SCP does not affect service-linked roles**: Service-linked roles cannot be restricted by SCPs.
-- **OU inheritance**: An account inherits SCPs from all parent OUs + Root. In an allow-list design, every applicable level must permit the action.
-- **SCP scope is the member-account identity**: A resource policy can grant an outside principal access to a member-account resource without that resource owner's SCP applying to the outside principal.
+**Common mistake** — An `Allow` in an SCP grants an IAM user or role the stated action.
+
+**Actual AWS behavior** — SCPs set the maximum permissions available to member-account IAM users and roles; they never grant permissions, so an applicable identity- or resource-based policy must also allow the request. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+**Why it matters** — Domain 4 Task 4.1 access-denied troubleshooting must identify both the organization guardrail and the policy that actually grants permission.
+
+**Common mistake** — An SCP attached at the root restricts the management account as well as member accounts.
+
+**Actual AWS behavior** — SCPs affect member accounts, including delegated administrators, but do not affect management-account users or roles. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+**Why it matters** — Domain 4 Task 4.1 multi-account-control scenarios require testing and diagnosing the member-account principal rather than expecting an SCP to constrain management-account access.
+
+**Common mistake** — An allow-list SCP at one OU is sufficient even when a parent OU or root omits the action.
+
+**Actual AWS behavior** — A member-account identity needs the permission allowed at every applicable parent level; an implicit or explicit block at any level prevents the action. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+**Why it matters** — Domain 4 Task 4.1 requires locating the effective permission boundary across the root, OU, account, and IAM policy layers.
+
+**Common mistake** — An SCP attached to a resource owner's member account restricts an outside principal that a resource policy allows.
+
+**Actual AWS behavior** — SCPs apply to IAM users and roles managed by accounts in the organization, not directly to resource-based policies or outside-account principals. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+
+**Why it matters** — Domain 4 Task 4.1 scenarios distinguish the resource-policy authorization path from an organization guardrail on the member-account identity.
 
 ## Operational signals
 
@@ -107,11 +127,14 @@ Authorization is request- and principal-dependent. IAM determines which identity
 
 ## Must-remember numbers
 
+No SOA-C03 decision figure is retained for Organizations; the exam-critical decision is the SCP evaluation path above.
+
+## Good to know
+
 | Figure | Value |
 |--------|-------|
-| Default maximum accounts per organization | 10; adjustable up to 50,000 |
-| Maximum OUs per organization | 2,000 |
-| Maximum SCPs per organization | 10,000 |
-| Maximum SCP size | 10,240 characters |
-| Directly attached SCPs per Root, OU, or account | 10 |
-| SCP evaluation | Applies to member-account IAM users and roles, not the management account |
+| Default maximum accounts per organization | 10; adjustable up to 50,000. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) |
+| Maximum OUs per organization | 2,000. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) |
+| Maximum SCPs per organization | 10,000. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) |
+| Maximum SCP size | 10,240 characters. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) |
+| Directly attached SCPs per root, OU, or account | 10. [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html) |

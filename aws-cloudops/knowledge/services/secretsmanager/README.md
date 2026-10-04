@@ -38,6 +38,9 @@ last_verified: 2026-10-04
 
 AWS Secrets Manager centrally stores, manages, and rotates secrets (database credentials, API keys, tokens) throughout their lifecycle. It encrypts secrets at rest using KMS, supports managed rotation for supported service-managed secrets or Lambda rotation for other secret types, provides reserved version staging labels (`AWSCURRENT`, `AWSPENDING`, `AWSPREVIOUS`) for safe rollout, and offers cross-region replication for disaster recovery.
 
+> [!IMPORTANT]
+> **Managed rotation and Lambda rotation are different mechanisms.** For SOA-C03 Domain 4 secret-rotation decisions, choose managed rotation when the supported managed secret fits and Lambda when custom rotation is required; confusing them leads to an unnecessary function or an unimplemented rotation workflow.
+
 ## Behavior and boundaries
 
 - **Secret storage**: Stores an encrypted secret value up to 65,536 bytes. Metadata (name, description, tags, KMS key ID, rotation configuration) is separate; each secret has one or more versions.
@@ -100,13 +103,29 @@ AWS Secrets Manager centrally stores, manages, and rotates secrets (database cre
 
 ## Common confusion
 
-- **Managed rotation vs Lambda rotation** — Managed rotation for supported service-managed secrets does not use Lambda. The 4-step protocol applies only to Lambda rotation.
-- **Version labels vs versions** — Versions are immutable (UUID). Labels (`AWSCURRENT`, `AWSPENDING`, `AWSPREVIOUS`) are mutable pointers. Rotation manipulates labels, not version IDs.
-- **Replication is async** — Replica may lag primary by seconds to minutes. Do not assume immediate consistency for failover.
-- **KMS authorization** — For customer-managed keys, Secrets Manager uses KMS on the caller's behalf. Grant the required KMS permissions through the applicable policy path; do not add a service-principal allow as a universal rule.
-- **Rotation requires VPC access for RDS** — Rotation Lambda must run in same VPC as RDS (subnet + SG allowing outbound to DB port). Secrets Manager does not manage this automatically for custom rotations.
-- **Minimum rotation interval is 1 day** — Cannot rotate more frequently than once per day.
-- **Secret value size limit 65,536 bytes** — This limit applies to the encrypted secret value, not its metadata. JSON stored in the value counts toward the limit.
+**Common mistake** — Every Secrets Manager rotation requires a Lambda function and the four-step rotation protocol.
+
+**Actual AWS behavior** — Managed rotation for supported managed secrets does not use Lambda; Lambda rotation is used for other secret types and implements the rotation workflow. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html)
+
+**Why it matters** — Domain 4 Task 4.2 requires choosing the supported managed-rotation path or a custom Lambda rotation implementation for the secret type.
+
+**Common mistake** — `AWSCURRENT`, `AWSPENDING`, and `AWSPREVIOUS` are immutable secret versions.
+
+**Actual AWS behavior** — Secret versions are immutable, while staging labels are mutable references; `GetSecretValue` returns `AWSCURRENT` by default, and rotation moves labels between versions. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/whats-in-a-secret.html)
+
+**Why it matters** — Domain 4 Task 4.2 troubleshooting depends on identifying whether the application retrieved the active version or whether rotation has left a pending version to validate.
+
+**Common mistake** — A replica secret is synchronously current with its primary and can be promoted by swapping roles.
+
+**Actual AWS behavior** — Replication is asynchronous, replicas are read-only, and removing a replica from replication promotes it to an independent standalone secret rather than swapping it with the primary. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/replication.html)
+
+**Why it matters** — Domain 4 Task 4.2 disaster-recovery decisions must account for replica lag and the promotion procedure before directing workloads to another Region.
+
+**Common mistake** — A customer-managed KMS key always needs a Secrets Manager service-principal allow.
+
+**Actual AWS behavior** — Secrets Manager uses KMS on behalf of the caller, so the required KMS operations must be authorized through the applicable key or IAM policy path; a universal service-principal allow is not required. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html)
+
+**Why it matters** — Domain 4 Task 4.2 separates secret access authorization from encryption-key authorization when diagnosing failed `GetSecretValue` requests.
 
 ## Exam mapping
 
@@ -121,10 +140,12 @@ AWS Secrets Manager centrally stores, manages, and rotates secrets (database cre
 
 | Figure | Value |
 |--------|-------|
-| Secret value max size | 65,536 bytes (encrypted secret value) |
-| Minimum rotation interval | 1 day |
-| Replica Regions | Enabled commercial Regions; replication cannot cross into or out of specialized Regions |
-| Pricing: per secret/month | $0.40 |
-| Pricing: per 10k API calls | $0.05 |
-| Staging labels across all versions | 20; reserved labels include `AWSCURRENT`, `AWSPENDING`, and `AWSPREVIOUS` |
-| Rotation protocol steps | 4 (createSecret, setSecret, testSecret, finishSecret) |
+| Minimum rotation interval | 1 day. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html) |
+| Lambda rotation workflow | 4 steps: `createSecret`, `setSecret`, `testSecret`, and `finishSecret`. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html) |
+
+## Good to know
+
+| Figure | Value |
+|--------|-------|
+| Secret value maximum size | 65,536 bytes for the encrypted secret value. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_limits.html) |
+| Staging labels across all versions | 20. [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_limits.html) |

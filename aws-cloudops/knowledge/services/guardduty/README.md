@@ -31,8 +31,11 @@ Amazon GuardDuty is a threat-detection service that analyzes AWS data sources to
 ## Common confusion
 
 - **Common mistake** — Creating a VPC Flow Log is required before GuardDuty can detect EC2 network threats.
-- **Actual AWS behavior** — GuardDuty consumes EC2 VPC flow log data from an independent stream after it is enabled; existing VPC Flow Log configuration does not control that analysis.
+- **Actual AWS behavior** — After GuardDuty is enabled, it consumes EC2 VPC flow log data through an independent stream; existing VPC Flow Log configuration does not control that analysis. [GuardDuty foundational data sources](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_data-sources.html)
 - **Why it matters** — Domain 4 scenarios distinguish enabling detection from retaining network logs for independent investigation.
+
+> [!IMPORTANT]
+> **GuardDuty's independent VPC flow log stream** starts when GuardDuty is enabled, not when you create VPC Flow Logs. For SOA-C03 Domain 4, assuming otherwise risks selecting log retention setup instead of enabling threat detection.
 
 ## Exam mapping
 

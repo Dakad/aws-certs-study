@@ -40,8 +40,12 @@ Amazon S3 is object storage: buckets contain objects identified by keys, with a 
 
 ## Common confusion
 
-- Strong consistency makes a multi-object update transactional -> The guarantee is key-based; S3 has no atomic update across keys.
-- Enabling versioning automatically removes prior versions -> Versioning keeps versions until an explicit lifecycle or deletion action manages them.
+- **Common mistake** — Deleting an object from a versioning-enabled bucket permanently removes its recoverable data.
+- **Actual AWS behavior** — A delete without a version ID adds a delete marker as the current version instead of permanently removing the object; an overwrite creates a new version, so a prior version can be restored. [Retaining multiple versions of objects with S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)
+- **Why it matters** — [Domain 2](../../../domains/02-reliability-business-continuity/README.md), Task 2.3 includes S3 versioning as a backup and restore choice.
+
+> [!IMPORTANT]
+> **S3 Versioning delete markers:** For SOA-C03, a versioned delete normally hides the current object rather than erasing its prior version; treating it as permanent deletion risks selecting an unnecessary or incorrect recovery action.
 
 ## Exam mapping
 

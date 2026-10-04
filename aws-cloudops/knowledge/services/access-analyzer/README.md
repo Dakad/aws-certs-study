@@ -34,6 +34,9 @@ last_verified: 2026-10-04
 
 IAM Access Analyzer uses automated reasoning to identify external access to supported resources, internal access to selected resources, and unused access for IAM users and roles. It also validates IAM policies against policy grammar and AWS best practices.
 
+> [!IMPORTANT]
+> **Archiving is not access remediation.** For SOA-C03 Domain 4 access-auditing decisions, remove the policy or permission that grants unintended access; treating an archive action as a fix leaves that access in place.
+
 ## Behavior and boundaries
 
 - **External access analyzers**: Identify supported resources shared with principals outside an account or organization zone of trust.
@@ -62,11 +65,23 @@ IAM Access Analyzer uses automated reasoning to identify external access to supp
 
 ## Common confusion
 
-- **Access Analyzer != IAM Policy Simulator**: The simulator evaluates a specified principal, action, and resource. Access Analyzer analyzes supported access paths and validates policies.
-- **External, internal, and unused access are distinct**: External analysis looks beyond a defined trust zone; internal analysis evaluates selected resources within it; unused analysis evaluates IAM access activity.
-- **Organization analyzer governance**: A delegated administrator can create and manage organization analyzers; it is not management-account-only.
-- **Archiving != remediation**: An archived finding remains stored and can be unarchived. Removing the access is what resolves an access finding.
-- **Custom checks are targeted assertions**: They compare for new access, test specified access, or test public access. They are not a general unused-permissions report.
+**Common mistake** — An archived access finding means the external or internal access has been remediated.
+
+**Actual AWS behavior** — Archiving clears a finding from the active list but does not delete it or change the underlying permission; remove the access to resolve it. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings-remediate.html)
+
+**Why it matters** — Domain 4 Task 4.1 requires access auditing and least-privilege validation; the remediation decision is to change the relevant policy or permission, not suppress evidence.
+
+**Common mistake** — Only the Organizations management account can operate an organization analyzer.
+
+**Actual AWS behavior** — The management account can designate a member account as an IAM Access Analyzer delegated administrator, which can create and manage organization analyzers. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-delegated-administrator.html)
+
+**Why it matters** — Domain 4 Task 4.1 tests multi-account controls, including selecting a delegated operational owner without assuming management-account-only administration.
+
+**Common mistake** — External, internal, and unused-access analyzers answer the same question.
+
+**Actual AWS behavior** — External analyzers evaluate access outside a zone of trust, internal analyzers evaluate selected resources within it, and unused-access analyzers use access activity for IAM users and roles. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html)
+
+**Why it matters** — Domain 4 Task 4.1 scenarios require choosing the analyzer that matches an external-exposure, internal-access, or least-privilege question.
 
 ## Exam mapping
 
@@ -74,8 +89,12 @@ IAM Access Analyzer uses automated reasoning to identify external access to supp
 
 ## Must-remember numbers
 
+No SOA-C03 decision figure is retained for this service; choose the analyzer type and remediation action from the behavior above.
+
+## Good to know
+
 | Figure | Value |
 |--------|-------|
-| Account-level analyzers | 1 per analyzer type, account, and Region |
-| Policy validation | Basic checks are free |
-| Custom policy checks | Charged per check |
+| Account-level analyzers | 1 per analyzer type, account, and Region. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-quotas.html) |
+| Policy validation | Basic checks are free. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-validation.html) |
+| Custom policy checks | Charged per check. [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html) |

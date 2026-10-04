@@ -38,6 +38,9 @@ last_verified: 2026-10-04
 
 AWS KMS is a managed service for creating, controlling, and using cryptographic keys. It integrates with AWS services to encrypt data at rest and in transit, and provides a FIPS 140-2 Level 2/3 validated HSM-backed key store. KMS keys never leave the service unencrypted; all cryptographic operations occur within KMS.
 
+> [!IMPORTANT]
+> **A KMS key policy is an authorization boundary, not an optional companion to IAM.** For SOA-C03 Domain 4 data-protection decisions, a cross-account caller needs authorization from the key owner; assuming its IAM allow is sufficient produces `AccessDenied`.
+
 ## Behavior and boundaries
 
 - **Symmetric vs asymmetric keys**: Symmetric (AES-256) for encrypt/decrypt, GenerateDataKey; asymmetric (RSA/ECC) for sign/verify, encrypt/decrypt, and key agreement. Symmetric keys support envelope encryption; asymmetric do not.
@@ -107,12 +110,23 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 
 ## Common confusion
 
-- **Key policy vs IAM policy for cross-account** — IAM policy in Account B allowing `kms:Encrypt` on Account A's key *does nothing* unless Account A authorizes Account B's principal with a key policy or grant.
-- **Rotation eligibility** — Symmetric multi-Region keys with `AWS_KMS` origin support automatic and on-demand rotation from the primary key; rotation is synchronized across the related keys.
-- **Deletion is irreversible** — After 7–30 day window, key material is destroyed. No recovery. Ciphertexts encrypted under that key become permanently undecryptable.
-- **Grants vs policies** — Grants are temporary, service-friendly, and can authorize same-account or cross-account principals. Policies are durable, human-managed controls.
-- **Multi-region key independence** — Replicas share key material and key ID but have regional ARNs and *independent* policies, grants, and aliases. Rotation is shared; a primary key cannot be deleted until all replicas are deleted.
-- **External key store / CloudHSM** — `Unavailable` state means KMS cannot reach HSM. Operations fail. Not the same as `Disabled`.
+**Common mistake** — An IAM allow in Account B is enough for Account B to use a KMS key owned by Account A.
+
+**Actual AWS behavior** — Every KMS key has a key policy, and IAM allows have no effect unless the key policy enables IAM-policy delegation; the key owner can instead authorize use with a key policy or grant. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html)
+
+**Why it matters** — Domain 4 Task 4.2 requires selecting the correct authorization path for encrypted data, rather than diagnosing a cross-account KMS failure as an IAM-policy-only problem.
+
+**Common mistake** — Scheduling deletion is equivalent to a reversible disable, or expiry of the waiting period can be undone.
+
+**Actual AWS behavior** — A pending-deletion key cannot perform cryptographic operations; cancellation is possible only before the mandatory waiting period ends, after which deletion is irreversible and encrypted data can become unrecoverable. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html)
+
+**Why it matters** — Domain 4 Task 4.2 scenarios distinguish a temporary access interruption, where disabling may fit, from irreversible key destruction that can make protected data unreadable.
+
+**Common mistake** — Multi-Region KMS replicas are interchangeable regional copies with one shared policy and alias configuration.
+
+**Actual AWS behavior** — Related multi-Region keys share key material and key ID, but their ARNs, policies, grants, and aliases are regional and independent; a primary cannot be deleted until its replicas are deleted. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html)
+
+**Why it matters** — Domain 4 Task 4.2 requires checking the regional key policy and replica lifecycle rather than assuming an authorization or deletion change propagates automatically.
 
 ## Exam mapping
 
@@ -122,13 +136,15 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 
 | Figure | Value |
 |--------|-------|
-| Deletion waiting window | 7–30 days (configurable per key) |
-| Key policy max size | 32 KB |
-| Grants per key | 50,000 |
-| Max key policy statements | No fixed limit (bounded by 32 KB) |
-| Encrypt/Decrypt payload limit | 4 KB (symmetric), varies by algorithm (asymmetric) |
-| GenerateDataKey output | 256-bit (AES-256) plaintext + encrypted DEK |
-| Automatic rotation interval | ~365 days (annual) |
-| Multi-Region key ARN | `arn:aws:kms:region:account-id:key/key-id`; related keys have different regional ARNs but share key ID/material |
+| Deletion waiting window | 7-30 days, configurable per key. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html) |
+| Direct symmetric `Encrypt`/`Decrypt` payload | 4 KB maximum; use envelope encryption for larger data. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) |
+
+## Good to know
+
+| Figure | Value |
+|--------|-------|
+| Key policy maximum size | 32 KB. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html) |
+| Grants per key | 50,000. [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html) |
+| Automatic rotation interval | Approximately 365 days (annual). [AWS documentation](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html) |
 
 (End of file)
