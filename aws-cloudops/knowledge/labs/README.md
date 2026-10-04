@@ -49,6 +49,24 @@ remains runnable after playground access ends on 2026-10-15.
 - **A KMS key** cannot be deleted immediately; `schedule-key-deletion` leaves it
   pending for at least 7 days.
 
+## Budget & account strategy
+
+| Account | Access window | Current / forecast | Credit | Use for |
+|---------|---------------|-------------------|--------|---------|
+| **AppTweak Playground** | Until **2026-10-15** | ~$5 now, ~$50/mo forecast | N/A (shared) | Primary live-AWS window (Oct 5–13). Run full lab suite once. |
+| **Personal account** | Until **2027-04** (credit expiry) | $100 credit | $100 | Re-runs after Oct 15, cross-Region variations, extra iterations, post-exam retention. |
+
+**Estimated one full pass (all 5 live labs, 9 days):** ~$3/day × 9 = **~$27** on playground, well under $50 forecast.
+
+**Per-lab daily cost ceiling** (from the table above):
+- Lab 01: < $0.50
+- Lab 02: < $0.75
+- Lab 04: < $1.20
+- Lab 05: < $0.35
+- Lab 06: < $0.10
+
+If playground spend approaches the forecast, shift remaining runs to personal account. The credit covers months of extra practice.
+
 ## Adding a lab
 
 1. Create a directory under this folder and a `README.md` with the objective, exam
