@@ -1,0 +1,19 @@
+name: Check service relationship graph
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/relationship-graph.yml"
+      - "aws-cloudops/knowledge/services/*/README.md"
+      - "aws-cloudops/knowledge/relationships/**"
+
+permissions:
+  contents: read
+
+jobs:
+  graph-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - run: mise run graph:check
