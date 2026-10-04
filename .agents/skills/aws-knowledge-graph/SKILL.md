@@ -37,7 +37,13 @@ Use these `relation` values in front matter and as link labels. A typed edge bea
 | `troubleshoots-with` | the target's signals explain the source's failures |
 | `secured-by` | the target supplies the security control |
 | `monitored-by` | the target supplies metrics, logs, or alarms |
+| `collects-metrics-from` | the source collects metrics, logs, or traces emitted by the target |
 | `automated-by` | the target performs an operational action |
+| `notifies-via` | the source sends notifications through the target |
+| `encrypts-for` | the source performs encryption operations for the target |
+| `encrypts-with` | the source uses the target to encrypt its data |
+| `audited-by` | the target records audit evidence about the source |
+| `aggregates-findings-from` | the source incorporates security or compliance findings from the target |
 | `scales-with` | capacity of the source follows the target |
 | `fails-over-to` | the target takes over on failure |
 

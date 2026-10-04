@@ -3,6 +3,15 @@ id: "organizations"
 kind: "service"
 domains: [4]
 services: ["organizations"]
+related:
+  - relation: "secured-by"
+    target: "iam"
+  - relation: "integrates-with"
+    target: "cloudtrail"
+  - relation: "integrates-with"
+    target: "access-analyzer"
+  - relation: "integrates-with"
+    target: "config"
 sources:
   - title: "AWS Organizations User Guide"
     url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html"

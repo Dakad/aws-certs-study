@@ -3,6 +3,23 @@ id: "cloudtrail"
 kind: "service"
 domains: [1, 4]
 services: ["cloudtrail"]
+related:
+  - relation: "integrates-with"
+    target: "cloudwatch"
+  - relation: "integrates-with"
+    target: "s3"
+  - relation: "integrates-with"
+    target: "sns"
+  - relation: "secured-by"
+    target: "kms"
+  - relation: "audited-by"
+    target: "config"
+  - relation: "integrates-with"
+    target: "organizations"
+  - relation: "integrates-with"
+    target: "securityhub"
+  - relation: "integrates-with"
+    target: "guardduty"
 sources:
   - title: "AWS CloudTrail User Guide"
     url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"

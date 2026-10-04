@@ -3,6 +3,17 @@ id: "secretsmanager"
 kind: "service"
 domains: [4]
 services: ["secretsmanager"]
+related:
+  - relation: "encrypts-with"
+    target: "kms"
+  - relation: "secured-by"
+    target: "iam"
+  - relation: "integrates-with"
+    target: "lambda"
+  - relation: "integrates-with"
+    target: "rds"
+  - relation: "audited-by"
+    target: "cloudtrail"
 sources:
   - title: "AWS Secrets Manager User Guide"
     url: "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"

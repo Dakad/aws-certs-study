@@ -3,6 +3,17 @@ id: "kms"
 kind: "service"
 domains: [4]
 services: ["kms"]
+related:
+  - relation: "secured-by"
+    target: "iam"
+  - relation: "encrypts-for"
+    target: "secretsmanager"
+  - relation: "encrypts-for"
+    target: "s3"
+  - relation: "encrypts-for"
+    target: "rds"
+  - relation: "audited-by"
+    target: "cloudtrail"
 sources:
   - title: "AWS Key Management Service Developer Guide"
     url: "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"

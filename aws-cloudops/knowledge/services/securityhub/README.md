@@ -3,6 +3,21 @@ id: "securityhub"
 kind: "service"
 domains: [4]
 services: ["securityhub"]
+related:
+  - relation: "aggregates-findings-from"
+    target: "config"
+  - relation: "aggregates-findings-from"
+    target: "guardduty"
+  - relation: "aggregates-findings-from"
+    target: "inspector"
+  - relation: "aggregates-findings-from"
+    target: "access-analyzer"
+  - relation: "integrates-with"
+    target: "organizations"
+  - relation: "integrates-with"
+    target: "cloudtrail"
+  - relation: "integrates-with"
+    target: "iam"
 sources:
   - title: "AWS Security Hub User Guide"
     url: "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"

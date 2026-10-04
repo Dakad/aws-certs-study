@@ -3,6 +3,13 @@ id: "access-analyzer"
 kind: "service"
 domains: [4]
 services: ["access-analyzer"]
+related:
+  - relation: "secured-by"
+    target: "iam"
+  - relation: "integrates-with"
+    target: "organizations"
+  - relation: "integrates-with"
+    target: "cloudtrail"
 sources:
   - title: "IAM Access Analyzer User Guide"
     url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
