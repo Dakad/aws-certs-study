@@ -1,0 +1,31 @@
+[tools]
+uv = "0.11.26"
+"conda:graphviz" = "14.1.2"
+
+[tasks."graph:generate"]
+description = "Generate the relationship atlas and all focused SVG views"
+depends = ["graph:atlas"]
+run = [
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus cloudwatch",
+  "dot -Tsvg aws-cloudops/knowledge/relationships/service-graph-cloudwatch.dot -o aws-cloudops/knowledge/relationships/service-graph-cloudwatch.svg",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus cloudtrail",
+  "dot -Tsvg aws-cloudops/knowledge/relationships/service-graph-cloudtrail.dot -o aws-cloudops/knowledge/relationships/service-graph-cloudtrail.svg",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus securityhub",
+  "dot -Tsvg aws-cloudops/knowledge/relationships/service-graph-securityhub.dot -o aws-cloudops/knowledge/relationships/service-graph-securityhub.svg",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus kms",
+  "dot -Tsvg aws-cloudops/knowledge/relationships/service-graph-kms.dot -o aws-cloudops/knowledge/relationships/service-graph-kms.svg",
+]
+
+[tasks."graph:atlas"]
+description = "Generate the Mermaid relationship atlas"
+run = "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py"
+
+[tasks."graph:check"]
+description = "Verify generated relationship graph sources are current"
+run = [
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --check",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus cloudwatch --check",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus cloudtrail --check",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus securityhub --check",
+  "uv run aws-cloudops/knowledge/relationships/tools/generate-service-graph.py --format dot --focus kms --check",
+]
