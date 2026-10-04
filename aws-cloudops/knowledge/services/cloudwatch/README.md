@@ -3,25 +3,6 @@ id: "cloudwatch"
 kind: "service"
 domains: [1]
 services: ["cloudwatch"]
-related:
-  - relation: "monitored-by"
-    target: "ec2"
-  - relation: "monitored-by"
-    target: "s3"
-  - relation: "monitored-by"
-    target: "rds"
-  - relation: "monitored-by"
-    target: "lambda"
-  - relation: "monitored-by"
-    target: "elb"
-  - relation: "integrates-with"
-    target: "eventbridge"
-  - relation: "automated-by"
-    target: "ssm-automation"
-  - relation: "notified-by"
-    target: "sns"
-  - relation: "integrates-with"
-    target: "cloudtrail"
 sources:
   - title: "AWS Certified CloudOps Engineer Associate - Domain 1"
     url: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html"
@@ -33,9 +14,19 @@ sources:
     url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarm-evaluation-window.html"
   - title: "CloudWatch Agent"
     url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html"
+  - title: "CloudWatch Metrics Concepts and Retention"
+    url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html"
+  - title: "CloudWatch Service Quotas"
+    url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_limits.html"
+  - title: "Amazon EBS CloudWatch Metrics"
+    url: "https://docs.aws.amazon.com/ebs/latest/userguide/using_cloudwatch_ebs.html"
+  - title: "Application Load Balancer CloudWatch Metrics"
+    url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-cloudwatch-metrics.html"
+  - title: "Network Load Balancer CloudWatch Metrics"
+    url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-cloudwatch-metrics.html"
   - title: "Composite Alarms"
     url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/composite-alarms.html"
-last_verified: 2026-10-03
+last_verified: 2026-10-04
 ---
 
 # CloudWatch
@@ -52,8 +43,8 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 - Multi-step logic (M-of-N, "Datapoints to Alarm" out of "Evaluation Periods") evaluates alarm state across multiple datapoints.
 - Missing data treatment is configurable: `missing` (default), `notBreaching`, `breaching`, `ignore`.
 - Evaluation range: CloudWatch retrieves more datapoints than Evaluation Periods (wider window) to handle missing data; exact count depends on period and resolution.
-- High-resolution metrics (1-second) available for custom metrics and some AWS services; standard resolution is 1-minute or 5-minute.
-- Metrics retained: 15 months (1-min for 15 days, 5-min for 63 days, 1-hour for 455 days).
+- Standard-resolution metrics have one-minute granularity. Five-minute intervals are service-specific publishing cadences, such as EC2 basic monitoring.
+- High-resolution custom metric data is retained for 3 hours; data at 1-minute resolution for 15 days, 5-minute resolution for 63 days, and 1-hour resolution for 455 days.
 
 ## Alarm configuration (must-know fields)
 
@@ -73,7 +64,7 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 
 ## Operational signals
 
-- **Metrics**: Standard (5-min/1-min) and high-resolution (1-sec); custom metrics via API/agent.
+- **Metrics**: Standard-resolution metrics have 1-minute granularity; some services publish on a 5-minute cadence, and high-resolution custom metrics have 1-second granularity.
 - **Logs**: CloudWatch Logs — log groups, log streams, retention (1 day to 10 years, or never expire).
 - **Log Insights**: Query language for log analysis; can create metric filters from log patterns.
 - **Metric Filters**: Turn log data into numerical metrics (e.g., count ERROR lines).
@@ -81,7 +72,7 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 - **Composite Alarms**: Combine multiple alarms; reduce noise; only ALARM state triggers actions.
 - **Anomaly Detection**: ML-based expected value bands; alarm when metric goes outside band.
 - **Dashboards**: Cross-account, cross-region; markdown widgets, text, metric graphs, alarm status.
-- **CloudWatch Agent**: Collects system-level metrics (memory, disk, swap, processes) and logs from EC2, on-prem, ECS, EKS. Requires IAM role/SSM parameter.
+- **CloudWatch Agent**: Collects system-level metrics (memory, disk, swap, processes) and logs from EC2, on-premises servers, and containerized applications. Systems Manager Parameter Store is an optional configuration source.
 - **Metric Streams**: Near-real-time delivery of metrics to destinations (S3, Firehose, third-party).
 - **Cross-account observability**: Central monitoring account links source accounts via CloudWatch observability access manager.
 
@@ -90,9 +81,10 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 | Service | Namespace | Critical metrics |
 |---------|-----------|------------------|
 | EC2 | `AWS/EC2` | `CPUUtilization`, `StatusCheckFailed`, `StatusCheckFailed_Instance`, `StatusCheckFailed_System`, `NetworkIn/Out`, `DiskReadOps/WriteOps`, `CPUCreditUsage/Balance` (T-class) |
-| EBS | `AWS/EBS` | `VolumeReadOps/WriteOps`, `VolumeReadBytes/WriteBytes`, `VolumeTotalReadTime/WriteTime`, `VolumeIdleTime`, `BurstBalance` (gp3/io2) |
+| EBS | `AWS/EBS` | `VolumeReadOps/WriteOps`, `VolumeReadBytes/WriteBytes`, `VolumeTotalReadTime/WriteTime`, `VolumeIdleTime`, `BurstBalance` (`gp2`, `st1`, and `sc1` only) |
 | RDS | `AWS/RDS` | `CPUUtilization`, `DatabaseConnections`, `FreeableMemory`, `FreeStorageSpace`, `ReadIOPS/WriteIOPS`, `ReadLatency/WriteLatency`, `ReplicaLag`, `SwapUsage` |
-| ALB/NLB | `AWS/ApplicationELB`, `AWS/NetworkELB` | `RequestCount`, `TargetResponseTime`, `HTTPCode_Target_2XX/4XX/5XX_Count`, `HTTPCode_ELB_4XX/5XX_Count`, `HealthyHostCount`, `UnHealthyHostCount`, `TargetConnectionErrorCount` |
+| ALB | `AWS/ApplicationELB` | `RequestCount`, `TargetResponseTime`, `HTTPCode_Target_2XX/4XX/5XX_Count`, `HTTPCode_ELB_4XX/5XX_Count`, `HealthyHostCount`, `UnHealthyHostCount`, `TargetConnectionErrorCount` |
+| NLB | `AWS/NetworkELB` | `ActiveFlowCount`, `NewFlowCount`, `ProcessedBytes`, `TCP_Client/ELB/Target_Reset_Count`, `HealthyHostCount`, `UnHealthyHostCount` |
 | Lambda | `AWS/Lambda` | `Invocations`, `Errors`, `Duration`, `Throttles`, `ConcurrentExecutions`, `ProvisionedConcurrentExecutions`, `IteratorAge` (stream) |
 | S3 | `AWS/S3` | `BucketSizeBytes`, `NumberOfObjects`, `AllRequests`, `GetRequests`, `PutRequests`, `4xxErrors`, `5xxErrors`, `FirstByteLatency` |
 | Auto Scaling | `AWS/AutoScaling` | `GroupMinSize`, `GroupMaxSize`, `GroupDesiredCapacity`, `GroupInServiceInstances`, `GroupTotalInstances` |
@@ -120,14 +112,14 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 - **Missing data vs. non-breaching data** → A valid low datapoint (e.g., 78% on a >=80% threshold) is *not* missing data. With M-of-N, if enough real datapoints exist to fill the evaluation window, the missing-data treatment is ignored entirely.
 - **INSUFFICIENT_DATA at creation** → Normal behavior ("Initial alarm creation"); transitions to OK/ALARM once enough datapoints are available.
 - **Premature ALARM transitions** → CloudWatch avoids false alarms when the oldest breaching datapoint in the evaluation range is at least as old as M (Datapoints to Alarm) and all newer points are breaching or missing — even if total points < M.
-- **Alarm period vs. metric resolution** → Period must be a multiple of the metric's native resolution. Setting Period=10s on a 1-min metric yields the same datapoint repeated.
+- **Alarm period vs. metric resolution** → A 10-second alarm period requires high-resolution data; it does not resample a one-minute datapoint.
 - **Composite alarm vs. metric math alarm** → Composite = boolean logic (AND/OR/NOT) over *other alarms*; metric math = single alarm evaluating an expression (e.g., `m1/m2 * 100`). Composite reduces action noise.
 - **Anomaly detection bands** → Use `LessThanLowerOrGreaterThanUpperThreshold` operator; model trains on up to 2 weeks of data; not suitable for sparse or highly seasonal metrics without tuning.
 - **Cross-account dashboards** → Requires CloudWatch cross-account observability enabled; source accounts share metrics/logs with monitoring account via sink.
 
 ## Exam mapping
 
-- [Domain 1: Monitoring, Logging, Analysis, Remediation, and Performance Optimization](../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md)
+- [Domain 1: Monitoring, Logging, Analysis, Remediation, and Performance Optimization](../../../domains/01-monitoring-logging-analysis-remediation-performance-optimization/README.md)
   - Task 1.1: Implement metrics, alarms, and filters (Skills 1.1.1–1.1.5)
   - Task 1.2: Identify and remediate issues (Skills 1.2.1–1.2.3)
   - Task 1.3: Performance optimization (Skills 1.3.1–1.3.6)
@@ -142,18 +134,6 @@ CloudWatch is the primary observability service for AWS, providing metrics, logs
 | Max dashboards per account | 500 | Soft limit |
 | Max log groups per account | 1,000,000 | |
 | Max metric filters per log group | 100 | |
-| Custom metric put rate | 150 TPS | Per account/region; burst higher |
+| `PutMetricData` request rate | 500 requests/second | Per account/Region; adjustable |
 | Anomaly detection training window | Up to 2 weeks | |
 | Alarm history retention | 14 days | |
-
-## Related nodes
-
-- [EC2](../services/ec2/README.md) — monitored-by
-- [S3](../services/s3/README.md) — monitored-by
-- [RDS](../services/rds/README.md) — monitored-by
-- [Lambda](../services/lambda/README.md) — monitored-by
-- [ELB](../services/elb/README.md) — monitored-by
-- [EventBridge](../services/eventbridge/README.md) — integrates-with
-- [Systems Manager Automation](../services/ssm-automation/README.md) — automated-by
-- [SNS](../services/sns/README.md) — notified-by
-- [CloudTrail](../services/cloudtrail/README.md) — integrates-with

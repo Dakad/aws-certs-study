@@ -3,81 +3,72 @@ id: "access-analyzer"
 kind: "service"
 domains: [4]
 services: ["access-analyzer"]
-related:
-  - relation: "secured-by"
-    target: "iam"
-  - relation: "integrates-with"
-    target: "organizations"
-  - relation: "integrates-with"
-    target: "cloudtrail"
 sources:
   - title: "IAM Access Analyzer User Guide"
-    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer.html"
-  - title: "Access Analyzer Policy Validation"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+  - title: "Delegated administrator for IAM Access Analyzer"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-delegated-administrator.html"
+  - title: "IAM Access Analyzer findings"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings.html"
+  - title: "Archive IAM Access Analyzer findings"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings-archive.html"
+  - title: "Resolve IAM Access Analyzer findings"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings-remediate.html"
+  - title: "Validate policies with IAM Access Analyzer"
     url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-validation.html"
-last_verified: 2026-10-03
+  - title: "IAM Access Analyzer quotas"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-quotas.html"
+last_verified: 2026-10-04
 ---
 
 # IAM Access Analyzer
 
 ## In one paragraph
 
-IAM Access Analyzer identifies unintended resource access by analyzing policies using automated reasoning. It generates findings for resources shared with external principals and validates IAM policies for syntax, best practices, and over-permissive permissions.
+IAM Access Analyzer uses automated reasoning to identify external access to supported resources, internal access to selected resources, and unused access for IAM users and roles. It also validates IAM policies against policy grammar and AWS best practices.
 
 ## Behavior and boundaries
 
-- **Two analyzer types**:
-  - **Account analyzer**: Finds resources in your account shared with external principals (other accounts, public, AWS services).
-  - **Organization analyzer**: Created in management account; scans all member accounts; finds cross-account and external access across the organization.
-- **Supported resource types**: S3 buckets, IAM roles, KMS keys, SQS queues, Lambda functions, Secrets Manager secrets, ECR repositories, EFS file systems, RDS snapshots, and more.
-- **Finding status**: `Active` (access exists), `Archived` (resolved), `Resolved` (access removed).
-- **Policy validation**: Checks IAM policies (identity, resource, SCPs) for:
-  - Syntax errors
-  - Security warnings (over-permissive, unused permissions)
-  - Best practice suggestions (condition keys, constraint resources)
-- **Custom policy checks** (paid): Validate policies against custom rules (e.g., "no `*` action on `*` resource").
+- **External access analyzers**: Identify supported resources shared with principals outside an account or organization zone of trust.
+- **Internal access analyzers**: Identify possible access paths from principals in an account or organization to selected business-critical resources.
+- **Unused access analyzers**: Identify unused roles, IAM user credentials, and service- or action-level permissions based on access activity.
+- **Organization analyzers**: An organization analyzer can be managed by the management account or an IAM Access Analyzer delegated administrator. The management account designates the delegated administrator.
+- **Supported resources**: External and internal analysis cover supported resource types only, and their support differs by analyzer type. Unused-access analysis applies to IAM users and roles.
+- **Policy validation**: Basic policy validation reports errors, security warnings, general warnings, and suggestions. It does not report unused permissions.
+- **Custom policy checks**: Paid checks can assert that a proposed policy grants no new access, does not grant specified access, or cannot grant public access to a specified resource type.
 
 ## Operational signals
 
-- **Findings console**: Filter by resource type, principal, status, analyzer. Shows external principal ARN, resource ARN, permission granted, condition context.
+- **Findings console**: Filter findings by analyzer, resource, principal, and status.
 - **Finding details**: Includes `action`, `condition`, `isPublic`, `principal`, `resource`, `resourceType`, `createdAt`, `updatedAt`.
-- **Policy validation API**: `ValidatePolicy` — returns `errors`, `warnings`, `suggestions`, `findings` for a policy document.
-- **Archive/Resolve workflow**: Archive = suppress finding (known intent). Resolve = access actually removed (analyzer re-scans and auto-resolves).
+- **Policy validation API**: `ValidatePolicy` returns validation findings for a policy document.
+- **Archive versus resolve**: Archiving marks an expected finding as not active; it neither changes nor removes the access. To resolve an access finding, remove the access from the relevant policy or permission. A subsequent analysis changes the finding to `Resolved` when the access is gone.
 
 ## Policy validation categories (exam-relevant)
 
 | Category | What it catches | Example |
 |----------|-----------------|---------|
-| **Error** | Invalid JSON, malformed ARN, unsupported condition key | `Condition: { "StringEquals": { "aws:PrincipalTag/CostCenter": "123" } }` — tag key not valid |
-| **Security Warning** | Over-permissive: `*` action, `*` resource, missing condition | `"Action": "*", "Resource": "*"` |
-| **Suggestion** | Add condition keys, constrain resources, use `aws:SourceArn`/`aws:SourceAccount` | S3 bucket policy missing `aws:SourceAccount` for CloudTrail delivery |
+| **Error** | Policy issues that prevent a policy from functioning | Malformed ARN |
+| **Security warning** | Access AWS considers a security risk because it is overly permissive | `"Action": "*", "Resource": "*"` |
+| **Warning** | Best-practice issue that is not a security risk | Policy does not conform to a recommended practice |
+| **Suggestion** | Recommended improvement that does not change permissions | A policy can be made clearer or more maintainable |
 
 ## Common confusion
 
-- **Access Analyzer ≠ IAM Policy Simulator** — Simulator tests *specific* principal+action+resource; Access Analyzer *scans all policies* for external access and validates syntax/best practices across the board.
-- **Account vs. Organization analyzer** — Org analyzer requires management account; member accounts cannot create their own org analyzer. Account analyzer only sees its own account.
-- **Findings are not vulnerabilities** — External access may be intentional (e.g., public S3 bucket for static site). You must review and archive if expected.
-- **Resolver = access removed** — Archiving doesn't fix the policy; it silences the finding. "Resolved" status means the analyzer re-scanned and the access no longer exists.
-- **Custom policy checks are paid** — Basic validation (errors/warnings/suggestions) is free. Custom rules require Access Analyzer Custom Policy Checks (additional cost).
-- **Scanner runs periodically** — Not real-time. New resource/policy changes may take hours to appear as findings.
+- **Access Analyzer != IAM Policy Simulator**: The simulator evaluates a specified principal, action, and resource. Access Analyzer analyzes supported access paths and validates policies.
+- **External, internal, and unused access are distinct**: External analysis looks beyond a defined trust zone; internal analysis evaluates selected resources within it; unused analysis evaluates IAM access activity.
+- **Organization analyzer governance**: A delegated administrator can create and manage organization analyzers; it is not management-account-only.
+- **Archiving != remediation**: An archived finding remains stored and can be unarchived. Removing the access is what resolves an access finding.
+- **Custom checks are targeted assertions**: They compare for new access, test specified access, or test public access. They are not a general unused-permissions report.
 
 ## Exam mapping
 
-- [Domain 4: Security and Compliance](../domains/04-security-compliance/README.md) — Task 4.1 (access auditing, least privilege validation)
+- [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) - Task 4.1 (access auditing, least-privilege validation)
 
 ## Must-remember numbers
 
 | Figure | Value |
 |--------|-------|
-| Max account analyzers per region | 1 |
-| Max organization analyzers per org | 1 |
-| Supported resource types | 20+ (S3, IAM, KMS, SQS, Lambda, Secrets Manager, ECR, EFS, RDS, etc.) |
-| Scan frequency | Periodic (not real-time); ~24 hours for full scan |
-| Policy validation | Free (errors/warnings/suggestions) |
-| Custom policy checks | Paid feature |
-
-## Related nodes
-
-- [IAM](../services/iam/README.md) — secured-by (analyzes IAM policies)
-- [Organizations](../services/organizations/README.md) — integrates-with (org analyzer)
-- [CloudTrail](../services/cloudtrail/README.md) — integrates-with (audit trail for access changes)
+| Account-level analyzers | 1 per analyzer type, account, and Region |
+| Policy validation | Basic checks are free |
+| Custom policy checks | Charged per check |

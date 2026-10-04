@@ -3,23 +3,22 @@ id: "kms"
 kind: "service"
 domains: [4]
 services: ["kms"]
-related:
-  - relation: "secured-by"
-    target: "iam"
-  - relation: "encrypts-for"
-    target: "secretsmanager"
-  - relation: "encrypts-for"
-    target: "s3"
-  - relation: "encrypts-for"
-    target: "rds"
-  - relation: "audited-by"
-    target: "cloudtrail"
 sources:
   - title: "AWS Key Management Service Developer Guide"
     url: "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
   - title: "AWS KMS Cryptographic Details"
     url: "https://docs.aws.amazon.com/kms/latest/cryptographic-details/whitepaper.html"
-last_verified: 2026-10-03
+  - title: "Key policies in AWS KMS"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html"
+  - title: "Grants in AWS KMS"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/grants.html"
+  - title: "Rotate AWS KMS keys"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"
+  - title: "Multi-Region keys in AWS KMS"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html"
+  - title: "Delete an AWS KMS key"
+    url: "https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html"
+last_verified: 2026-10-04
 ---
 
 # AWS Key Management Service (KMS)
@@ -31,22 +30,22 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 ## Behavior and boundaries
 
 - **Symmetric vs asymmetric keys**: Symmetric (AES-256) for encrypt/decrypt, GenerateDataKey; asymmetric (RSA/ECC) for sign/verify, encrypt/decrypt, and key agreement. Symmetric keys support envelope encryption; asymmetric do not.
-- **Key policies vs IAM policies**: Key policy is the *only* way to allow cross-account access. IAM policy alone cannot grant cross-account KMS permissions. Key policy + IAM policy both evaluated (AND logic) for same-account calls.
+- **Key policies vs IAM policies**: A key policy can directly allow a principal. An IAM policy can allow access only when the key policy enables IAM-policy delegation; an explicit deny still wins. IAM policy alone cannot grant cross-account KMS permissions, but a grant can name a cross-account principal.
 - **Grants**: Temporary, granular permissions (e.g., `kms:Decrypt`, `kms:GenerateDataKey`) issued by key owner to principals or AWS services. Used by services like S3, RDS, EBS for encryption. Up to 50,000 grants per key. Retire or revoke to remove.
 - **Key rotation**:
-  - *Automatic* (annual): Only for symmetric KMS-generated keys (`EnableKeyRotation=true`). AWS manages old key material; ciphertexts decrypt with current or prior key version.
-  - *Manual*: `EnableKeyRotation=false`. Create new key, update alias, re-encrypt data. Required for imported key material, asymmetric keys, and multi-region keys.
-- **Key states**: `Enabled` (usable), `Disabled` (not usable, reversible), `PendingDeletion` (scheduled, irreversible), `PendingImport` (awaiting imported material), `Unavailable` (external key store disconnected).
-- **Deletion**: `ScheduleKeyDeletion` with 7–30 day wait window. Irreversible after window. Key enters `PendingDeletion` state; all operations fail. Alias deleted immediately. Cannot cancel after window.
-- **Multi-region keys**: Primary key + replicas in other regions. Same key material (shared key ID), independent policies/grants/rotation. Replicas readable/writable. `UpdatePrimaryRegion` promotes replica. Deleting primary schedules deletion of all replicas after window.
+  - *Automatic* (annual by default): Supported for symmetric encryption keys with `AWS_KMS` origin. AWS manages old key material; ciphertexts decrypt with current or prior key version.
+  - *Manual*: Create a new key, update an alias, and re-encrypt data when neither automatic nor on-demand rotation is supported, such as for asymmetric, HMAC, and custom-key-store keys.
+- **Key states**: `Enabled` (usable), `Disabled` (not usable, reversible), `PendingDeletion` (scheduled and cancellable during the waiting period), `PendingImport` (awaiting imported material), `Unavailable` (external key store disconnected).
+- **Deletion**: `ScheduleKeyDeletion` has a 7–30 day wait window. Deletion is cancellable during that window; after it expires, deletion is irreversible and removes the key's aliases. A primary multi-Region key enters `PendingReplicaDeletion` while replicas remain: schedule and delete every replica first, then the primary key's waiting period begins.
+- **Multi-region keys**: Primary key + replicas in other Regions. Related keys share key ID and key material, but each ARN is regional and policies, grants, aliases, and most administration are independent. Rotation is a shared property; for symmetric keys with `AWS_KMS` origin, enable automatic rotation or initiate on-demand rotation from the primary key.
 - **External key store**: Keys stored in external HSM (CloudHSM or external key manager via XKS proxy). KMS never sees plaintext key material. `Unavailable` state if connectivity lost.
 - **CloudHSM integration**: Custom key store backed by CloudHSM cluster. Keys generated/stored in HSM; KMS forwards operations. Supports symmetric and asymmetric.
 
 ## Key policy vs IAM policy distinction (exam-critical)
 
 - **Key policy is mandatory** — Every KMS key has exactly one key policy (max 32 KB). It is the *resource policy*.
-- **Cross-account access** — Only possible via key policy (`Principal` with external account ARN). IAM policy in the external account *alone* is insufficient; the key policy must explicitly allow the external principal.
-- **Same-account calls** — Both key policy and caller's IAM policy must allow the action (implicit AND).
+- **Cross-account access** — An IAM policy in the external account alone is insufficient. The key owner can authorize the external principal with a key policy or a grant.
+- **Same-account calls** — A key policy can directly allow the caller. If it enables IAM-policy delegation, the caller's IAM allow can provide the allow; explicit deny overrides either path.
 - **Default key policy** — Allows root user full access; delegates to IAM policies via `"Sid": "Allow access for Key Administrators"` and `"Sid": "Allow use of the key"`.
 
 ## Grant mechanism
@@ -55,14 +54,14 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 - **Issued by**: Key owner (or principal with `kms:CreateGrant`).
 - **Used by**: AWS services (S3, RDS, EBS, Lambda, etc.) for envelope encryption operations on your behalf.
 - **Operations**: `CreateGrant`, `RetireGrant` (by grantee or token), `RevokeGrant` (by key admin), `ListGrants`, `ListRetirableGrants`.
-- **Constraints**: 50,000 grants per key. Grantee principal must be in same account (or assumable role). Grants survive key policy changes; revoking is immediate.
+- **Constraints**: 50,000 grants per key. A grantee principal can be in the same account or a different account. Grants survive key policy changes; revoking is eventually consistent.
 
 ## Key rotation detail
 
 | Type | Applies to | Mechanism | Ciphertext compatibility |
 |------|------------|-----------|--------------------------|
-| Automatic | Symmetric KMS-generated keys only | Annual, AWS-managed key versions | Decrypt works with any version |
-| Manual | Imported keys, asymmetric, multi-region | Create new key, update alias, re-encrypt | Old key must remain for decryption |
+| Automatic | Symmetric encryption keys with `AWS_KMS` origin, including eligible multi-Region keys | Annual by default, AWS-managed key versions | Decrypt works with any version |
+| Manual | Keys without automatic or on-demand rotation support | Create new key, update alias, re-encrypt | Old key must remain for decryption |
 
 ## Key states and allowed operations
 
@@ -97,16 +96,16 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 
 ## Common confusion
 
-- **Key policy vs IAM policy for cross-account** — IAM policy in Account B allowing `kms:Encrypt` on Account A's key *does nothing* unless Account A's key policy allows Account B's principal.
-- **Rotation only for symmetric AWS-managed keys** — Asymmetric, imported, and multi-region keys cannot use automatic rotation.
+- **Key policy vs IAM policy for cross-account** — IAM policy in Account B allowing `kms:Encrypt` on Account A's key *does nothing* unless Account A authorizes Account B's principal with a key policy or grant.
+- **Rotation eligibility** — Symmetric multi-Region keys with `AWS_KMS` origin support automatic and on-demand rotation from the primary key; rotation is synchronized across the related keys.
 - **Deletion is irreversible** — After 7–30 day window, key material is destroyed. No recovery. Ciphertexts encrypted under that key become permanently undecryptable.
-- **Grants vs policies** — Grants are temporary, service-friendly, and survive key policy changes. Policies are permanent, human-managed, and support cross-account.
-- **Multi-region key independence** — Replicas share key material but have *independent* policies, grants, aliases, and rotation state. Deleting primary schedules deletion of all replicas.
+- **Grants vs policies** — Grants are temporary, service-friendly, and can authorize same-account or cross-account principals. Policies are durable, human-managed controls.
+- **Multi-region key independence** — Replicas share key material and key ID but have regional ARNs and *independent* policies, grants, and aliases. Rotation is shared; a primary key cannot be deleted until all replicas are deleted.
 - **External key store / CloudHSM** — `Unavailable` state means KMS cannot reach HSM. Operations fail. Not the same as `Disabled`.
 
 ## Exam mapping
 
-- [Domain 4: Security and Compliance](../domains/04-security-compliance/README.md) — Task 4.2 (Data protection: encryption at rest/in transit, key management, KMS)
+- [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) — Task 4.2 (Data protection: encryption at rest/in transit, key management, KMS)
 
 ## Must-remember numbers
 
@@ -115,19 +114,10 @@ AWS KMS is a managed service for creating, controlling, and using cryptographic 
 | Deletion waiting window | 7–30 days (configurable per key) |
 | Key policy max size | 32 KB |
 | Grants per key | 50,000 |
-| Multi-region key replicas | Up to 10 (1 primary + 9 replicas) |
 | Max key policy statements | No fixed limit (bounded by 32 KB) |
 | Encrypt/Decrypt payload limit | 4 KB (symmetric), varies by algorithm (asymmetric) |
 | GenerateDataKey output | 256-bit (AES-256) plaintext + encrypted DEK |
 | Automatic rotation interval | ~365 days (annual) |
-| Key ID / ARN format | `arn:aws:kms:region:account-id:key/key-id` (global for multi-region) |
-
-## Related nodes
-
-- [IAM](../services/iam/README.md) — secured-by (key policies, IAM policies, grants)
-- [Secrets Manager](../services/secretsmanager/README.md) — encrypts-for (uses KMS for secret encryption)
-- [S3](../services/s3/README.md) — encrypts-for (SSE-KMS, bucket keys)
-- [RDS](../services/rds/README.md) — encrypts-for (storage encryption, KMS key per instance)
-- [CloudTrail](../services/cloudtrail/README.md) — audited-by (KMS API calls logged)
+| Multi-Region key ARN | `arn:aws:kms:region:account-id:key/key-id`; related keys have different regional ARNs but share key ID/material |
 
 (End of file)

@@ -3,15 +3,6 @@ id: "organizations"
 kind: "service"
 domains: [4]
 services: ["organizations"]
-related:
-  - relation: "secured-by"
-    target: "iam"
-  - relation: "integrates-with"
-    target: "cloudtrail"
-  - relation: "integrates-with"
-    target: "access-analyzer"
-  - relation: "integrates-with"
-    target: "config"
 sources:
   - title: "AWS Organizations User Guide"
     url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html"
@@ -19,39 +10,35 @@ sources:
     url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
   - title: "AWS Policy Evaluation Logic"
     url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
-last_verified: 2026-10-03
+  - title: "Resource control policies (RCPs)"
+    url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html"
+  - title: "AWS Organizations quotas and service limits"
+    url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html"
+last_verified: 2026-10-04
 ---
 
 # AWS Organizations & Service Control Policies (SCPs)
 
 ## In one paragraph
 
-AWS Organizations centrally manages multiple AWS accounts. Service Control Policies (SCPs) set maximum permissions guardrails for member accounts — they define what actions *can* be allowed, but do not grant permissions themselves. SCPs are the organization-level boundary in the policy evaluation hierarchy.
+AWS Organizations centrally manages multiple AWS accounts. Service Control Policies (SCPs) set maximum-permission guardrails for IAM users and roles in member accounts. They define what actions can be allowed, but do not grant permissions themselves. SCPs are one organizational input to authorization, not a universal policy-evaluation formula.
 
 ## Behavior and boundaries
 
 - **Organization structure**: Management account (payer) + member accounts. Organizational Units (OUs) group accounts for policy attachment.
-- **SCPs are not permissions** — They are *allow-lists* (or deny-lists) that filter what identity/resource policies can allow. Effective permission = Identity Policy ∩ Resource Policy ∩ SCP ∩ Session Policy ∩ Permissions Boundary.
-- **SCP attachment**: Can attach to Root, OU, or individual account. Inheritance flows down: Root → OU → Account.
+- **SCPs are not permissions**: They are allow-lists (or deny-lists) that filter what identity and resource policies can allow. The applicable IAM policy still grants permission.
+- **SCP attachment**: Can attach to Root, OU, or individual account. Inheritance flows down: Root -> OU -> Account.
 - **Default SCP**: `FullAWSAccess` (allows all). Removing it without replacement blocks everything.
-- **Management account is exempt** — SCPs do not apply to the management account (by design).
-- **SCP size limit**: 5,120 characters per policy.
+- **Management account is exempt**: SCPs do not apply to the management account.
+- **RCP distinction**: RCPs are also organizational guardrails and do not grant permissions. Unlike SCPs, applicable RCPs constrain access to supported resources in member accounts, including requests from principals outside the organization.
 
 ## Policy evaluation hierarchy (exam-critical)
 
-```
-Effective Permissions = 
-  Identity Policy (user/role) 
-  ∩ Resource Policy (bucket, KMS key, etc.) 
-  ∩ SCP (org/OU/account) 
-  ∩ Session Policy (assumed role) 
-  ∩ Permissions Boundary (role)
-```
+Authorization is request- and principal-dependent. IAM determines which identity-based, resource-based, session, and permissions-boundary policies apply to that request. Applicable SCPs limit IAM users and roles in member accounts; applicable RCPs limit supported resources in member accounts. An explicit `Deny` in any applicable policy wins.
 
-**Evaluation logic for a request:**
-1. Explicit **Deny** anywhere → **Deny** (wins always)
-2. If no explicit Deny: check **Allow** in each layer — all applicable layers must Allow
-3. SCP only restricts; it never grants. If SCP doesn't Allow an action, it's Denied even if identity policy Allows.
+- SCPs do not grant permissions. A principal still needs an applicable IAM `Allow`.
+- In an SCP allow-list, an action must be allowed at every applicable organization level for a member-account identity to use it.
+- An SCP attached to the resource owner's account does not restrict an outside principal that a resource policy grants access to. An applicable RCP can restrict access to the resource instead.
 
 ## SCP syntax (exam-relevant)
 
@@ -74,15 +61,15 @@ Effective Permissions =
 }
 ```
 
-- **Effect: Allow** → Adds to the allow-list (must be allowed by SCP *and* identity policy)
-- **Effect: Deny** → Explicit deny (wins over any Allow)
+- **Effect: Allow**: Adds to the SCP allow-list; it still does not grant IAM permissions.
+- **Effect: Deny**: Explicitly denies the action and takes precedence over an Allow.
 - **Condition keys**: `aws:PrincipalOrgID`, `aws:PrincipalOrgPaths`, `aws:PrincipalAccount`, `aws:RequestedRegion`, service-specific keys
 
 ## Common SCP patterns (exam-relevant)
 
 | Pattern | Use case |
 |---------|----------|
-| **Deny by default** (Allow-list) | `"Effect": "Allow", "Action": ["s3:*", "ec2:*"], "Resource": "*"` — only listed services allowed |
+| **Deny by default** (Allow-list) | `"Effect": "Allow", "Action": ["s3:*", "ec2:*"], "Resource": "*"` - only listed services can be allowed |
 | **Deny specific high-risk actions** | `"Effect": "Deny", "Action": ["organizations:LeaveOrganization", "account:CloseAccount"], "Resource": "*"` |
 | **Enforce encryption** | Deny `s3:PutObject` without `s3:x-amz-server-side-encryption` |
 | **Restrict regions** | `"Condition": { "StringNotEquals": { "aws:RequestedRegion": ["us-east-1", "eu-west-1"] } }` |
@@ -91,39 +78,31 @@ Effective Permissions =
 
 ## Common confusion
 
-- **SCP ≠ IAM Policy** — SCP filters what *can* be allowed; IAM policy grants. SCP `Allow` alone does nothing without matching IAM `Allow`.
-- **Management account exemption** — SCPs never restrict the management account. Test from a member account.
-- **Implicit deny in SCP** — If an action isn't listed in an Allow-list SCP, it's implicitly denied. An explicit `Deny` in SCP is redundant but clearer.
-- **SCP doesn't affect service-linked roles** — Service-linked roles operate with their own permissions; SCPs don't restrict them.
-- **OU inheritance** — Account inherits SCPs from all parent OUs + Root. Most restrictive union applies.
-- **`aws:PrincipalOrgID` vs `aws:PrincipalAccount`** — OrgID = entire organization; Account = specific account. Use OrgID for "only my org" conditions.
-- **SCP changes are not instant** — Propagation can take a few minutes across accounts.
+- **SCP != IAM Policy**: SCP filters what can be allowed; IAM policy grants. SCP `Allow` alone does nothing without matching IAM permission.
+- **Management account exemption**: SCPs never restrict the management account. Test from a member account.
+- **Implicit deny in SCP**: If an action is not listed in an allow-list SCP, it is denied for affected member-account identities.
+- **SCP does not affect service-linked roles**: Service-linked roles cannot be restricted by SCPs.
+- **OU inheritance**: An account inherits SCPs from all parent OUs + Root. In an allow-list design, every applicable level must permit the action.
+- **SCP scope is the member-account identity**: A resource policy can grant an outside principal access to a member-account resource without that resource owner's SCP applying to the outside principal.
 
 ## Operational signals
 
-- **Organization CloudTrail** — Single trail in management account logs all member accounts (org trail).
-- **Access Analyzer org analyzer** — Scans all member accounts for external access findings.
-- **Config aggregator** — Multi-account compliance view.
-- **Trusted Advisor** — Org-level checks (service limits, security groups, etc.).
+- **Organization CloudTrail**: Single trail in management account logs all member accounts (org trail).
+- **Access Analyzer org analyzer**: Scans all member accounts for external access findings.
+- **Config aggregator**: Multi-account compliance view.
+- **Trusted Advisor**: Org-level checks (service limits, security groups, etc.).
 
 ## Exam mapping
 
-- [Domain 4: Security and Compliance](../domains/04-security-compliance/README.md) — Task 4.1 (multi-account controls, SCPs, access auditing)
+- [Domain 4: Security and Compliance](../../../domains/04-security-compliance/README.md) - Task 4.1 (multi-account controls, SCPs, access auditing)
 
 ## Must-remember numbers
 
 | Figure | Value |
 |--------|-------|
-| Max accounts per organization | 10,000 (soft limit) |
-| Max OUs per organization | Unlimited (practical limit ~100s) |
-| Max SCPs per organization | 1,000 |
-| Max SCP size | 5,120 characters |
-| Max policies attached per target | 5 (Root/OU/Account) |
-| SCP evaluation | Always applied to member accounts; never management account |
-
-## Related nodes
-
-- [IAM](../services/iam/README.md) — secured-by (SCPs filter IAM permissions)
-- [CloudTrail](../services/cloudtrail/README.md) — integrates-with (org trail)
-- [Access Analyzer](../services/access-analyzer/README.md) — integrates-with (org analyzer)
-- [Config](../services/config/README.md) — integrates-with (multi-account aggregator)
+| Default maximum accounts per organization | 10; adjustable up to 50,000 |
+| Maximum OUs per organization | 2,000 |
+| Maximum SCPs per organization | 10,000 |
+| Maximum SCP size | 10,240 characters |
+| Directly attached SCPs per Root, OU, or account | 10 |
+| SCP evaluation | Applies to member-account IAM users and roles, not the management account |
