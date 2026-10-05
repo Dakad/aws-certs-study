@@ -1,5 +1,7 @@
 # Personal learning notes
 
+Use these notes with the [revision workflow](REVISION.md) before timed mixed practice. Append new observations in date order.
+
 ## 2026-09-28
 
 - Questions/practice evidence (2026-09-28): Given rising API latency and HTTP 5xx with normal EC2 CPU, proposed checking VPC Flow Logs and EC2 logs, using `curl` to inspect response headers/body, and using `dig` conditionally if the hostname fails to resolve.
