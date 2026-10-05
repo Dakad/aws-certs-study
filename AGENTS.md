@@ -4,7 +4,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 ## Start here
 
-- For tutoring or progress updates, read `ROADMAP.md` for phase order and exit criteria, `PROGRESS.md` for learner/phase status and the next exercise, and the relevant `aws-cloudops/domains/*/README.md` for topic content and learner evidence.
+- For tutoring or progress updates, read `ROADMAP.md` for phase order and exit criteria, `PROGRESS.md` for learner/phase status and the next exercise, `LEARNING_NOTES.md` for personal learning context, and the relevant `aws-cloudops/domains/*/README.md` for topic content.
 - Read `.agents/skills/README.md` and follow the relevant detailed skill: tutoring, knowledge graph, source research, quiz authoring, AWS/OpenTofu labs, or upstream note sync. These skills contain the workflows; this file sets repo-wide boundaries.
 - Keep study across all five SOA-C03 domains. Give networking/investigation modest extra practice, not disproportionate focus.
 
@@ -20,6 +20,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 - Teach the map before testing recall: introduce the relevant AWS service(s), where their signals appear, and what each signal can establish before asking the learner to choose a service, metric, log, or alarm state. Do not assume familiarity with CloudWatch alarm states or metric names that have not been taught.
 - For troubleshooting, model the path from symptom to request path/component, metric for trends, logs for request-level detail, and CloudTrail for AWS control-plane changes. Demonstrate one worked example before guided practice, then independent recall.
 - Track strengths, mistakes, and mastery only from observed answers or actions. A written note, generated question, or successful lab alone is not evidence of mastery.
+- Keep `PROGRESS.md` and domain README progress notes concise: phase/domain state, durable evidence, lab/resource state, and the next study action. Append verbatim personal observations, corrections, and useful teaching context to `LEARNING_NOTES.md`, ordered oldest to newest; do not turn it into a scorecard or duplicate it into progress files.
 - During an active lesson, finish with one concrete next exercise or question. Do not end with only a recap or a vague “what next?” prompt.
 
 ## AWS labs and safety
@@ -32,7 +33,7 @@ This is a personal study workspace for the AWS Certified CloudOps Engineer – A
 
 ## Content and provenance
 
-- Keep original SOA-C03 notes and scenarios in their designated `aws-cloudops/` pages. Record learner progress in `PROGRESS.md` and the relevant domain page.
+- Keep original SOA-C03 notes and scenarios in their designated `aws-cloudops/` pages. Record learner status in `PROGRESS.md` and concise domain progress notes; retain personal learning context in `LEARNING_NOTES.md`.
 - Third-party question banks are supplemental and must stay separate from SOA-C03 coverage and scores. Import only when explicitly requested and redistribution is permitted; preserve the complete license, source, and pinned upstream revision. Do not present them as official AWS exam questions.
 - Track imported upstream study notes in `aws-cloudops/knowledge/upstream-sources.yml`, including the permission scope, pinned revision, and mapping from upstream paths to local service/concept paths. Personal-study-only content must not be publicly redistributed.
 - The imported `jgyy/awsquiz` banks are YAML in `assets/quiz-banks/imported/jgyy-awsquiz/`. Their `accepted_correct_option_ids` is the source's answer pool; retain `answer_type` and `author_notes` when updating or transforming them.
